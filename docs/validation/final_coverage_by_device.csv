@@ -1,0 +1,7 @@
+device,recording,files,compared_epochs,requested_epochs,zero_filled_raw_samples
+GT3X,static,15,79768,81000,0
+GT3X,secondary,15,392316,396217,18300
+GT9X,static,15,80292,81000,26500
+GT9X,secondary,14,328556,331081,6600
+LEAP,static,15,81000,81000,0
+LEAP,secondary,15,292621,292621,0

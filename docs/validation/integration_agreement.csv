@@ -1,0 +1,13 @@
+device,recording,reference,recordings,axis_values,exact_percent,maximum_absolute_difference
+GT3X,secondary,ActiLife_AGD,15,1176948,99.97952330944103,187.0
+GT3X,secondary,Pinned_Python_reference_vectors,15,1176948,100.0,0.0
+GT3X,static,ActiLife_AGD,15,239304,100.0,0.0
+GT3X,static,Pinned_Python_reference_vectors,15,239304,100.0,0.0
+GT9X,secondary,ActiLife_AGD,14,985668,99.97930337598461,230.0
+GT9X,secondary,Pinned_Python_reference_vectors,14,985668,100.0,0.0
+GT9X,static,ActiLife_AGD,15,240876,99.99252727544463,161.0
+GT9X,static,Pinned_Python_reference_vectors,15,240876,100.0,0.0
+LEAP,secondary,ActiLife_AGD,15,877863,100.0,0.0
+LEAP,secondary,Pinned_Python_reference_vectors,15,877863,100.0,0.0
+LEAP,static,ActiLife_AGD,15,243000,100.0,0.0
+LEAP,static,Pinned_Python_reference_vectors,15,243000,100.0,0.0

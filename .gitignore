@@ -1,0 +1,23 @@
+# Generated files and local data do not belong in source history.
+.Rhistory
+.RData
+.Ruserdata
+.Renviron
+.env
+.env.*
+__pycache__/
+*.pyc
+*.Rcheck/
+*.tar.gz
+outputs/
+local/
+node_modules/
+.venv/
+sessions/
+dist/
+tmp/
+.DS_Store
+Thumbs.db
+
+# Native examples restored into the working project by m_load_sample_data.
+/metronautica-samples/

@@ -1,0 +1,27 @@
+Package: metronautica
+Type: Package
+Title: Wearable Accelerometer Parsing, Diagnostics and Metrology
+Version: 0.1.0
+Authors@R: person("Millen James", "Theophilus", email="m.j.theophilus@lboro.ac.uk", role=c("aut", "cre"))
+Description: Direct functions for native wearable accelerometer parsing,
+    signal diagnostics, clipping, static and dynamic characterisation,
+    filtering and time-domain acceleration features. Provides direct access to
+    calculation functions and optional retrieval of native laboratory examples
+    distributed separately by the companion study repository.
+License: GPL-3
+Encoding: UTF-8
+Depends: R (>= 4.1.0)
+Imports: tibble, dplyr (>= 1.0.0), data.table, digest, jsonlite, signal, ggplot2 (>= 3.4.0), ggrepel (>= 0.9.1),
+    scales, stats, utils, grid, tools
+Suggests: plotly, GENEAread, GGIRread, read.gt3x, MIMSunit, TSEntropies
+Collate:
+    'm_qc.R'
+    'm_parsers.R'
+    'm_accel_clipper.R'
+    'm_static.R'
+    'm_dynamic.R'
+    'm_filter.R'
+    'm_accel_summary_suite.R'
+    'm_agcounts.R'
+    'm_plotter.R'
+    'm_sample_data.R'

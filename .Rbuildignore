@@ -1,0 +1,7 @@
+^\.gitignore$
+^\.github$
+^CITATION\.cff$
+^docs$
+^tools$
+^LICENSE\.md$
+^examples$
