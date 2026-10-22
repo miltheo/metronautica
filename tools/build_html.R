@@ -82,12 +82,12 @@ regions <- list(
     list("native-recordings", 25, 90, 310, 126, "Native recordings: GENEActiv/SENS BIN, Axivity CWA/AX3 CSV, ActiGraph GT3X/LEAP CSV/LEAP AGSD, HBK G-Link CSV. See decoder limits below."),
     list(paste0(repo, "R/m_parsers.R"), 347, 89, 328, 72, "Open m_parsers.R: parse_raw_auto(qc = TRUE) decodes the native recording and attaches primary-five diagnostics."),
     list("acceleration-tibble", 660, 90, 360, 135, "Acceleration tibble: time (POSIXct, UTC), ax_g, ay_g, az_g (numeric, g). Attached meta holds acquisition settings, provenance and QC."),
-    list("static-characterisation", 660, 307, 360, 145, "Static characterisation: select a stationary interval; sampling frequency, noise floor, signed offset bias, drift and Allan deviation."),
-    list("dynamic-characterisation", 1060, 307, 260, 145, "Dynamic characterisation: specify a reference, range and stage schedule; response slope, bias, non-linearity and composite error."),
-    list("feature-extraction-and-visual-comparison", 1360, 307, 315, 145, "Feature extraction and visual comparison: compute epoch summaries or counts and inspect processed-signal plots."),
-    list("metrology-and-feature-reports", 1715, 307, 305, 145, "Reports: retain error estimates, units, resolved settings and provenance."),
+    list("static-characterisation", 660, 307, 360, 205, "Static characterisation: select a stationary interval; sampling frequency, noise floor, signed offset bias, drift and Allan deviation."),
+    list("dynamic-characterisation", 1060, 307, 260, 205, "Dynamic characterisation: specify a reference, range and stage schedule; response slope, bias, non-linearity and composite error."),
+    list("feature-extraction-and-visual-comparison", 1360, 307, 315, 205, "Feature extraction and visual comparison: compute epoch summaries or counts and inspect processed-signal plots."),
+    list("metrology-and-feature-reports", 1715, 307, 305, 205, "Reports: retain error estimates, units, resolved settings and provenance."),
     list("optional-calibration", 975, 558, 425, 107, "Optional calibration: fit and apply a VM mapping; independently validate benefit and repeat assessments."),
-    list("reference.html#attach_qc", 357, 573, 321, 83, "attach_qc(): open documentation for recomputing and attaching diagnostics to the calibrated signal before reassessment.")
+    list("reference.html#attach_qc", 337, 558, 361, 107, "attach_qc(): open documentation for recomputing and attaching diagnostics to the calibrated signal before reassessment.")
 )
 hotspots <- vapply(regions, function(r) sprintf(
     '<a href="%s" aria-label="%s"><title>%s</title><rect class="hotspot" x="%s" y="%s" width="%s" height="%s"/></a>',

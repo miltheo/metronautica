@@ -8,10 +8,10 @@
       .box{fill:#161b22;stroke:#8b949e;stroke-width:2.5}
       .solid{fill:none;stroke:#79c0ff;stroke-width:4;marker-end:url(#solid-arrow)}
       .optional{fill:none;stroke:#3fb9a8;stroke-width:3;stroke-dasharray:10 7;marker-end:url(#optional-arrow)}
-      text{fill:#e6edf3;font-family:Consolas,'Liberation Mono',monospace;text-anchor:middle}
-      .heading{font-size:22px;font-weight:700}
-      .body{font-size:18px}
-      .small{font-size:16px}
+      text{fill:#e6edf3;font-family:'Segoe UI',Arial,sans-serif;text-anchor:middle}
+      .heading{font-size:24px;font-weight:700}
+      .body{font-size:20px}
+      .small{font-size:18px}
     </style>
   </defs>
   <rect width="2048" height="768" fill="#0d1117"/>
@@ -27,40 +27,45 @@
   <text class="small" x="501" y="150">Parsing and signal diagnostics</text>
   <!-- One precise centreline: tibble x=840, arrow x=840, static x=840. -->
   <path class="solid" d="M840 223 V307"/>
-  <rect class="box" x="660" y="308" width="360" height="142"/>
-  <text class="heading" x="840" y="345">Static characterisation</text>
-  <text class="body" x="840" y="379">Sampling frequency, noise floor,</text>
-  <text class="body" x="840" y="404">offset bias</text>
-  <text class="body" x="840" y="430">Drift, Allan deviation</text>
-  <path class="solid" d="M1020 379 H1059"/>
-  <rect class="box" x="1060" y="308" width="260" height="142"/>
-  <text class="heading" x="1190" y="340" style="font-size:18px">Dynamic characterisation</text>
-  <text class="body" x="1190" y="377">Reference comparison</text>
-  <text class="body" x="1190" y="404">Response slope, bias,</text>
-  <text class="body" x="1190" y="430" style="font-size:16px">non-linearity, composite error</text>
-  <path class="solid" d="M1320 379 H1359"/>
-  <rect class="box" x="1360" y="308" width="315" height="142"/>
-  <text class="heading" x="1517.5" y="340">Feature extraction and</text>
-  <text class="heading" x="1517.5" y="370">visual comparison</text>
-  <text class="body" x="1517.5" y="406" style="font-size:17px">Epoch summaries, activity counts</text>
-  <text class="body" x="1517.5" y="432">Processed-signal plots</text>
-  <path class="solid" d="M1675 379 H1714"/>
-  <rect class="box" x="1715" y="308" width="305" height="142" rx="24"/>
-  <text class="heading" x="1867.5" y="340">Metrology and feature</text>
-  <text class="heading" x="1867.5" y="370">reports</text>
-  <text class="body" x="1867.5" y="406">Error estimates, settings,</text>
-  <text class="body" x="1867.5" y="432">provenance</text>
+  <rect class="box" x="660" y="308" width="360" height="202"/>
+  <text class="heading" x="840" y="345">Static</text>
+  <text class="heading" x="840" y="375">characterisation</text>
+  <text class="body" x="840" y="420">Sampling frequency, noise floor,</text>
+  <text class="body" x="840" y="449">offset bias</text>
+  <text class="body" x="840" y="478">Drift, Allan deviation</text>
+  <path class="solid" d="M1020 409 H1059"/>
+  <rect class="box" x="1060" y="308" width="260" height="202"/>
+  <text class="heading" x="1190" y="345">Dynamic</text>
+  <text class="heading" x="1190" y="375">characterisation</text>
+  <text class="body" x="1190" y="414">Reference comparison</text>
+  <text class="body" x="1190" y="441">Response slope, bias,</text>
+  <text class="body" x="1190" y="468">non-linearity,</text>
+  <text class="body" x="1190" y="495">composite error</text>
+  <path class="solid" d="M1320 409 H1359"/>
+  <rect class="box" x="1360" y="308" width="315" height="202"/>
+  <text class="heading" x="1517.5" y="345">Feature extraction and</text>
+  <text class="heading" x="1517.5" y="375">visual comparison</text>
+  <text class="body" x="1517.5" y="420">Epoch summaries,</text>
+  <text class="body" x="1517.5" y="449">activity counts</text>
+  <text class="body" x="1517.5" y="478">Processed-signal plots</text>
+  <path class="solid" d="M1675 409 H1714"/>
+  <rect class="box" x="1715" y="308" width="305" height="202" rx="24"/>
+  <text class="heading" x="1867.5" y="345">Metrology and feature</text>
+  <text class="heading" x="1867.5" y="375">reports</text>
+  <text class="body" x="1867.5" y="435">Error estimates, settings,</text>
+  <text class="body" x="1867.5" y="464">provenance</text>
   <path class="optional" d="M1008 134 H1517.5 V307"/>
   <path class="optional" d="M996 174 H1190 V307"/>
-  <path class="optional" d="M1867.5 450 V612 H1400"/>
+  <path class="optional" d="M1867.5 510 V612 H1400"/>
   <rect class="box" x="976" y="559" width="424" height="105"/>
   <text class="heading" x="1188" y="603">Optional calibration</text>
   <text class="body" x="1188" y="640">Fit, apply, independently validate</text>
-  <path class="optional" d="M976 612 H678"/>
-  <rect class="box" x="358" y="574" width="320" height="82"/>
-  <text class="heading" x="518" y="609" style="font-size:20px">Re-run signal diagnostics</text>
-  <text class="body" x="518" y="638">attach_qc()</text>
-  <path class="optional" d="M358 612 H164 V241 H680 V224"/>
+  <path class="optional" d="M976 612 H698"/>
+  <rect class="box" x="338" y="559" width="360" height="105"/>
+  <text class="heading" x="518" y="589">Re-run signal</text>
+  <text class="heading" x="518" y="618">diagnostics</text>
+  <text class="body" x="518" y="647">attach_qc()</text>
+  <path class="optional" d="M338 612 H164 V241 H680 V224"/>
   <text class="body" x="266" y="410">Calibrated signal</text>
   <rect x="1608" y="62" width="412" height="96" rx="3" fill="#161b22" stroke="#8b949e" stroke-dasharray="6 6"/>
   <path class="solid" d="M1630 94 H1722"/>
