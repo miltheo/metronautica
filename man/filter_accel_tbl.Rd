@@ -12,10 +12,10 @@ filter_accel_tbl(x, cutoff, forder = 4, ftype = "low")
 \item{ftype}{\if{latex}{\out{\sloppy}} Filter type accepted by \code{signal::butter}: \code{"low"}, \code{"high"}, \code{"pass"}, \code{"stop"}.}
 }
 \value{\if{latex}{\out{\sloppy}} The same input container type with filtered axes, unchanged timestamps, appended processing history and invalidated inherited QC. Table and bundle metadata remain synchronised.}
-\details{\if{latex}{\out{\sloppy}} The implemented cutoff adjustment is \eqn{f_c/(\sqrt{2}-1)^{1/(2n)}}, followed by normalisation to Nyquist and \code{signal::filtfilt()}. All adjusted cutoffs must lie strictly between zero and Nyquist. This helper preserves the study implementation, including its cutoff adjustment for the selected filter type; do not assume identical effective edges across filter types. The feature-suite band-pass filter is a separate implementation. The input must contain a finite positive acquisition$fs_derived_hz in its metadata; this helper does not substitute a nominal rate or infer a new rate. Regular sampling and an adequate contiguous, finite record are caller responsibilities; this function does not repair gaps.}
+\details{\if{latex}{\out{\sloppy}} The implemented cutoff adjustment is \eqn{f_c/(\sqrt{2}-1)^{1/(2n)}}, followed by normalisation to Nyquist and \code{signal::filtfilt()}. All adjusted cutoffs must lie strictly between zero and Nyquist. This helper applies the cutoff adjustment for the selected filter type; do not assume identical effective edges across filter types. The feature-suite band-pass filter is a separate implementation. The input must contain a finite positive acquisition$fs_derived_hz in its metadata; this helper does not substitute a nominal rate or infer a new rate. Regular sampling and an adequate contiguous, finite record are caller responsibilities; this function does not repair gaps.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{filter_accel_tbl} in \code{R/m_filter.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{filter_accel_tbl} in \code{R/m_filter.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \section{Stage bundles}{
 \if{latex}{\out{\sloppy}}

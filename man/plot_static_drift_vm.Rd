@@ -13,4 +13,4 @@ plot_static_drift_vm(d1, drift_fit, title_prefix = "Static drift")
 \value{\if{latex}{\out{\sloppy}} A ggplot object; supplied data are unchanged.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{plot_static_drift_vm} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{plot_static_drift_vm} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and function map.}

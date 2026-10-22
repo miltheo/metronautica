@@ -20,7 +20,7 @@ dm_fit_vm_calibration(test_clips, ref_clips, window_s = 5, select_by
 
 \section{Method}{\if{latex}{\out{\sloppy}} Form VM from each matched stage and pair reference observations using the retained evenly spaced sample-index rule. Fit linear and quadratic candidates in the requested regression direction; select by the supplied criterion or force linear. This is within-recording fitted calibration, not independent validation. Apply only ref_on_test coefficients to test recordings.}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{dm_fit_vm_calibration} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{dm_fit_vm_calibration} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \examples{
 t0 <- as.POSIXct("2026-01-01", tz = "UTC")

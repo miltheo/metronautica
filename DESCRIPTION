@@ -1,14 +1,24 @@
 Package: metronautica
 Type: Package
-Title: Wearable Accelerometer Parsing, Diagnostics and Metrology
+Title: Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports.
 Version: 0.1.0
-Authors@R: person("Millen James", "Theophilus", email="m.j.theophilus@lboro.ac.uk", role=c("aut", "cre"))
-Description: Direct functions for native wearable accelerometer parsing,
-    signal diagnostics, clipping, static and dynamic characterisation,
-    filtering and time-domain acceleration features. Provides direct access to
-    calculation functions and optional retrieval of native laboratory examples
-    distributed separately by the companion study repository.
+Date: 2026-10-22
+Language: en-GB
+NeedsCompilation: no
+Authors@R: person("Millen James", "Theophilus",
+    email = "m.j.theophilus@lboro.ac.uk", role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0001-9823-7177"))
+Author: Millen James Theophilus [aut, cre]
+    (<https://orcid.org/0000-0001-9823-7177>)
+Maintainer: Millen James Theophilus <m.j.theophilus@lboro.ac.uk>
+Description: Native wearable triaxial accelerometer parsing, signal diagnostics,
+    clipping, static and dynamic characterisation, filtering and reporting.
+    Developed for the wearable-accelerometer metrology research article under
+    submission for publication, with accompanying analyses and data in WAM
+    <https://github.com/miltheo/wam>.
 License: GPL-3
+URL: https://github.com/miltheo/metronautica
+BugReports: https://github.com/miltheo/metronautica/issues
 Encoding: UTF-8
 Depends: R (>= 4.1.0)
 Imports: tibble, dplyr (>= 1.0.0), data.table, digest, jsonlite, signal, ggplot2 (>= 3.4.0), ggrepel (>= 0.9.1),

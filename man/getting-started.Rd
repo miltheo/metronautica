@@ -6,7 +6,7 @@
 
 For a native recording, replace the constructor with \code{\link{parse_raw_auto}} and inspect the returned metadata. Parsing attaches QC by default; the constructor requires explicit \code{\link{attach_qc}}. Optional native decoders depend on format. Interactive signal plots require plotly; calculations below do not.
 
-For stationary metrology, select a stationary window with \code{\link{static_clip}}, then use \code{\link{static_metrology_from_tbl}} or its direct outcome helpers. For stepped excitation, apply any intended filter to the recording before \code{\link{clip_dynamic_stages}}, construct test/reference stages and call \code{\link{dynamic_metrology_report}}. \code{\link{native-study-examples}} supplies the full laboratory workflow with external samples. The \code{\link{implementation-guide}} maps these stages to source functions and measurement outcomes.}
+For stationary metrology, select a stationary window with \code{\link{static_clip}}, then use \code{\link{static_metrology_from_tbl}} or its direct outcome helpers. For stepped excitation, apply any intended filter to the recording before \code{\link{clip_dynamic_stages}}, construct test/reference stages and call \code{\link{dynamic_metrology_report}}. \code{\link{native-recording-examples}} supplies stationary and orbital-shaker examples with external recordings. The \code{\link{implementation-guide}} maps these stages to source functions and measurement outcomes.}
 \examples{
 library(metronautica)
 fs <- 100
@@ -33,4 +33,4 @@ table(mixed$data_long$measure)  # Four epochs per feature
 nrow(mixed$data_wide)          # Eight rows: different timestamp labels
 stopifnot(nrow(mixed$data_wide) == 8)
 }
-\seealso{\code{\link{common-data-format}}, \code{\link{compute_accel_summaries}}, \code{\link{native-study-examples}}}
+\seealso{\code{\link{common-data-format}}, \code{\link{compute_accel_summaries}}, \code{\link{native-recording-examples}}}

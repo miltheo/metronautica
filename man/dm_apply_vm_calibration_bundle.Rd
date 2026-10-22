@@ -14,4 +14,4 @@ dm_apply_vm_calibration_bundle(clips, cal_row)
 
 \section{Method}{\if{latex}{\out{\sloppy}} Use dm_apply_vm_calibration_tbl for every stored signal. Missing stage entries remain NULL; present stage names and all timestamps remain unchanged. Invalid coefficients fail before a calibrated result is returned. The function neither refits the model nor validates its benefit on independent recordings.}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{dm_apply_vm_calibration_bundle} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{dm_apply_vm_calibration_bundle} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and function map.}

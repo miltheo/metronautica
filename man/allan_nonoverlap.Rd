@@ -16,4 +16,4 @@ allan_nonoverlap(x, fs_hz, tau_s, min_M = 4L)
 
 \section{Method}{\if{latex}{\out{\sloppy}} Convert tau_s to rounded sample counts and divide the sequence into complete non-overlapping clusters. Compute each cluster mean, then sqrt(mean(diff(cluster_means)^2)/2). Omit unsupported cluster lengths and trailing incomplete clusters. Returned tau is the actual sample count divided by fs_hz.}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{allan_nonoverlap} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{allan_nonoverlap} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and function map.}

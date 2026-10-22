@@ -6,4 +6,4 @@ Initial release.
 - Time-window and stepped-RPM clipping; static and dynamic metrological characterisation.
 - Filtering, calibration provenance, time-domain features and interactive plots.
 - Standalone published-filter and custom-cutoff activity counts.
-- Checksum-verified access to separately distributed laboratory samples.
+- Checksum-verified access to separately distributed native-recording examples.

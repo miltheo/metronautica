@@ -15,7 +15,7 @@ accel_metric_rocam(tbl, epoch_s, fs_hz, anchor = "center", median_s
 }
 \value{A tibble with \code{time} (the selected observed-sample epoch label), \code{epoch_id} (integer elapsed-time bin starting at one), and \code{value} (g per successive-sample change, without division by elapsed time).}
 
-\details{\if{latex}{\out{\sloppy}} Take the Euclidean norm of successive triaxial sample differences, smooth the difference series by a running median, then average within epochs. There is no division by elapsed time or one-second resampling. The retained outcome is g/sample change, not g/s. See \code{\link{measurement-definitions}} for manuscript-aligned definitions. No additional device calibration is performed by choosing a feature.}
+\details{\if{latex}{\out{\sloppy}} Take the Euclidean norm of successive triaxial sample differences, smooth the difference series by a running median, then average within epochs. There is no division by elapsed time or one-second resampling. The retained outcome is g/sample change, not g/s. See \code{\link{measurement-definitions}} for calculation definitions. No additional device calibration is performed by choosing a feature.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_rocam} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_rocam} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}

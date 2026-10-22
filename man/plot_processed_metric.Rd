@@ -14,4 +14,4 @@ plot_processed_metric(result, metric, unit = NULL, title = metric)
 \value{\if{latex}{\out{\sloppy}} An interactive Plotly htmlwidget; no feature values are recalculated.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{plot_processed_metric} in \code{R/m_plotter.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{plot_processed_metric} in \code{R/m_plotter.R}. See \code{\link{implementation-guide}} for the framework and function map.}

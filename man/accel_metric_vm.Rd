@@ -15,7 +15,7 @@ accel_metric_vm(tbl, epoch_s, anchor = "center", summary_fun =
 }
 \value{A tibble with \code{time} (the selected observed-sample epoch label), \code{epoch_id} (integer elapsed-time bin starting at one), and \code{value} (g or mg according to the selected output unit).}
 
-\details{\if{latex}{\out{\sloppy}} Compute sample vector magnitude and the selected within-epoch statistic; return g or mg. See \code{\link{measurement-definitions}} for manuscript-aligned definitions. No additional device calibration is performed by choosing a feature.}
+\details{\if{latex}{\out{\sloppy}} Compute sample vector magnitude and the selected within-epoch statistic; return g or mg. See \code{\link{measurement-definitions}} for calculation definitions. No additional device calibration is performed by choosing a feature.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_vm} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_vm} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}

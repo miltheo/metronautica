@@ -17,7 +17,7 @@ accel_metric_svmg(tbl, epoch_s, fs_hz, anchor = "center", output =
 }
 \value{A tibble with \code{time} (the selected observed-sample epoch label), \code{epoch_id} (integer elapsed-time bin starting at one), and \code{value} (g seconds for g_seconds, g sample sums for sample_sum_g, mg for mean_mg, or g for mean_g).}
 
-\details{\if{latex}{\out{\sloppy}} Subtract 1 g from sample VM, optionally take absolute differences, and aggregate by the selected output form. The manuscript SVMgs, SVMg.s and mean SVMg variants use the absolute differences; ENMO instead truncates negative differences to zero. See \code{\link{measurement-definitions}} for manuscript-aligned definitions. No additional device calibration is performed by choosing a feature.}
+\details{\if{latex}{\out{\sloppy}} Subtract 1 g from sample VM, optionally take absolute differences, and aggregate by the selected output form. The SVMGS, SVMGSEC and SVMGMEAN variants use the absolute differences; ENMO instead truncates negative differences to zero. See \code{\link{measurement-definitions}} for calculation definitions. No additional device calibration is performed by choosing a feature.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_svmg} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_svmg} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}

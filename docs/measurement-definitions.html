@@ -1,0 +1,55 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Measurement definitions | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="measurement-definitions"></a></p>
+<h1>Measurement definitions</h1>
+<p><a href="index.html#processing-workflow">Workflow</a> · <a href="reference.html">Function reference</a> · <a href="metronautica-reference.pdf">PDF</a></p>
+<p>The R help sources are the maintained technical definitions. This index directs
+to the relevant definitions without maintaining a second set of equations.</p>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time, triaxial acceleration, g, metadata and container forms</td>
+<td><a href="reference.html#common-data-format">Common data format</a></td>
+</tr>
+<tr>
+<td>Static offset bias, noise floor, drift and Allan deviation</td>
+<td><a href="reference.html#measurement-definitions">Measurement definitions</a>, <a href="reference.html#static_metrology_from_tbl">static outcomes</a></td>
+</tr>
+<tr>
+<td>Response slope, signed bias, VM integral non-linearity and composite error</td>
+<td><a href="reference.html#measurement-definitions">Measurement definitions</a>, <a href="reference.html#dynamic_metrology_report">dynamic outcomes</a></td>
+</tr>
+<tr>
+<td>Post-parse primary-five diagnostics</td>
+<td><a href="reference.html#qc_accel_tbl">Diagnostic rules, numerators and denominators</a></td>
+</tr>
+<tr>
+<td>Feature operations, units and epoch conventions</td>
+<td><a href="reference.html#compute_accel_summaries">Feature summary specification</a> and linked individual metrics</td>
+</tr>
+<tr>
+<td>Activity Index noise variance</td>
+<td><a href="reference.html#compute_ai_noise_var_from_static">Stationary variance estimation</a></td>
+</tr>
+<tr>
+<td>Published-filter and custom-cutoff counts</td>
+<td><a href="reference.html#accel_metric_agcounts">Count computation</a>, <a href="activity-counts.html">validation</a></td>
+</tr>
+<tr>
+<td>VM calibration, application and provenance</td>
+<td><a href="reference.html#dm_fit_vm_calibration">Calibration fitting</a> and linked application functions</td>
+</tr>
+<tr>
+<td>Framework, source functions and interpretation</td>
+<td><a href="reference.html#implementation-guide">Implementation guide</a></td>
+</tr>
+</tbody>
+</table>
+<p>The same help sources generate the HTML and PDF references and are installed
+with the package. Use <code>help(&quot;measurement-definitions&quot;, package = &quot;metronautica&quot;)</code>
+for the outcome definitions in R.</p>
+</main></body></html>

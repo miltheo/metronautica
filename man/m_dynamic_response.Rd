@@ -14,7 +14,7 @@ m_dynamic_response(test, reference, axis_fsr_g)
 \details{\if{latex}{\out{\sloppy}} The least-squares test-VM-on-reference-VM regression and nearest-index length matching are the same calculations used by dynamic_metrology_report. The signed bias is the mean test-minus-reference VM. Scale-factor error is slope minus one, dimensionless. Integral non-linearity uses the maximum absolute residual divided by the VM normalising span, times 100. The composite-error field uses half that span; it represents trial composite error only when the supplied vectors contain the complete pooled trial assessment. It is not a measurement-uncertainty budget. This function applies no new calibration or timestamp correction.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{m_dynamic_response} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{m_dynamic_response} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \examples{
 reference_vm <- seq(.1, 2, length.out = 100)

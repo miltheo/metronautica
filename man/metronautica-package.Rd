@@ -2,16 +2,18 @@
 \alias{metronautica-package}
 \alias{metronautica}
 \docType{package}
-\title{Wearable Accelerometer Parsing, Diagnostics and Metrology}
-\description{\if{latex}{\out{\sloppy}} Direct R functions for native decoding, primary-five signal diagnostics, clipping, stationary and dynamic characterisation, filtering and time-domain acceleration features.}
-\details{\if{latex}{\out{\sloppy}} All engine functions reside directly in ten R/m_*.R files. Loading the package makes the functions available. Functions returning tables and bundles document their container and units. The companion WAM repository distributes native samples as release attachments from one laboratory unit each of LEAP, AX3, SENS and GENEActiv. The package retains a small catalogue and offline fixtures. Configure a local sample directory or fixed release-asset URL and use m_load_sample_data to retrieve one sample into a project; dynamic examples include the primary HBK reference by default. These are controlled laboratory recordings, not human behavioural validation data.}
-\section{Start here}{\code{\link{getting-started}} provides a complete offline example; \code{\link{native-study-examples}} extends it to laboratory recordings.}
+\title{Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports.}
+\description{Native wearable triaxial accelerometer parsing, signal diagnostics, clipping, static and dynamic characterisation, filtering and reporting. Developed for the wearable-accelerometer metrology research article under submission for publication; the associated analyses and data are available in WAM: \url{https://github.com/miltheo/wam}.}
+\details{The package provides functions for native decoding, common-format acceleration data, signal diagnostics and selected assessments. Each function documents its input, returned quantities, units and processing settings. \code{\link{implementation-guide}} maps the workflow to the public functions.}
+\section{Author and maintainer}{Millen James Theophilus, \url{https://orcid.org/0000-0001-9823-7177}. Maintainer: \email{m.j.theophilus@lboro.ac.uk}. Documentation language: British English (en-GB). The package contains R code and does not require compilation.}
+\section{Repositories}{Package source: \url{https://github.com/miltheo/metronautica}. WAM analyses, observations and native-recording catalogue: \url{https://github.com/miltheo/wam}. Native recording payloads are separate release attachments.}
+\section{Start here}{\code{\link{getting-started}} provides a complete offline example; \code{\link{native-recording-examples}} covers stationary and ten-stage orbital-shaker recordings.}
 \section{Standalone counts}{The published-filter and custom-cutoff count function \code{\link{accel_metric_agcounts}} is documented separately. The AG selector is disabled in compute_accel_summaries. GT3X parsing defaults to native precision, with an explicit legacy_3dp mode.}
-\section{Scope}{\if{latex}{\out{\sloppy}} Functions calculate features and metrological outcomes for supplied recordings and selected intervals. The package does not append study master sheets, orchestrate repeated study trials, automatically compare native/calibrated pipelines or perform cohort-level inference. Calibration, filtering and analysis settings are explicit caller choices. Dynamic clipping requires explicit stepped-RPM schedule parameters; the native example supplies the manuscript schedule.}
+\section{Scope}{\if{latex}{\out{\sloppy}} Functions calculate features and metrological outcomes for supplied recordings and selected intervals. Cohort-level inference and inter-device equivalence testing are provided by the linked WAM analyses. Calibration, filtering and analysis settings are explicit caller choices. Dynamic clipping requires explicit stepped-RPM schedule parameters; the native-recording example supplies ten six-minute stages from 50 to 500 RPM.}
 \section{Workflow}{\if{latex}{\out{\sloppy}} Load a sample or supply a recording, call parse_raw_auto, inspect metadata and diagnostics, select the intended interval, then call the required metrology or feature functions. Use static_1hz_means, static_drift, static_allan and the direct accel_metric_* functions when individual outcomes are needed. Static_metrology_from_tbl and dynamic_metrology_report remain optional combined assessments.}
 \seealso{\itemize{
 \item{\code{\link{implementation-guide}}}
-\item{\code{\link{native-study-examples}}}
+\item{\code{\link{native-recording-examples}}}
 \item{\code{\link{m_load_sample_data}}}
 \item{\code{\link{parse_raw_auto}}}
 \item{\code{\link{qc_accel_tbl}}}

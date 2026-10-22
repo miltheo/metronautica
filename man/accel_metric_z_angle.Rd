@@ -14,7 +14,7 @@ accel_metric_z_angle(tbl, epoch_s, anchor = "center", output =
 }
 \value{A tibble with \code{time} (the selected observed-sample epoch label), \code{epoch_id} (integer elapsed-time bin starting at one), and \code{value} (degrees).}
 
-\details{\if{latex}{\out{\sloppy}} For each sample compute atan(z/sqrt(x^2+y^2)) in degrees, then take the selected epoch mean or SD. No low-pass gravity-vector estimate is introduced; this is the full-vector orientation feature in the approved definition. See \code{\link{measurement-definitions}} for manuscript-aligned definitions. No additional device calibration is performed by choosing a feature.}
+\details{\if{latex}{\out{\sloppy}} For each sample compute atan(z/sqrt(x^2+y^2)) in degrees, then take the selected epoch mean or SD. No low-pass gravity-vector estimate is introduced; this is the full-vector orientation feature. See \code{\link{measurement-definitions}} for calculation definitions. No additional device calibration is performed by choosing a feature.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_z_angle} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_z_angle} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}

@@ -12,4 +12,4 @@ attach_qc(x, scope = "whole parsed recording")
 \value{\if{latex}{\out{\sloppy}} The same input container, with primary-five diagnostics in meta$processing$qc. Bundle and data metadata are synchronised.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{attach_qc} in \code{R/m_qc.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{attach_qc} in \code{R/m_qc.R}. See \code{\link{implementation-guide}} for the framework and function map.}

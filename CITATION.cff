@@ -1,9 +1,11 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata in this file."
-title: "Metronautica"
+title: "Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports."
 type: software
 authors:
   - family-names: Theophilus
     given-names: Millen James
+    orcid: "https://orcid.org/0000-0001-9823-7177"
 version: 0.1.0
 license: GPL-3.0-only
+repository-code: "https://github.com/miltheo/metronautica"

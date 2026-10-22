@@ -14,4 +14,4 @@ static_drift(d1)
 
 \section{Method}{\if{latex}{\out{\sloppy}} Fit separate ordinary least-squares models of one-second VM and axis means on elapsed_h. Return the signed slopes in g/h and the fitted VM model. Selection of a stationary interval is the caller's responsibility; fitting a slope does not establish physical sensor drift in uncontrolled movement.}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_drift} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_drift} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and function map.}

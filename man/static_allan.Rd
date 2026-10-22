@@ -13,4 +13,4 @@ static_allan(x)
 
 \section{Method}{\if{latex}{\out{\sloppy}} For each axis, evaluate 60 log-spaced requested averaging times from 0.1 to 10000 seconds through allan_nonoverlap. Sampling frequency is estimated from positive timestamp intervals. The calculation assumes suitable uniformly sampled stationary data; it does not repair gaps or resample. The minimum four-cluster requirement limits supported long averaging times.}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_allan} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_allan} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and function map.}

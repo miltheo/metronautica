@@ -5,3 +5,8 @@
 ^tools$
 ^LICENSE\.md$
 ^examples$
+^metronautica-samples$
+^outputs$
+^local$
+^dist$
+^tmp$

@@ -21,10 +21,10 @@ accel_metric_svmbp(tbl, epoch_s, fs_hz, anchor = "center",
 }
 \value{A tibble with \code{time}, \code{epoch_id} and \code{value}. Units are mg/g for means, mg/g sample sums for sum_mg/sum_g, or g seconds for g_seconds. The \code{settings} attribute records requested/applied cutoffs, filter order, sampling frequency, Nyquist policy, output aggregation, epoch duration and anchor.}
 
-\details{\if{latex}{\out{\sloppy}} Filter each acceleration axis using signal::butter and forward/reverse filtfilt, recombine the filtered axes as VM, then aggregate. The requested and actual passband are retained. This is distinct from filtering the already-combined VM or from the compensated standalone filter. See \code{\link{measurement-definitions}} for manuscript-aligned definitions. No additional device calibration is performed by choosing a feature.}
+\details{\if{latex}{\out{\sloppy}} Filter each acceleration axis using signal::butter and forward/reverse filtfilt, recombine the filtered axes as VM, then aggregate. The requested and actual passband are retained. This is distinct from filtering the already-combined VM or from the compensated standalone filter. See \code{\link{measurement-definitions}} for calculation definitions. No additional device calibration is performed by choosing a feature.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_svmbp} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_svmbp} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \examples{
 path <- system.file("extdata", "example_motion.csv",

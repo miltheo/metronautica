@@ -1,6 +1,11 @@
-example_motion.csv is a synthetic continuous signal for arithmetic examples.
-leap_reference.agsd and leap_reference.rds are paired laboratory packed-byte
-and rounded vendor-export fixtures used to verify the supported LEAP conversion.
-native/sample_index.csv contains the external sample catalogue and checksums.
-Native recordings and their provenance are distributed separately by WAM.
-Use m_load_sample_data() with a local sample directory or release-asset URL.
+Installed offline data and sample catalogue.
+
+example_motion.csv: synthetic continuous acceleration for runnable help examples.
+leap_reference.agsd: 16 non-contiguous LEAP records for decoder and loader tests.
+leap_reference.rds: expected rounded vendor values, timestamps and provenance for
+those records. These are test fixtures, not a complete static or dynamic trial.
+native/sample_index.csv: external recording catalogue used by m_load_sample_data().
+
+Keep these files in inst/extdata in the source package. R installs them as extdata
+at the package root, accessible through system.file("extdata", package="metronautica").
+Complete analysis-window samples are distributed separately through WAM.

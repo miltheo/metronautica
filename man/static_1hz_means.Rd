@@ -11,6 +11,6 @@ static_1hz_means(x)
 \value{\if{latex}{\out{\sloppy}} A tibble with sec (UTC second-bin start), ax_mean, ay_mean, az_mean and vm_mean (one-second means in g), and elapsed_h (hours since the first populated bin).}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Method}{\if{latex}{\out{\sloppy}} Bin timestamps by floor of Unix seconds. Within each populated second, average each axis and sample vector magnitude, omitting missing values. Empty UTC seconds are not filled. elapsed_h starts at the first populated bin. This is the input to the manuscript static drift and initial VM-offset calculations.}
+\section{Method}{\if{latex}{\out{\sloppy}} Bin timestamps by floor of Unix seconds. Within each populated second, average each axis and sample vector magnitude, omitting missing values. Empty UTC seconds are not filled. elapsed_h starts at the first populated bin. This is the input to the static drift and initial VM-offset calculations.}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_1hz_means} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_1hz_means} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and function map.}

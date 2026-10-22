@@ -14,4 +14,4 @@ dm_apply_vm_calibration_tbl(df, cal_row)
 
 \section{Method}{\if{latex}{\out{\sloppy}} Map test VM v to max(b0+b1*v+b2*v^2, 0), then multiply every axis at that sample by corrected_VM/v. The original scale fallback of one for zero/undefined VM is retained. This scalar mapping preserves the instantaneous acceleration-vector direction; it is not a general axis-specific calibration. Finite single-row coefficients are required. When a direction is provided it must be ref_on_test. Source decoding provenance remains available; added calibration history is separate.}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{dm_apply_vm_calibration_tbl} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{dm_apply_vm_calibration_tbl} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and function map.}

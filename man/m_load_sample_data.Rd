@@ -1,7 +1,7 @@
 \name{m_load_sample_data}
 \alias{m_load_sample_data}
-\title{Retrieve a native study recording into a project}
-\description{\if{latex}{\out{\sloppy}} Copy a local native example or explicitly download it from a configured fixed WAM release, verifying compressed and restored checksums. No measurement values are changed.}
+\title{Retrieve a native recording example into a project}
+\description{\if{latex}{\out{\sloppy}} Copy a local native example or explicitly download it from a configured fixed WAM release-asset directory, verifying compressed and restored checksums. No measurement values are changed.}
 \usage{
 m_load_sample_data(device = "LEAP", type = "static", dest_dir =
     file.path(getwd(), "metronautica-samples"), overwrite = FALSE,
@@ -18,10 +18,10 @@ m_load_sample_data(device = "LEAP", type = "static", dest_dir =
 \item{base_url}{\if{latex}{\out{\sloppy}} Fixed HTTPS WAM release-asset directory, used only when a needed compressed sample is unavailable locally. Defaults to \code{metronautica.sample_base_url}. No public URL is preconfigured. A \code{file:///} directory also supports offline retrieval.}
 }
 \value{\if{latex}{\out{\sloppy}} The native file path, with a sample_info attribute containing source identity, analysis bounds, units and timestamp shift. A JSON sidecar contains the same information. With a dynamic reference, the path also has reference_file and reference_info attributes.}
-\details{\if{latex}{\out{\sloppy}} Large native examples are distributed separately through WAM, not installed with this package. For local source checkouts, point sample_dir at WAM's samples directory. After publication, configure base_url with the fixed sample-data release asset directory. The packaged catalogue fixes filenames and SHA-256 checksums. Installation, package loading and ordinary calculations do not require WAM or network access. If a sample cannot be obtained, an informative error explains local and remote configuration. Existing identical restored files are reused offline; existing different files are protected unless overwrite is TRUE. Downloads and decompression use temporary files and validation precedes replacement.
+\details{\if{latex}{\out{\sloppy}} Stationary and orbital-shaker recording examples are distributed separately through WAM (\url{https://github.com/miltheo/wam}), not installed with this package. For local source checkouts, point sample_dir at WAM's samples directory. After publication, configure base_url with the fixed sample-data release-asset directory. The packaged catalogue fixes filenames and SHA-256 checksums. Installation, package loading and ordinary calculations do not require WAM or network access. If a sample cannot be obtained, an informative error explains local and remote configuration. Existing identical restored files are reused offline; existing different files are protected unless overwrite is TRUE. Downloads and decompression use temporary files and validation precedes replacement.
 
 Static files cover the analysed 24-hour stationary window, 15 August 2025 20:30 UTC to 16 August 2025 20:30 UTC. Dynamic files retain the complete first primary trial, 19 August 2025 13:18 to 14:36 UTC: ten six-minute stages from 50 to 500 RPM, including intervening two-minute adjustments. Files preserve native records, calibration coefficients and timestamps; boundary padding is retained where needed. Gzip is storage compression only. The SENS example and paired HBK reference each require their own documented +3600-second shift. This function does not parse, filter or calibrate data.}
-\seealso{\code{\link{native-study-examples}}, \code{\link{parse_raw_auto}}}
+\seealso{\code{\link{native-recording-examples}}, \code{\link{parse_raw_auto}}}
 \examples{
 \dontrun{
 # Local sibling checkout; adjust for the current project.
@@ -37,4 +37,4 @@ accel_meta(x)$processing$qc$ruleset
 }
 }
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{m_load_sample_data} in \code{R/m_sample_data.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{m_load_sample_data} in \code{R/m_sample_data.R}. See \code{\link{implementation-guide}} for the framework and function map.}

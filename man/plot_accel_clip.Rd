@@ -15,4 +15,4 @@ plot_accel_clip(x, include_vm = FALSE, demean_vm = FALSE, title =
 \value{\if{latex}{\out{\sloppy}} An interactive Plotly htmlwidget. Display thinning does not alter the input recording.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{plot_accel_clip} in \code{R/m_plotter.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{plot_accel_clip} in \code{R/m_plotter.R}. See \code{\link{implementation-guide}} for the framework and function map.}

@@ -23,9 +23,9 @@ accel_metric_ai(tbl, epoch_s, fs_hz, anchor = "center", ai_noise_var
 }
 \value{A tibble with \code{epoch_id}, \code{time} and \code{value}. Absolute output is in g; relative output is dimensionless. Sum and mean refer to the one-second indices, not acceleration samples. Timestamps select the first, last or middle one-second bin start within each output epoch. The \code{settings} attribute records noise variance/source, estimation settings, scale, aggregation, rate and duration; \code{ai_noise_var_used} also records the variance in g squared.}
 
-\details{\if{latex}{\out{\sloppy}} Calculate sample variance per axis within one-second windows, average the three variances, subtract the stationary mean-axis noise variance, truncate negative excess to zero and take the square root. The absolute index is in g. Relative scaling divides excess variance by noise variance before the square root; zero noise variance gives undefined relative values. Aggregate the one-second indices by the selected sum or mean. See \code{\link{measurement-definitions}} for manuscript-aligned definitions. No additional device calibration is performed by choosing a feature.}
+\details{\if{latex}{\out{\sloppy}} Calculate sample variance per axis within one-second windows, average the three variances, subtract the stationary mean-axis noise variance, truncate negative excess to zero and take the square root. The absolute index is in g. Relative scaling divides excess variance by noise variance before the square root; zero noise variance gives undefined relative values. Aggregate the one-second indices by the selected sum or mean. See \code{\link{measurement-definitions}} for calculation definitions. No additional device calibration is performed by choosing a feature.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_ai} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_ai} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \references{Bai et al. (2016), \doi{10.1371/journal.pone.0160644}.}

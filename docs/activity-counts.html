@@ -1,0 +1,96 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Activity counts: implementation and validation | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="activity-counts-implementation-and-validation"></a></p>
+<h1>Activity counts: implementation and validation</h1>
+<p><a href="index.html#processing-workflow">Workflow</a> · <a href="index.html">HTML guide</a> · <a href="reference.html">HTML reference</a> · <a href="metronautica-reference.pdf">PDF reference</a></p>
+<p>The standalone <code>accel_metric_agcounts()</code> API is implemented in <code>R/m_agcounts.R</code>.
+Its Rd help and generated reference manual are the parameter/method reference.
+This is an implementation of the published algorithm, not a newly proposed
+historical count definition. Published coefficients are acknowledged from
+ActiGraph/agcounts under GPL-3.0, commit
+3137c9b9a26539ae2d9645d396586fe15faece59; see
+<a href="https://doi.org/10.1038/s41598-022-16003-x">Neishabouri et al. (2022)</a>.</p>
+<p><a name="use-and-interpretation"></a></p>
+<h2>Use and interpretation</h2>
+<p>Use <code>accel_metric_agcounts()</code> for the published-filter calculation or explicit
+custom cutoffs. Input precision, gap handling and boundary policies are part of
+the pipeline; modified counts do not inherit behavioural-threshold validation.
+<a href="reference.html#accel_metric_agcounts">Function parameters and method</a> define
+these settings. <a href="recording-examples.html#feature-settings">The processing guide</a>
+links count computation to the acceleration workflow.</p>
+<p><a name="original-experimental-validation"></a></p>
+<h2>Original experimental validation</h2>
+<p>The experiment included 89 paired native/ActiLife 7.1.0 Normal-filter AGD
+recordings: 45 static files and 44 secondary-shaker files. Static checks used
+initial, central stationary and final 30-minute windows, with preceding context
+for internal windows. They did not cover every static-recording second.
+Secondary checks used all matching raw coverage. GT9X startup prefixes were
+explicitly derived from native-header timing. No lag or parameter was fitted.</p>
+<p>Across 3,763,659 paired one-second axis values, the calculation matched the
+pinned official Python reference exactly, including nonzero counts. Synthetic
+checks covered all 12 supported rates; all eight legacy rates also matched R
+agcounts 0.7.0. A custom 0.69-10 Hz example matched an independently designed
+SciPy calculation. These are computational comparisons, not behavioural tests.</p>
+<p>AGD agreement in the controlled-shaker interval was 100% for wGT3X-BT and LEAP,
+and 99.996693% for GT9X. The latter involved eight affected seconds around a one-second
+missing interval. A targeted carry-forward test reproduced those AGD values, whereas zero
+filling did not. Other residuals concerned startup and idle/download transitions.
+R agcounts also modifies zero-valued periods internally, so its public wrapper
+need not evaluate the supplied values unchanged. Matching the calculation does
+not establish universal export reproduction under different input conventions.</p>
+<p>The accompanying CSV files report full-record/window agreement, nonzero-count
+agreement, maximum differences and coverage. Python and R agcounts were external
+benchmarks only; neither is required to install or use Metronautica.</p>
+<p><a name="api-verification-and-benchmark-scope"></a></p>
+<h2>API verification and benchmark scope</h2>
+<p>The standalone API reproduced all 3,763,659 pinned published-reference axis
+values over the 89-recording benchmark. Benchmark inputs use explicit zero-fill
+and GT9X startup-padding conventions; this does not imply that recordings with
+gaps satisfy the function's strict default policy.</p>
+<p>Native parser-to-count checks cover complete first shaker trials for LEAP,
+wGT3X-BT and GT9X. Explicit legacy precision reproduces the upstream conversion.
+The audited GT9X recording has two one-second missing intervals; only one lies
+within the controlled-shaker window. Gap rejection, explicit carry-forward,
+boundary padding and affected-epoch flags are checked separately.</p>
+<p>Package tests use synthetic signals and small deterministic reference fixtures;
+they do not download recordings or require external benchmark software. Run
+<code>Rscript tools/validate.R</code> after installing the package to execute all eight
+checks, including counts.</p>
+<p><a name="benchmark-tables"></a></p>
+<h2>Benchmark tables</h2>
+<p>Tables are in <a href="https://github.com/miltheo/metronautica/blob/main/docs/validation/">validation</a>. The recording/window summaries include
+startup and other transitions; controlled-shaker agreement is reported separately.
+Their denominators and intervals must be retained when interpreting percentages.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/docs/validation/final_agreement_by_device.csv">final_agreement_by_device.csv</a></td>
+<td>Reference and AGD agreement by device and recording type</td>
+</tr>
+<tr>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/docs/validation/final_agd_agreement_by_period.csv">final_agd_agreement_by_period.csv</a></td>
+<td>AGD agreement by assessment interval</td>
+</tr>
+<tr>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/docs/validation/final_coverage_by_device.csv">final_coverage_by_device.csv</a></td>
+<td>Paired recording and epoch coverage</td>
+</tr>
+<tr>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/docs/validation/integration_agreement.csv">integration_agreement.csv</a></td>
+<td>Installed-API agreement over the benchmark inputs</td>
+</tr>
+<tr>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/docs/validation/integration_coverage.csv">integration_coverage.csv</a></td>
+<td>Window coverage and missing samples</td>
+</tr>
+<tr>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/docs/validation/native_agd_start_times.csv">native_agd_start_times.csv</a></td>
+<td>Native versus AGD recording-start times</td>
+</tr>
+</tbody>
+</table>
+</main></body></html>

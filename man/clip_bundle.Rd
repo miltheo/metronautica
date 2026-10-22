@@ -18,7 +18,7 @@ clip_bundle(obj, start_time = NULL, duration_s = NULL, end_time =
 \details{\if{latex}{\out{\sloppy}} Both endpoints are included. A 10-s interval sampled at 100 Hz can therefore contain 1001 samples. This differs deliberately from the exclusive end used by static and dynamic stage clipping. The input is unchanged. Invalid or empty intervals raise errors. Recompute \code{qc_accel_tbl()} for the selected interval.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{clip_bundle} in \code{R/m_accel_clipper.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{clip_bundle} in \code{R/m_accel_clipper.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \section{Stage bundles}{
 \if{latex}{\out{\sloppy}}

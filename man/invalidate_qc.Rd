@@ -11,4 +11,4 @@ invalidate_qc(x)
 \value{\if{latex}{\out{\sloppy}} The same input container with inherited QC removed; acceleration samples are unchanged.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{invalidate_qc} in \code{R/m_qc.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{invalidate_qc} in \code{R/m_qc.R}. See \code{\link{implementation-guide}} for the framework and function map.}

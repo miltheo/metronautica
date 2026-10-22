@@ -21,4 +21,4 @@ x <- as_accel_tbl(t0 + s, 0.1 * sin(2 * pi * 2 * s),
 accel_meta(x)$acquisition
 }
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_meta} in \code{R/m_parsers.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_meta} in \code{R/m_parsers.R}. See \code{\link{implementation-guide}} for the framework and function map.}

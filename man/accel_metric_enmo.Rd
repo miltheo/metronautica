@@ -14,10 +14,10 @@ accel_metric_enmo(tbl, epoch_s, anchor = "center", out_unit =
 }
 \value{A tibble with \code{time} (the selected observed-sample epoch label), \code{epoch_id} (integer elapsed-time bin starting at one), and \code{value} (g or mg according to the selected output unit).}
 
-\details{\if{latex}{\out{\sloppy}} Compute max(VM - 1, 0) for every sample, then average within each epoch. Rectification precedes averaging; this is the approved ENMO definition. See \code{\link{measurement-definitions}} for manuscript-aligned definitions. No additional device calibration is performed by choosing a feature.}
+\details{\if{latex}{\out{\sloppy}} Compute max(VM - 1, 0) for every sample, then average within each epoch. Rectification precedes averaging; this is the ENMO definition. See \code{\link{measurement-definitions}} for calculation definitions. No additional device calibration is performed by choosing a feature.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_enmo} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_enmo} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \examples{
 path <- system.file("extdata", "example_motion.csv",

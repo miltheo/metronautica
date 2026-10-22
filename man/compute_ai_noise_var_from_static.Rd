@@ -15,9 +15,9 @@ compute_ai_noise_var_from_static(x, window_s = 1, fs_hz = NULL,
 \value{\if{latex}{\out{\sloppy}} A list with ai_noise_var (mean per-axis stationary variance, g squared), ai_noise_sd (its square root, g), window_values (per-window variances), n_windows, fs_hz and window_s. Trailing incomplete sample windows are discarded. No finite estimates or fewer than two samples per window raises an error.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Method}{\if{latex}{\out{\sloppy}} For every complete stationary window calculate (var(x)+var(y)+var(z))/3 using sample variances. Average these window variances for the Activity Index noise correction. The estimate differs from the manuscript maximum-axis detrended noise floor. The supported table/bundle forms feed the same calculation; no calibration, detrending or stationarity detection is added.}
+\section{Method}{\if{latex}{\out{\sloppy}} For every complete stationary window calculate (var(x)+var(y)+var(z))/3 using sample variances. Average these window variances for the Activity Index noise correction. The estimate differs from the maximum-axis detrended noise floor. The supported table/bundle forms feed the same calculation; no calibration, detrending or stationarity detection is added.}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{compute_ai_noise_var_from_static} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{compute_ai_noise_var_from_static} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \examples{
 seconds <- (0:5999) / 100

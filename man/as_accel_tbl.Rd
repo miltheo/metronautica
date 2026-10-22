@@ -27,4 +27,4 @@ class(x)
 qc_accel_tbl(x)$n_samples
 }
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{as_accel_tbl} in \code{R/m_parsers.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{as_accel_tbl} in \code{R/m_parsers.R}. See \code{\link{implementation-guide}} for the framework and function map.}

@@ -1,0 +1,138 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Processing workflow | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="metronautica"></a></p>
+<h1>Metronautica</h1>
+<p>Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports.</p>
+<p>Parse wearable recordings, inspect signal quality, characterise measurement response
+and extract acceleration features. Developed for a research article under submission;
+associated analyses and data are in <a href="https://github.com/miltheo/wam">WAM</a>.</p>
+<p><a href="getting-started.html">Getting started</a> · <a href="recording-examples.html">Recording examples</a> · <a href="metronautica-reference.pdf">PDF reference</a> · <a href="index.html">Browser guide</a></p>
+<p><a name="processing-workflow"></a></p>
+<h2>Processing workflow</h2>
+<svg class="workflow" viewBox="0 0 2048 768" role="group" aria-label="Interactive processing workflow"><image href="assets/workflow-dark.svg" width="2048" height="768"/><a href="#native-recordings" aria-label="Native recordings: GENEActiv/SENS BIN, Axivity CWA/AX3 CSV, ActiGraph GT3X/LEAP CSV/LEAP AGSD, HBK G-Link CSV. See decoder limits below."><title>Native recordings: GENEActiv/SENS BIN, Axivity CWA/AX3 CSV, ActiGraph GT3X/LEAP CSV/LEAP AGSD, HBK G-Link CSV. See decoder limits below.</title><rect class="hotspot" x="25" y="90" width="310" height="126"/></a>
+<a href="https://github.com/miltheo/metronautica/blob/main/R/m_parsers.R" aria-label="Open m_parsers.R: parse_raw_auto(qc = TRUE) decodes the native recording and attaches primary-five diagnostics."><title>Open m_parsers.R: parse_raw_auto(qc = TRUE) decodes the native recording and attaches primary-five diagnostics.</title><rect class="hotspot" x="347" y="89" width="328" height="72"/></a>
+<a href="#acceleration-tibble" aria-label="Acceleration tibble: time (POSIXct, UTC), ax_g, ay_g, az_g (numeric, g). Attached meta holds acquisition settings, provenance and QC."><title>Acceleration tibble: time (POSIXct, UTC), ax_g, ay_g, az_g (numeric, g). Attached meta holds acquisition settings, provenance and QC.</title><rect class="hotspot" x="660" y="90" width="360" height="135"/></a>
+<a href="#static-characterisation" aria-label="Static characterisation: select a stationary interval; sampling frequency, noise floor, signed offset bias, drift and Allan deviation."><title>Static characterisation: select a stationary interval; sampling frequency, noise floor, signed offset bias, drift and Allan deviation.</title><rect class="hotspot" x="660" y="307" width="360" height="145"/></a>
+<a href="#dynamic-characterisation" aria-label="Dynamic characterisation: specify a reference, range and stage schedule; response slope, bias, non-linearity and composite error."><title>Dynamic characterisation: specify a reference, range and stage schedule; response slope, bias, non-linearity and composite error.</title><rect class="hotspot" x="1060" y="307" width="260" height="145"/></a>
+<a href="#feature-extraction-and-visual-comparison" aria-label="Feature extraction and visual comparison: compute epoch summaries or counts and inspect processed-signal plots."><title>Feature extraction and visual comparison: compute epoch summaries or counts and inspect processed-signal plots.</title><rect class="hotspot" x="1360" y="307" width="315" height="145"/></a>
+<a href="#metrology-and-feature-reports" aria-label="Reports: retain error estimates, units, resolved settings and provenance."><title>Reports: retain error estimates, units, resolved settings and provenance.</title><rect class="hotspot" x="1715" y="307" width="305" height="145"/></a>
+<a href="#optional-calibration" aria-label="Optional calibration: fit and apply a VM mapping; independently validate benefit and repeat assessments."><title>Optional calibration: fit and apply a VM mapping; independently validate benefit and repeat assessments.</title><rect class="hotspot" x="975" y="558" width="425" height="107"/></a>
+<a href="reference.html#attach_qc" aria-label="attach_qc(): open documentation for recomputing and attaching diagnostics to the calibrated signal before reassessment."><title>attach_qc(): open documentation for recomputing and attaching diagnostics to the calibrated signal before reassessment.</title><rect class="hotspot" x="357" y="573" width="321" height="83"/></a></svg>
+<p><a href="#native-recordings" title="GENEActiv/SENS BIN; Axivity CWA/AX3 CSV; ActiGraph GT3X/LEAP CSV/LEAP AGSD; HBK G-Link CSV.">Native recordings</a> →
+<a href="#acceleration-tibble" title="time: POSIXct, UTC; ax_g, ay_g, az_g: numeric acceleration in g; attached meta: acquisition settings, provenance and QC.">Acceleration tibble</a> →
+<a href="#static-characterisation">Static</a> → <a href="#dynamic-characterisation">Dynamic</a> →
+<a href="#feature-extraction-and-visual-comparison">Features</a> → <a href="#metrology-and-feature-reports">Reports</a>.
+<a href="#optional-calibration">Optional calibration</a> returns to assessment with refreshed QC.</p>
+<p>Each assessment can also be called independently. Open the browser guide locally
+for clickable diagram navigation.</p>
+<p><a name="installation"></a></p>
+<h2>Installation</h2>
+<p>Install dependencies in R:</p>
+<pre><code class="language-r">install.packages(c(&quot;tibble&quot;, &quot;dplyr&quot;, &quot;data.table&quot;, &quot;digest&quot;, &quot;jsonlite&quot;,
+                   &quot;signal&quot;, &quot;ggplot2&quot;, &quot;ggrepel&quot;, &quot;scales&quot;))
+</code></pre>
+<p>Download this repository, then install its source directory from R:</p>
+<pre><code class="language-r">install.packages(&quot;path/to/metronautica&quot;, repos = NULL, type = &quot;source&quot;)
+</code></pre>
+<p>Alternatively, run <code>R CMD INSTALL .</code> from the repository root in a terminal.
+Optional decoder and plotting packages are listed in <a href="getting-started.html#optional-packages">Getting Started</a>.</p>
+<p><a name="quick-start"></a></p>
+<h2>Quick start</h2>
+<p>Run the installed offline example to inspect QC, calculate ENMO/MAD and see their
+returned values and settings:</p>
+<pre><code class="language-r">library(metronautica)
+example(&quot;getting-started&quot;, package = &quot;metronautica&quot;)
+</code></pre>
+<p>For a native recording:</p>
+<pre><code class="language-r">accel &lt;- parse_raw_auto(&quot;path/to/recording.agsd&quot;, return = &quot;bundle&quot;, qc = TRUE)
+accel_meta(accel)$processing$qc
+features &lt;- compute_accel_summaries(accel, measures = c(&quot;ENMO&quot;, &quot;MAD&quot;), epoch_s = 5)
+head(features$data_wide)
+</code></pre>
+<p><a href="getting-started.html#real-recording-examples">Worked static and dynamic examples with plots</a>
+use separately distributed samples. Ordinary package use requires neither WAM nor downloads.</p>
+<p><a name="native-recordings"></a></p>
+<h2>Native recordings</h2>
+<p><code>parse_raw_auto()</code> detects the format and applies its documented decoder.
+QC is enabled by default and attached as <code>meta$processing$qc</code> (<code>primary-five</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Supported input</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ActiGraph LEAP</td>
+<td>AGSD, exported CSV</td>
+</tr>
+<tr>
+<td>ActiGraph wGT3X-BT / GT9X Link</td>
+<td>GT3X</td>
+</tr>
+<tr>
+<td>Axivity AX3</td>
+<td>CWA, exported CSV</td>
+</tr>
+<tr>
+<td>GENEActiv / SENS motion</td>
+<td>BIN</td>
+</tr>
+<tr>
+<td>HBK G-Link</td>
+<td>Exported CSV</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="getting-started.html#optional-packages">decoder requirements and limits</a>,
+<a href="reference.html#parse_raw_auto">parser documentation</a> and <a href="https://github.com/miltheo/metronautica/blob/main/R/m_parsers.R">parser source</a>.</p>
+<p><a name="acceleration-tibble"></a></p>
+<h2>Acceleration tibble</h2>
+<p>Four columns: <code>time</code> (<code>POSIXct</code>, UTC), <code>ax_g</code>, <code>ay_g</code>, <code>az_g</code> (numeric, g).
+Attached <code>meta</code> records acquisition settings, provenance and QC; read it with
+<code>accel_meta()</code>. For already decoded data, construct with <code>as_accel_tbl()</code> and
+attach diagnostics with <code>attach_qc()</code>.
+<a href="reference.html#common-data-format">Data contract</a>.</p>
+<p><a name="static-characterisation"></a></p>
+<h2>Static characterisation</h2>
+<p>Select a stationary interval with an explicit start and duration.
+<code>static_metrology_from_tbl()</code> returns noise, signed 1-g VM offset bias, drift,
+Allan deviation and plots. Individual outcome functions are also available.
+<a href="getting-started.html#static-characterisation">Example</a> · <a href="reference.html#static_metrology_from_tbl">Reference</a> · <a href="https://github.com/miltheo/metronautica/blob/main/R/m_static.R">Source</a>.</p>
+<p><a name="dynamic-characterisation"></a></p>
+<h2>Dynamic characterisation</h2>
+<p>Specify test/reference recordings, the excitation schedule and measurement range.
+<code>clip_dynamic_stages()</code> selects stages; <code>dynamic_metrology_report()</code> returns
+response slope, signed VM bias, VM integral non-linearity, composite error and plots.
+<a href="getting-started.html#dynamic-characterisation">Example</a> · <a href="reference.html#dynamic_metrology_report">Reference</a> · <a href="https://github.com/miltheo/metronautica/blob/main/R/m_dynamic.R">Source</a>.</p>
+<p><a name="feature-extraction-and-visual-comparison"></a></p>
+<h2>Feature extraction and visual comparison</h2>
+<p><code>compute_accel_summaries()</code> returns epoch features and resolved settings;
+<code>accel_metric_*()</code> functions provide individual calculations.
+<code>plot_accel_clip()</code> shows acceleration; <code>plot_processed_metric()</code> shows features.
+Activity counts use the standalone <code>accel_metric_agcounts()</code>.
+<a href="recording-examples.html#feature-settings">Feature guide</a> · <a href="reference.html#compute_accel_summaries">Reference</a> · <a href="https://github.com/miltheo/metronautica/blob/main/R/m_accel_summary_suite.R">Source</a>.</p>
+<p><a name="metrology-and-feature-reports"></a></p>
+<h2>Metrology and feature reports</h2>
+<p>Retain outcomes with their units, reference, tested range and processing settings.
+Static results provide <code>summary</code>/<code>meta</code>; dynamic results provide <code>stages</code>/<code>overall</code>/<code>meta</code>;
+feature results provide <code>data_long</code>/<code>data_wide</code>/<code>settings</code>.
+<a href="reference.html#measurement-definitions">Outcome reference</a>.</p>
+<p><a name="optional-calibration"></a></p>
+<h2>Optional calibration</h2>
+<p>Use <code>dm_fit_vm_calibration()</code> and its application helpers when additional VM
+calibration is warranted. Validate benefit independently, call <code>attach_qc()</code> on
+the calibrated signal, then repeat the selected assessments.
+<a href="reference.html#dm_fit_vm_calibration">Methods</a> · <a href="reference.html#attach_qc">Refresh QC</a> · <a href="https://github.com/miltheo/metronautica/blob/main/R/m_dynamic.R">Source</a>.</p>
+<p><a name="documentation-and-citation"></a></p>
+<h2>Documentation and citation</h2>
+<p>Use <code>help(&quot;function_name&quot;, package = &quot;metronautica&quot;)</code> in R, or the
+<a href="reference.html">HTML reference</a> and <a href="metronautica-reference.pdf">PDF reference</a>.
+<a href="documentation.html">Documentation maintenance</a> covers repository layout, tests and builds.</p>
+<p><a href="activity-counts.html">Activity-count validation</a> · <a href="https://github.com/miltheo/metronautica/blob/main/CITATION.cff">Citation</a> ·
+<strong>GPL-3</strong> (<a href="https://github.com/miltheo/metronautica/blob/main/LICENSE.md">licence</a>, <a href="dependency-licensing.html">dependency notices</a>).
+Native samples have separate distribution terms documented by WAM.</p>
+<p>Maintainer: <a href="https://github.com/miltheo">Millen James Theophilus</a>,
+<a href="https://orcid.org/0000-0001-9823-7177">ORCID</a>.
+<a href="https://github.com/miltheo/metronautica/issues">Report an issue</a> with the function
+call, error, <code>sessionInfo()</code> and a reproducible input where permitted.</p>
+</main></body></html>

@@ -43,4 +43,31 @@ check("static drift plot preserves supplied data", identical(d, before) && ident
 check("static drift label text is unchanged",
       identical(p$layers[[3]]$aes_params$label,
                 sprintf("drift = %s g/h", formatC(unname(stats::coef(fit)[2]), format = "e", digits = 2))))
+
+# Render, rather than only construct, to exercise logarithmic tick drawing.
+allan <- expand.grid(tau = 10^seq(-1, 4, length.out = 60), axis = c("X", "Y", "Z"))
+allan$adev <- 1e-4 + 1e-3 / sqrt(allan$tau) + allan$tau * 1e-8
+before_allan <- allan
+warnings <- character()
+render_allan <- function() {
+    path <- tempfile(fileext = ".pdf")
+    grDevices::pdf(path)
+    on.exit({grDevices::dev.off(); unlink(path)}, add = TRUE)
+    p <- plot_static_allan(allan)
+    print(p)
+    p
+}
+p_allan <- withCallingHandlers(render_allan(), warning = function(w) {
+    warnings <<- c(warnings, conditionMessage(w)); invokeRestart("muffleWarning")
+})
+check("Allan logarithmic ticks render without warnings", !length(warnings))
+check("Allan plot preserves supplied curves", identical(allan, before_allan) && identical(p_allan$data, before_allan))
+expected_min <- do.call(rbind, lapply(split(allan, allan$axis), function(d) d[which.min(d$adev), ]))
+actual_min <- p_allan$layers[[3L]]$data
+check("Allan minimum coordinates are unchanged",
+      identical(as.numeric(actual_min$tau), as.numeric(expected_min$tau)) &&
+      identical(as.numeric(actual_min$adev), as.numeric(expected_min$adev)))
+check("Allan axes retain log10 transforms",
+      p_allan$scales$get_scales("x")$trans$name == "log-10" &&
+      p_allan$scales$get_scales("y")$trans$name == "log-10")
 cat(length(checks), "compatibility checks passed\n")

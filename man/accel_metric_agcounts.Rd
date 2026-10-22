@@ -48,4 +48,4 @@ modified <- accel_metric_agcounts(x, epoch_s = 5, fs_hz = fs,
 attr(modified, "settings")$algorithm
 }
 \seealso{\code{\link{parse_raw_auto}}, \code{\link{qc_accel_tbl}}, \code{\link{compute_accel_summaries}}}
-\section{Implementation}{Implemented in R/m_agcounts.R. Standalone count calculation; no study master-sheet or manuscript-output generation is performed.}
+\section{Implementation}{Implemented in R/m_agcounts.R. Standalone count calculation.}

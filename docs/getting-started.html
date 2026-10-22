@@ -1,0 +1,169 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Getting started | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="getting-started"></a></p>
+<h1>Getting started</h1>
+<p><a href="index.html#processing-workflow">Workflow</a> · <a href="reference.html">Function reference</a> · <a href="metronautica-reference.pdf">PDF</a></p>
+<p>Load the installed package with <code>library(metronautica)</code>. Individual scripts do not
+need to be sourced. Start offline, then substitute a native recording.</p>
+<p><a name="offline-example"></a></p>
+<h2>Offline example</h2>
+<p>This synthetic 20-second example requires no external recordings or optional
+packages. It demonstrates the interface, not stationary noise or behavioural validity.</p>
+<!-- EXAMPLE:offline:start -->
+<pre><code class="language-r">library(metronautica)
+fs &lt;- 100
+seconds &lt;- (0:1999) / fs
+meta &lt;- list(acquisition = list(fs_nominal_hz = fs,
+    fs_derived_hz = fs, full_scale_range_g = 16))
+x &lt;- as_accel_tbl(as.POSIXct(&quot;2026-01-01&quot;, tz = &quot;UTC&quot;) + seconds,
+    .2 * sin(2*pi*2*seconds), .2 * cos(2*pi*2*seconds),
+    rep(1, length(seconds)), meta)
+x &lt;- attach_qc(x, scope = &quot;synthetic 20-second recording&quot;)
+accel_meta(x)$processing$qc[c(&quot;n_samples&quot;, &quot;median_dt_ms&quot;)]
+
+features &lt;- compute_accel_summaries(x, measures = c(&quot;ENMO&quot;, &quot;MAD&quot;),
+    epoch_s = 5, fs_hz = fs, quiet = TRUE)
+head(features$data_wide)
+features$settings$metric_units
+stopifnot(nrow(features$data_wide) == 4)
+
+</code></pre>
+<!-- EXAMPLE:offline:end -->
+<p>The result contains four five-second ENMO/MAD epochs in mg. <code>data_long</code> retains
+feature-specific timestamps; <code>data_wide</code> joins exact timestamp labels. Keep
+<code>settings</code> with the values. The complete installed example also demonstrates
+mixed-feature timestamp conventions:</p>
+<pre><code class="language-r">example(&quot;getting-started&quot;, package = &quot;metronautica&quot;)
+</code></pre>
+<p><a name="your-own-recording"></a></p>
+<h2>Your own recording</h2>
+<pre><code class="language-r">accel &lt;- parse_raw_auto(&quot;path/to/recording.agsd&quot;, return = &quot;bundle&quot;, qc = TRUE)
+accel_meta(accel)$processing$qc
+features &lt;- compute_accel_summaries(accel, measures = c(&quot;ENMO&quot;, &quot;MAD&quot;), epoch_s = 5)
+</code></pre>
+<p>Inspect QC and acquisition metadata before selecting the assessment interval.
+QC flags recording properties; it does not repair or remove observations.
+See the <a href="reference.html#common-data-format">data contract</a> for table/bundle structure.</p>
+<p><a name="optional-packages"></a></p>
+<h2>Optional packages</h2>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Requirement or supported scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LEAP AGSD</td>
+<td>Built-in; LEAP v2, dataVersion 3, firmware 2.1.0.106, 128 Hz, calibrationMethod 2</td>
+</tr>
+<tr>
+<td>Modern GT3X native-precision decoding</td>
+<td><code>read.gt3x</code> 1.2.0; other layouts/settings require the documented explicit legacy route</td>
+</tr>
+<tr>
+<td>GENEActiv BIN</td>
+<td><code>GENEAread</code></td>
+</tr>
+<tr>
+<td>Unsupported fast AX3 CWA layouts</td>
+<td>Optional <code>GGIRread</code> fallback</td>
+</tr>
+<tr>
+<td>Interactive raw/feature plots</td>
+<td><code>plotly</code></td>
+</tr>
+<tr>
+<td>MIMS-unit</td>
+<td><code>MIMSunit</code></td>
+</tr>
+<tr>
+<td>Dynamic entropy diagnostics</td>
+<td><code>TSEntropies</code></td>
+</tr>
+</tbody>
+</table>
+<p>Install only those needed for the selected function. Package functions do not
+install dependencies. <a href="reference.html#parse_raw_auto">Parser options</a>.</p>
+<p><a name="real-recording-examples"></a></p>
+<h2>Real recording examples</h2>
+<p>The examples below use one LEAP unit and its paired HBK reference. They are
+single-unit demonstrations, not between-device inference or behavioural validation.
+Static data cover the selected 24 hours; dynamic data retain the first 78-minute
+trial, including ten stages and adjustment periods.</p>
+<p>Obtain the selected compressed recording attachments and <code>sample_index.csv</code> from
+WAM and place them together in a local directory. A WAM clone alone does not include
+the excluded recording payloads. Set the directory before running the examples:</p>
+<pre><code class="language-r">options(metronautica.sample_dir = &quot;path/to/wam/samples&quot;)
+</code></pre>
+<p>No default download URL is configured. <a href="recording-examples.html#sample-retrieval">Sample retrieval and provenance</a>
+explains local files and explicit release URLs. The loader writes checksum-verified
+copies under <code>metronautica-samples/</code> in the current project.</p>
+<p><a name="static-characterisation"></a></p>
+<h2>Static characterisation</h2>
+<!-- EXAMPLE:static:start -->
+<pre><code class="language-r">library(metronautica)
+path &lt;- m_load_sample_data(device = &quot;LEAP&quot;, type = &quot;static&quot;)
+info &lt;- attr(path, &quot;sample_info&quot;)
+stationary &lt;- parse_raw_auto(path, return = &quot;bundle&quot;,
+    time_shift_s = info$time_shift_s,
+    full_scale_range_g = info$full_scale_range_g)
+static_result &lt;- static_metrology_from_tbl(stationary,
+    start_utc = info$analysis_start_utc, duration_h = 24, progress = FALSE)
+static_result$summary
+static_result$drift_plot
+static_result$allan_plot
+
+</code></pre>
+<!-- EXAMPLE:static:end -->
+<p><img src="assets/examples/static-characterisation.png" alt="LEAP static example: signed VM drift over the selected 24 hours and axis-specific Allan deviation." /></p>
+<p>The left panel shows one-second VM means and their fitted drift; the right shows
+axis-specific Allan deviation. No additional filtering or dynamic VM calibration
+is applied. Panel titles are shortened for display. Interpretation requires
+stationary conditions; the function does not establish stationarity.</p>
+<p><a name="dynamic-characterisation"></a></p>
+<h2>Dynamic characterisation</h2>
+<!-- EXAMPLE:dynamic:start -->
+<pre><code class="language-r">library(metronautica)
+path &lt;- m_load_sample_data(device = &quot;LEAP&quot;, type = &quot;dynamic&quot;)
+info &lt;- attr(path, &quot;sample_info&quot;)
+ref_info &lt;- attr(path, &quot;reference_info&quot;)
+test &lt;- parse_raw_auto(path, return = &quot;bundle&quot;,
+    time_shift_s = info$time_shift_s,
+    full_scale_range_g = info$full_scale_range_g)
+reference &lt;- parse_raw_auto(attr(path, &quot;reference_file&quot;), return = &quot;bundle&quot;,
+    time_shift_s = ref_info$time_shift_s,
+    full_scale_range_g = ref_info$full_scale_range_g)
+test_stages &lt;- clip_dynamic_stages(test, start_utc = info$trial_start_utc,
+    n_stages = 10L, stage_min = 6, buffer_min = 2, rpm_start = 50, rpm_step = 50,
+    trim_start_min = 1, trim_end_min = 1)
+ref_stages &lt;- clip_dynamic_stages(reference, start_utc = ref_info$trial_start_utc,
+    n_stages = 10L, stage_min = 6, buffer_min = 2, rpm_start = 50, rpm_step = 50,
+    trim_start_min = 1, trim_end_min = 1)
+dynamic_result &lt;- dynamic_metrology_report(test_stages, ref_stages,
+    test_axis_fsr_g = info$full_scale_range_g,
+    ref_axis_fsr_g = ref_info$full_scale_range_g,
+    compute_entropy = FALSE, inspect_alignment = FALSE, add_plot = TRUE,
+    progress = FALSE)
+dynamic_result$stages
+dynamic_result$overall
+dynamic_result$plots$vm_mean_vs_rpm
+dynamic_result$plots$linearity_vs_rpm
+
+</code></pre>
+<!-- EXAMPLE:dynamic:end -->
+<p><img src="assets/examples/dynamic-characterisation.png" alt="LEAP dynamic example: stage-mean VM and reference-based VM integral non-linearity across ten stages." /></p>
+<p>All ten stages are retained, with one minute removed from each end of each
+six-minute stage. The plots show stage-mean VM and reference-based VM integral
+non-linearity. Timestamp shifts come from the sample catalogue. Alignment and
+entropy diagnostics are disabled explicitly in this example; pairing and error
+calculations use the documented functions. No additional filtering or dynamic VM
+calibration is applied. Index-based pairing is not timestamp correction.</p>
+<p><a name="next-steps"></a></p>
+<h2>Next steps</h2>
+<ul>
+<li><a href="recording-examples.html#feature-settings">Feature settings and output interpretation</a>.</li>
+<li><a href="recording-examples.html#calibration">Calibration and independent reassessment</a>.</li>
+<li><a href="activity-counts.html">Activity-count validation</a>.</li>
+<li><a href="reference.html">Function parameters, methods and units</a>.</li>
+</ul>
+</main></body></html>

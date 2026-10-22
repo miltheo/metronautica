@@ -1,0 +1,22 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Software and dependency licences | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="software-and-dependency-licences"></a></p>
+<h1>Software and dependency licences</h1>
+<p><a href="index.html#processing-workflow">Workflow</a> · <a href="index.html">HTML guide</a> · <a href="reference.html">HTML reference</a> · <a href="metronautica-reference.pdf">PDF reference</a></p>
+<p>Metronautica's original software is GPL version 3 only (<code>GPL-3</code> in DESCRIPTION).
+Dependencies remain separately licensed; they are not included or relicensed by
+this repository's licence. Preserve their copyright and licence notices if
+redistributing their source or binaries.</p>
+<p>The <code>signal</code> 1.8-1 package declares GPL-2 in its metadata. The inspected
+<code>butter</code>, <code>filtfilt</code>, <code>filter</code>, <code>sftrans</code>, <code>bilinear</code> and <code>poly</code> source files
+explicitly permit version 2 <strong>or any later version</strong>, providing a GPL-3 option
+for the filtering path used here. This finding does not relicense unrelated
+files in that dependency.</p>
+<p>Activity counts are implemented directly in <code>R/m_agcounts.R</code>; neither the R
+agcounts package nor the Python reference is a runtime/optional dependency.
+The published numerical coefficients are acknowledged from ActiGraph/agcounts
+(GPL-3.0), pinned commit 3137c9b9a26539ae2d9645d396586fe15faece59.
+The original R implementation is distributed under this package's GPL-3 licence.
+External comparison software remains separately licensed.</p>
+<p>See the official <a href="https://cran.r-project.org/src/contrib/signal_1.8-1.tar.gz">signal source</a>,
+<a href="https://www.gnu.org/licenses/gpl-faq.en.html#v2v3Compatibility">GNU compatibility guidance</a>
+and each dependency's licence. Native-recording distribution terms are separate.</p>
+</main></body></html>

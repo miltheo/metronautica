@@ -12,7 +12,7 @@ static_axis_noise_metrics(x, cv_min_abs_mean_g = 0.005)
 \value{\if{latex}{\out{\sloppy}} One-row tibble with raw and linearly detrended sample SDs, first-five-minute raw SDs, CVs, ranges and maximum-/median-axis summaries. Acceleration fields use g unless their name explicitly specifies mg; CV fields are percentages.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_axis_noise_metrics} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_axis_noise_metrics} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \section{Returned fields}{
 \if{latex}{\out{\sloppy}}

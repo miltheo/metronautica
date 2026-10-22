@@ -13,4 +13,4 @@ static_offset_vm_5min(d1)
 
 \section{Method}{\if{latex}{\out{\sloppy}} Select one-second bins satisfying elapsed_h <= 5/60, average vm_mean and subtract 1 g. The inclusive elapsed-bin rule is retained exactly. This measures VM offset relative to gravity, not an axis-specific multi-orientation calibration.}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_offset_vm_5min} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_offset_vm_5min} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and function map.}

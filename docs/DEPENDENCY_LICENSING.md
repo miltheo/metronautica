@@ -1,5 +1,7 @@
 # Software and dependency licences
 
+[Workflow](../README.md#processing-workflow) · [HTML guide](index.html) · [HTML reference](reference.html) · [PDF reference](metronautica-reference.pdf)
+
 Metronautica's original software is GPL version 3 only (`GPL-3` in DESCRIPTION).
 Dependencies remain separately licensed; they are not included or relicensed by
 this repository's licence. Preserve their copyright and licence notices if
@@ -20,4 +22,4 @@ External comparison software remains separately licensed.
 
 See the official [signal source](https://cran.r-project.org/src/contrib/signal_1.8-1.tar.gz),
 [GNU compatibility guidance](https://www.gnu.org/licenses/gpl-faq.en.html#v2v3Compatibility)
-and each dependency's licence. Study-data distribution terms are separate.
+and each dependency's licence. Native-recording distribution terms are separate.

@@ -1,5 +1,7 @@
 # Activity counts: implementation and validation
 
+[Workflow](../README.md#processing-workflow) · [HTML guide](index.html) · [HTML reference](reference.html) · [PDF reference](metronautica-reference.pdf)
+
 The standalone `accel_metric_agcounts()` API is implemented in `R/m_agcounts.R`.
 Its Rd help and generated reference manual are the parameter/method reference.
 This is an implementation of the published algorithm, not a newly proposed
@@ -10,38 +12,12 @@ ActiGraph/agcounts under GPL-3.0, commit
 
 ## Use and interpretation
 
-Default cutoffs are represented by the exact historical coefficients, not by
-a replacement Butterworth approximation. Custom cutoffs specify -3-dB points
-of a causal Butterworth filter; its peak gain is matched to the historical
-response. Later historical scaling, thresholding and accumulation are retained.
-Modified counts do not inherit validation of behavioural thresholds.
-
-Input precision is part of the pipeline. The native GT3X mode obtains integer
-samples using the guarded read.gt3x decoder at unit scale, then divides by the
-file scale without three-decimal rounding. The explicit `legacy_3dp` mode uses
-the original upstream conversion. No rounded values are reverse engineered.
-The native implementation is currently bounded to read.gt3x 1.2.0 modern
-log.bin containers; unsupported configurations fail explicitly.
-
-Parsing preserves gaps. Counts reject gaps by default; `zero` and
-`carry_forward` are explicit conventions. An observed all-zero sample is not
-automatically treated as missing. No recording-start prefix or trailing
-extrapolation is added implicitly. Explicit requested padding requires three
-axis values. Output flags identify inserted samples and their surrounding
-filter context. The configurable guard is a reporting convention, not a
-certified uncertainty or settling-time bound.
-
-```r
-accel <- parse_raw_auto(path, return = "bundle")
-counts <- accel_metric_agcounts(accel, epoch_s = 5, fs_hz = 100)
-attr(counts, "settings")
-counts[counts$affected_by_imputation | counts$boundary_affected, ]
-```
-
-Calculate on the intended continuous interval before selecting derived epochs
-when filter history is required. Epochs start at the first supplied sample or
-explicit `start_time`; they are not silently aligned to a civil-clock boundary.
-The standalone API is not enabled through the general summary selector.
+Use `accel_metric_agcounts()` for the published-filter calculation or explicit
+custom cutoffs. Input precision, gap handling and boundary policies are part of
+the pipeline; modified counts do not inherit behavioural-threshold validation.
+[Function parameters and method](reference.html#accel_metric_agcounts) define
+these settings. [The processing guide](REAL_DATA_EXAMPLES.md#feature-settings)
+links count computation to the acceleration workflow.
 
 ## Original experimental validation
 

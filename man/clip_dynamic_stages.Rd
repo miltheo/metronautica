@@ -13,7 +13,7 @@ clip_dynamic_stages(x, start_utc, n_stages, stage_min,
 \item{start_utc}{\if{latex}{\out{\sloppy}} UTC window start; POSIXct or parseable text.}
 \item{n_stages}{\if{latex}{\out{\sloppy}} Required positive integer number of excitation stages; not inferred from the data.}
 \item{stage_min}{\if{latex}{\out{\sloppy}} Required raw duration of each stage in minutes, before trimming.}
-\item{buffer_min}{\if{latex}{\out{\sloppy}} Required non-negative interval in minutes between raw stages. It is excluded from the stage tables but retained within the full protocol span.}
+\item{buffer_min}{\if{latex}{\out{\sloppy}} Required non-negative interval in minutes between raw stages. It is excluded from the stage tables but retained within the complete assessment span.}
 \item{rpm_start}{\if{latex}{\out{\sloppy}} Required numerical RPM label assigned to the first stage; it is a supplied excitation condition, not a measured frequency.}
 \item{rpm_step}{\if{latex}{\out{\sloppy}} Required increment in the RPM label between consecutive stages. The clipper assumes this regular schedule.}
 \item{trim_start_min}{\if{latex}{\out{\sloppy}} Required non-negative minutes removed from the beginning of every raw stage. Start/end trims must sum to less than stage_min.}
@@ -22,11 +22,11 @@ clip_dynamic_stages(x, start_utc, n_stages, stage_min,
 \item{verbose}{\if{latex}{\out{\sloppy}} Logical; print processing messages. Does not change calculations.}
 \item{time_offset_s}{\if{latex}{\out{\sloppy}} Additive schedule-anchor shift in seconds; sample timestamps are unchanged.}
 }
-\value{\if{latex}{\out{\sloppy}} A list with \code{full} (untrimmed full-protocol table), \code{stages} (named list, e.g. \code{rpm_50}), \code{schedule} (raw and trimmed UTC bounds, settings and labels), and \code{meta}. Each clip has freshly computed QC.}
-\details{\if{latex}{\out{\sloppy}} All schedule parameters must be supplied explicitly for the experiment; this helper does not infer an excitation protocol from the recording. The input is sorted by timestamp within this operation; inspect whole-recording QC beforehand. Each stage spans \eqn{[start,end)}. The first raw stage starts at \code{start_utc + time_offset_s}; consecutive starts are separated by \code{stage_min + buffer_min}. Trims must total less than the raw stage duration. Missing stages remain positionally identifiable; resolve them before requesting paired metrology.}
+\value{\if{latex}{\out{\sloppy}} A list with \code{full} (untrimmed full-assessment table), \code{stages} (named list, e.g. \code{rpm_50}), \code{schedule} (raw and trimmed UTC bounds, settings and labels), and \code{meta}. Each clip has freshly computed QC.}
+\details{\if{latex}{\out{\sloppy}} All schedule parameters must be supplied explicitly for the experiment; this helper does not infer an excitation schedule from the recording. The input is sorted by timestamp within this operation; inspect whole-recording QC beforehand. Each stage spans \eqn{[start,end)}. The first raw stage starts at \code{start_utc + time_offset_s}; consecutive starts are separated by \code{stage_min + buffer_min}. Trims must total less than the raw stage duration. Missing stages remain positionally identifiable; resolve them before requesting paired metrology.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{clip_dynamic_stages} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{clip_dynamic_stages} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \section{Processing order}{
 \if{latex}{\out{\sloppy}}

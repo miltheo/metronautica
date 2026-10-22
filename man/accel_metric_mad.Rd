@@ -14,9 +14,9 @@ accel_metric_mad(tbl, epoch_s, anchor = "center", out_unit = c("mg",
 }
 \value{A tibble with \code{time} (the selected observed-sample epoch label), \code{epoch_id} (integer elapsed-time bin starting at one), and \code{value} (g or mg according to the selected output unit).}
 
-\details{\if{latex}{\out{\sloppy}} Within each epoch, calculate VM and average its absolute deviations from that epoch's VM mean. This is the approved mean amplitude deviation definition. See \code{\link{measurement-definitions}} for manuscript-aligned definitions. No additional device calibration is performed by choosing a feature.}
+\details{\if{latex}{\out{\sloppy}} Within each epoch, calculate VM and average its absolute deviations from that epoch's VM mean. This is the mean amplitude deviation definition. See \code{\link{measurement-definitions}} for calculation definitions. No additional device calibration is performed by choosing a feature.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_mad} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_mad} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \references{Vaha-Ypya et al. (2015), A universal, accurate intensity-based classification of different physical activities using raw data of accelerometer. \doi{10.1111/cpf.12127}.}

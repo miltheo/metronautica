@@ -375,6 +375,16 @@ plot_static_drift_vm <- function(d1, drift_fit, title_prefix = "Static drift") {
 }
 
 plot_static_allan <- function(allan_df, title_prefix = "Allan deviation") {    # Allan deviation plot
+    # Modern axis guides avoid annotation_logticks() recycling warnings in R-devel.
+    # Match the previous inward 1/2/3-mm ticks; retain ggplot2 3.4 compatibility.
+    log_ticks <- if (utils::packageVersion("ggplot2") >= "3.5.0") {
+        list(ggplot2::guides(
+            x = ggplot2::guide_axis_logticks(long = 3, mid = 2, short = 1),
+            y = ggplot2::guide_axis_logticks(long = 3, mid = 2, short = 1)),
+            ggplot2::theme(axis.ticks.length = grid::unit(-1, "mm")))
+    } else {
+        list(ggplot2::annotation_logticks(sides = "bl"))
+    }
     mins <- allan_df %>%
         dplyr::group_by(axis) %>%
         dplyr::slice_min(order_by = adev, n = 1, with_ties = FALSE) %>%
@@ -393,10 +403,10 @@ plot_static_allan <- function(allan_df, title_prefix = "Allan deviation") {    #
                                   segment.size = 0.4, max.overlaps = Inf) +
         ggplot2::scale_x_log10() +
         ggplot2::scale_y_log10() +
-        ggplot2::annotation_logticks(sides = "bl") +
         ggplot2::labs(title = title_prefix, x = "Cluster time \u03C4 (s)", y = "Allan deviation (g)", colour = "Axis") +
         ggplot2::theme_bw(base_size = 12) +
-        ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
+        ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
+        log_ticks
 }
 
 static_slug <- function(x) {                                                   # Make safe filename token

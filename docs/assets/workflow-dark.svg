@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="768" viewBox="0 0 2048 768" role="img" aria-labelledby="title description">
+  <title id="title">Metronautica processing workflow</title>
+  <desc id="description">Native recordings are parsed with QC into an acceleration tibble, followed by static characterisation, dynamic characterisation, feature extraction and reports. Dashed routes permit direct assessments and calibration followed by refreshed QC. The tibble, downward arrow and static rectangle share the horizontal centre x=840.</desc>
+  <defs>
+    <marker id="solid-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0 0 L10 5 L0 10 Z" fill="#79c0ff"/></marker>
+    <marker id="optional-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0 0 L10 5 L0 10 Z" fill="#3fb9a8"/></marker>
+    <style>
+      .box{fill:#161b22;stroke:#8b949e;stroke-width:2.5}
+      .solid{fill:none;stroke:#79c0ff;stroke-width:4;marker-end:url(#solid-arrow)}
+      .optional{fill:none;stroke:#3fb9a8;stroke-width:3;stroke-dasharray:10 7;marker-end:url(#optional-arrow)}
+      text{fill:#e6edf3;font-family:Consolas,'Liberation Mono',monospace;text-anchor:middle}
+      .heading{font-size:22px;font-weight:700}
+      .body{font-size:18px}
+      .small{font-size:16px}
+    </style>
+  </defs>
+  <rect width="2048" height="768" fill="#0d1117"/>
+  <!-- Data objects: symmetric bounding box for the tibble is x=660..1020. -->
+  <polygon class="box" points="65,93 335,93 295,213 25,213"/>
+  <text class="heading" x="180" y="161">Native recordings</text>
+  <polygon class="box" points="700,93 1020,93 980,223 660,223"/>
+  <text class="heading" x="840" y="134">Acceleration tibble</text>
+  <text class="body" x="840" y="171">time, ax_g, ay_g, az_g</text>
+  <text class="body" x="840" y="203">Metadata and QC report</text>
+  <path class="solid" d="M315 168 H675"/>
+  <text class="heading" x="501" y="120">parse_raw_auto(qc = TRUE)</text>
+  <text class="small" x="501" y="150">Parsing and signal diagnostics</text>
+  <!-- One precise centreline: tibble x=840, arrow x=840, static x=840. -->
+  <path class="solid" d="M840 223 V307"/>
+  <rect class="box" x="660" y="308" width="360" height="142"/>
+  <text class="heading" x="840" y="345">Static characterisation</text>
+  <text class="body" x="840" y="379">Sampling frequency, noise floor,</text>
+  <text class="body" x="840" y="404">offset bias</text>
+  <text class="body" x="840" y="430">Drift, Allan deviation</text>
+  <path class="solid" d="M1020 379 H1059"/>
+  <rect class="box" x="1060" y="308" width="260" height="142"/>
+  <text class="heading" x="1190" y="340" style="font-size:18px">Dynamic characterisation</text>
+  <text class="body" x="1190" y="377">Reference comparison</text>
+  <text class="body" x="1190" y="404">Response slope, bias,</text>
+  <text class="body" x="1190" y="430" style="font-size:16px">non-linearity, composite error</text>
+  <path class="solid" d="M1320 379 H1359"/>
+  <rect class="box" x="1360" y="308" width="315" height="142"/>
+  <text class="heading" x="1517.5" y="340">Feature extraction and</text>
+  <text class="heading" x="1517.5" y="370">visual comparison</text>
+  <text class="body" x="1517.5" y="406" style="font-size:17px">Epoch summaries, activity counts</text>
+  <text class="body" x="1517.5" y="432">Processed-signal plots</text>
+  <path class="solid" d="M1675 379 H1714"/>
+  <rect class="box" x="1715" y="308" width="305" height="142" rx="24"/>
+  <text class="heading" x="1867.5" y="340">Metrology and feature</text>
+  <text class="heading" x="1867.5" y="370">reports</text>
+  <text class="body" x="1867.5" y="406">Error estimates, settings,</text>
+  <text class="body" x="1867.5" y="432">provenance</text>
+  <path class="optional" d="M1008 134 H1517.5 V307"/>
+  <path class="optional" d="M996 174 H1190 V307"/>
+  <path class="optional" d="M1867.5 450 V612 H1400"/>
+  <rect class="box" x="976" y="559" width="424" height="105"/>
+  <text class="heading" x="1188" y="603">Optional calibration</text>
+  <text class="body" x="1188" y="640">Fit, apply, independently validate</text>
+  <path class="optional" d="M976 612 H678"/>
+  <rect class="box" x="358" y="574" width="320" height="82"/>
+  <text class="heading" x="518" y="609" style="font-size:20px">Re-run signal diagnostics</text>
+  <text class="body" x="518" y="638">attach_qc()</text>
+  <path class="optional" d="M358 612 H164 V241 H680 V224"/>
+  <text class="body" x="266" y="410">Calibrated signal</text>
+  <rect x="1608" y="62" width="412" height="96" rx="3" fill="#161b22" stroke="#8b949e" stroke-dasharray="6 6"/>
+  <path class="solid" d="M1630 94 H1722"/>
+  <text class="small" x="1876" y="99">Solid: assessment sequence</text>
+  <path class="optional" d="M1630 128 H1722"/>
+  <text class="small" x="1876" y="133">Dashed: optional routes</text>
+</svg>

@@ -19,14 +19,14 @@ static_noise_summary_from_tbl(x, instrument = NA_character_,
 \item{fs_derived_hz}{\if{latex}{\out{\sloppy}} Optional timestamp-derived frequency label in Hz for the summary; metadata/timestamps provide a fallback. It does not override the implemented static calculation windows.}
 \item{out_dir}{\if{latex}{\out{\sloppy}} NULL returns results in memory without writing files. Otherwise, create/use this output directory for the documented CSV, RDS and diagnostic plot files.}
 \item{start_utc}{\if{latex}{\out{\sloppy}} UTC window start; POSIXct or parseable text.}
-\item{duration_h}{\if{latex}{\out{\sloppy}} Required positive window duration in hours; the end is exclusive. No study duration is assumed. Requested bounds, actual sample span and boundary coverage are retained in processing$static_window metadata. Incomplete boundary coverage warns; this is not an internal-gap or stationarity test.}
+\item{duration_h}{\if{latex}{\out{\sloppy}} Required positive window duration in hours; the end is exclusive. No duration is assumed. Requested bounds, actual sample span and boundary coverage are retained in processing$static_window metadata. Incomplete boundary coverage warns; this is not an internal-gap or stationarity test.}
 \item{verbose}{\if{latex}{\out{\sloppy}} Logical; print processing messages. Does not change calculations.}
 \item{progress}{\if{latex}{\out{\sloppy}} Logical; display a text progress bar. Does not change calculations.}
 }
 \value{\if{latex}{\out{\sloppy}} An invisible list containing summary (one-row noise/identifier table), clipped_data (selected acceleration table), meta (including static-window coverage) and files (written paths, or NULL). This is not itself a one-row table.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_noise_summary_from_tbl} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_noise_summary_from_tbl} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and function map.}
 
 \section{Summary fields}{
 \if{latex}{\out{\sloppy}}

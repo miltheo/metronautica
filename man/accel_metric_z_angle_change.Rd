@@ -17,7 +17,7 @@ accel_metric_z_angle_change(tbl, epoch_s, fs_hz, anchor = "center",
 }
 \value{A tibble with \code{time} (the selected observed-sample epoch label), \code{epoch_id} (integer elapsed-time bin starting at one), and \code{value} (degrees per successive-sample change, without division by elapsed time).}
 
-\details{\if{latex}{\out{\sloppy}} Compute full-vector Z-angle, apply the selected running median, then form successive absolute differences. Summarise the differences within epochs. It measures change per successive sample, not angular velocity. See \code{\link{measurement-definitions}} for manuscript-aligned definitions. No additional device calibration is performed by choosing a feature.}
+\details{\if{latex}{\out{\sloppy}} Compute full-vector Z-angle, apply the selected running median, then form successive absolute differences. Summarise the differences within epochs. It measures change per successive sample, not angular velocity. See \code{\link{measurement-definitions}} for calculation definitions. No additional device calibration is performed by choosing a feature.}
 \seealso{\code{\link{metronautica-package}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_z_angle_change} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and manuscript mapping.}
+\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_z_angle_change} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}

@@ -1,0 +1,99 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Recording and processing guide | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="recording-and-processing-guide"></a></p>
+<h1>Recording and processing guide</h1>
+<p><a href="getting-started.html">Getting started</a> · <a href="reference.html">Function reference</a> · <a href="metronautica-reference.pdf">PDF</a></p>
+<p>Worked code and plot previews are in <a href="getting-started.html#real-recording-examples">Getting Started</a>.
+This guide covers sample retrieval and processing choices.</p>
+<p><a name="sample-retrieval"></a></p>
+<h2>Sample retrieval</h2>
+<p><code>m_load_sample_data()</code> accepts <code>device = &quot;LEAP&quot;</code>, <code>&quot;AX3&quot;</code>, <code>&quot;SENS&quot;</code> or <code>&quot;GENEActiv&quot;</code>
+and <code>type = &quot;static&quot;</code> or <code>&quot;dynamic&quot;</code>. Static recordings cover the selected 24 hours;
+dynamic recordings include all ten stages of the first primary trial. They retain
+native payloads and stored coefficients, with boundary handling documented in provenance.
+They are selected recording intervals, not complete original downloads.</p>
+<p>The compressed recordings are separate WAM release attachments, outside Git history.
+Before running an example, place the required attachments beside <code>sample_index.csv</code>
+and set <code>options(metronautica.sample_dir = &quot;path/to/samples&quot;)</code>. A repository clone
+without attachments is insufficient. Alternatively, explicitly configure
+<code>options(metronautica.sample_base_url = &quot;https://…/release-asset-directory&quot;)</code> with
+an actual published release directory. No URL is configured by default.</p>
+<p>Dynamic retrieval includes the HBK reference unless <code>include_reference = FALSE</code>.
+The returned path carries <code>sample_info</code>, <code>reference_file</code> and <code>reference_info</code>
+attributes. Use each file's own time shift and measurement span when parsing.
+The reference requires its documented +3600-second shift; do not apply the
+wearable's shift to it. No clock-rate correction is inferred.</p>
+<p>Compressed and restored SHA-256 checksums are verified. Identical local outputs
+are reused; different existing files are protected unless <code>overwrite = TRUE</code>.
+The default destination is <code>metronautica-samples/</code>; each recording has a JSON
+provenance sidecar. <a href="reference.html#m_load_sample_data">Loader parameters</a>.</p>
+<p><a name="assessment-intervals"></a></p>
+<h2>Assessment intervals</h2>
+<p>Static assessment requires an explicit start and duration. Incomplete boundary
+coverage warns; that check does not establish stationarity or internal continuity.
+Full static parsing can require several minutes and substantial memory.</p>
+<p>Dynamic assessment requires the full stage schedule and both trims. Apply any
+intended filtering before constructing stage bundles. Filtering or generic clipping
+of a stage bundle modifies <code>full</code>, leaving its existing <code>stages</code> unchanged.
+<a href="reference.html#implementation-guide">Container contracts</a>.</p>
+<p>A test-axis peak-to-peak measurement span is required for normalised dynamic
+errors: 16 g means -8 to +8 g. Observed signal extrema do not establish this span.
+Review time alignment independently of sample-index matching.
+<a href="reference.html#dynamic_metrology_report">Dynamic methods</a>.</p>
+<p><a name="feature-settings"></a></p>
+<h2>Feature settings</h2>
+<p>Epoch duration, rate, axis filtering, calibration state and aggregation define a
+feature pipeline. Retain <code>settings</code> with the results. Use the direct
+<code>accel_metric_*()</code> functions for individual calculations.</p>
+<table>
+<thead>
+<tr>
+<th>Feature or operation</th>
+<th>Required decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Activity Index</td>
+<td>Supply stationary per-axis noise variance (<code>ai_noise_var</code>, g²), estimated with <code>compute_ai_noise_var_from_static()</code>; noise-floor SD is a different quantity</td>
+</tr>
+<tr>
+<td>MIMS</td>
+<td>Supply the configured measurement span; default passband is 0.2-5 Hz; request alternatives explicitly</td>
+</tr>
+<tr>
+<td>Band-pass SVM</td>
+<td>Specify cutoffs; invalid Nyquist limits error by default; explicit clipping and applied cutoffs are recorded</td>
+</tr>
+<tr>
+<td>Activity counts</td>
+<td>Use <code>accel_metric_agcounts()</code>; <code>AG</code> is not a summary selector; custom filters require separate interpretation</td>
+</tr>
+<tr>
+<td>Processed-signal plotting</td>
+<td><code>plot_processed_metric()</code> reads units from summary settings; bare tables require an explicit unit label</td>
+</tr>
+</tbody>
+</table>
+<p>Sample-level features, Activity Index and MIMS can label epochs differently.
+<code>data_wide</code> joins exact timestamps; additional rows and unpaired cells do not
+necessarily indicate missing acceleration. Inspect intervals before joining or
+comparing features, and do not replace unpaired values with zero.
+<a href="reference.html#compute_accel_summaries">Feature parameters</a>.</p>
+<p><a name="calibration"></a></p>
+<h2>Calibration</h2>
+<p><code>dm_fit_vm_calibration()</code> fits linear/quadratic VM mappings in the specified
+regression direction. Apply only test-to-reference coefficients using the
+application helpers. The scalar mapping preserves vector direction; it is not
+an axis-specific calibration. Application invalidates inherited QC. Re-run
+<code>attach_qc()</code> and assess benefit on an independent recording before retaining
+the calibration. <a href="reference.html#dm_fit_vm_calibration">Calibration methods</a>.</p>
+<p><a name="results-and-reporting"></a></p>
+<h2>Results and reporting</h2>
+<p>Static results return summaries, one-second means, Allan curves and plots;
+dynamic results return stage/pooled outcomes and plots; feature results return
+long/wide tables and settings. Keep the reference, interval, measurement range,
+signal state, timing assumptions, units and settings with the results.</p>
+<p>Within-stage epoch-mean VM variability is distinct from repeated-trial
+repeatability. Error estimates are not a complete uncertainty budget. WAM
+provides cohort-level analyses and equivalence tests.
+<a href="reference.html#measurement-definitions">Canonical definitions</a>.</p>
+</main></body></html>
