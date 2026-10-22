@@ -6,7 +6,7 @@
 filter_accel_tbl(x, cutoff, forder = 4, ftype = "low")
 }
 \arguments{
-\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.}
+\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in \eqn{g}, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.}
 \item{cutoff}{\if{latex}{\out{\sloppy}} One cutoff for low/high pass, or increasing lower and upper cutoffs for pass/stop bands, in Hz.}
 \item{forder}{\if{latex}{\out{\sloppy}} Positive integer Butterworth order before forward-backward application.}
 \item{ftype}{\if{latex}{\out{\sloppy}} Filter type accepted by \code{signal::butter}: \code{"low"}, \code{"high"}, \code{"pass"}, \code{"stop"}.}

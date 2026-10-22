@@ -6,16 +6,16 @@ Parse wearable recordings, inspect signal quality, characterise measurement resp
 and extract acceleration features. Developed for a research article under submission;
 associated analyses and data are in [WAM](https://github.com/miltheo/wam).
 
-[Getting started](docs/GETTING_STARTED.md) · [Recording examples](docs/REAL_DATA_EXAMPLES.md) · [PDF reference](docs/metronautica-reference.pdf) · [Browser guide](docs/index.html)
+[Getting started](docs/GETTING_STARTED.md) &middot; [Recording examples](docs/REAL_DATA_EXAMPLES.md) &middot; [PDF reference](docs/metronautica-reference.pdf) &middot; [Browser guide](docs/index.html)
 
 ## Processing workflow
 
 ![Metronautica workflow: parsing with QC, static and dynamic characterisation, features and reports; optional calibration and reassessment.](docs/assets/workflow-dark.svg)
 
-[Native recordings](#native-recordings "GENEActiv/SENS BIN; Axivity CWA/AX3 CSV; ActiGraph GT3X/LEAP CSV/LEAP AGSD; HBK G-Link CSV.") →
-[Acceleration tibble](#acceleration-tibble "time: POSIXct, UTC; ax_g, ay_g, az_g: numeric acceleration in g; attached meta: acquisition settings, provenance and QC.") →
-[Static](#static-characterisation) → [Dynamic](#dynamic-characterisation) →
-[Features](#feature-extraction-and-visual-comparison) → [Reports](#metrology-and-feature-reports).
+[Native recordings](#native-recordings "GENEActiv/SENS BIN; Axivity CWA/AX3 CSV; ActiGraph GT3X/LEAP CSV/LEAP AGSD; HBK G-Link CSV.") &rarr;
+[Acceleration tibble](#acceleration-tibble "time: POSIXct, UTC; ax_g, ay_g, az_g: numeric acceleration in g; attached meta: acquisition settings, provenance and QC.") &rarr;
+[Static](#static-characterisation) &rarr; [Dynamic](#dynamic-characterisation) &rarr;
+[Features](#feature-extraction-and-visual-comparison) &rarr; [Reports](#metrology-and-feature-reports).
 [Optional calibration](#optional-calibration) returns to assessment with refreshed QC.
 
 Each assessment can also be called independently. Open the browser guide locally
@@ -83,7 +83,7 @@ See [decoder requirements and limits](docs/GETTING_STARTED.md#optional-packages)
 <a name="acceleration-tibble"></a>
 ## Acceleration tibble
 
-Four columns: `time` (`POSIXct`, UTC), `ax_g`, `ay_g`, `az_g` (numeric, g).
+Four columns: `time` (`POSIXct`, UTC), `ax_g`, `ay_g`, `az_g` (numeric, *g*).
 Attached `meta` records acquisition settings, provenance and QC; read it with
 `accel_meta()`. For already decoded data, construct with `as_accel_tbl()` and
 attach diagnostics with `attach_qc()`.
@@ -93,9 +93,9 @@ attach diagnostics with `attach_qc()`.
 ## Static characterisation
 
 Select a stationary interval with an explicit start and duration.
-`static_metrology_from_tbl()` returns noise, signed 1-g VM offset bias, drift,
+`static_metrology_from_tbl()` returns noise, signed 1-*g* VM offset bias, drift,
 Allan deviation and plots. Individual outcome functions are also available.
-[Example](docs/GETTING_STARTED.md#static-characterisation) · [Reference](docs/reference.html#static_metrology_from_tbl) · [Source](R/m_static.R).
+[Example](docs/GETTING_STARTED.md#static-characterisation) &middot; [Reference](docs/reference.html#static_metrology_from_tbl) &middot; [Source](R/m_static.R).
 
 <a name="dynamic-characterisation"></a>
 ## Dynamic characterisation
@@ -103,7 +103,7 @@ Allan deviation and plots. Individual outcome functions are also available.
 Specify test/reference recordings, the excitation schedule and measurement range.
 `clip_dynamic_stages()` selects stages; `dynamic_metrology_report()` returns
 response slope, signed VM bias, VM integral non-linearity, composite error and plots.
-[Example](docs/GETTING_STARTED.md#dynamic-characterisation) · [Reference](docs/reference.html#dynamic_metrology_report) · [Source](R/m_dynamic.R).
+[Example](docs/GETTING_STARTED.md#dynamic-characterisation) &middot; [Reference](docs/reference.html#dynamic_metrology_report) &middot; [Source](R/m_dynamic.R).
 
 <a name="feature-extraction-and-visual-comparison"></a>
 ## Feature extraction and visual comparison
@@ -112,7 +112,7 @@ response slope, signed VM bias, VM integral non-linearity, composite error and p
 `accel_metric_*()` functions provide individual calculations.
 `plot_accel_clip()` shows acceleration; `plot_processed_metric()` shows features.
 Activity counts use the standalone `accel_metric_agcounts()`.
-[Feature guide](docs/REAL_DATA_EXAMPLES.md#feature-settings) · [Reference](docs/reference.html#compute_accel_summaries) · [Source](R/m_accel_summary_suite.R).
+[Combined comparison example](docs/REAL_DATA_EXAMPLES.md#feature-comparison) &middot; [Feature guide](docs/REAL_DATA_EXAMPLES.md#feature-settings) &middot; [Reference](docs/reference.html#compute_accel_summaries) &middot; [Source](R/m_accel_summary_suite.R).
 
 <a name="metrology-and-feature-reports"></a>
 ## Metrology and feature reports
@@ -128,7 +128,7 @@ feature results provide `data_long`/`data_wide`/`settings`.
 Use `dm_fit_vm_calibration()` and its application helpers when additional VM
 calibration is warranted. Validate benefit independently, call `attach_qc()` on
 the calibrated signal, then repeat the selected assessments.
-[Methods](docs/reference.html#dm_fit_vm_calibration) · [Refresh QC](docs/reference.html#attach_qc) · [Source](R/m_dynamic.R).
+[Methods](docs/reference.html#dm_fit_vm_calibration) &middot; [Refresh QC](docs/reference.html#attach_qc) &middot; [Source](R/m_dynamic.R).
 
 ## Documentation and citation
 
@@ -136,9 +136,10 @@ Use `help("function_name", package = "metronautica")` in R, or the
 [HTML reference](docs/reference.html) and [PDF reference](docs/metronautica-reference.pdf).
 [Documentation maintenance](docs/README.md) covers repository layout, tests and builds.
 
-[Activity-count validation](docs/ACTIGRAPH_COUNTS.md) · [Citation](CITATION.cff) ·
+[Activity-count validation](docs/ACTIGRAPH_COUNTS.md) &middot; [Citation](CITATION.cff) &middot;
 **GPL-3** ([licence](LICENSE.md), [dependency notices](docs/DEPENDENCY_LICENSING.md)).
-Native samples have separate distribution terms documented by WAM.
+Native sample distribution, provenance and GPL-3 licensing are documented in
+[WAM](https://github.com/miltheo/wam/blob/main/samples/README.md).
 
 Maintainer: [Millen James Theophilus](https://github.com/miltheo),
 [ORCID](https://orcid.org/0000-0001-9823-7177).

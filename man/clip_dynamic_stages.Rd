@@ -9,7 +9,7 @@ clip_dynamic_stages(x, start_utc, n_stages, stage_min,
     time_offset_s = 0)
 }
 \arguments{
-\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.}
+\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in \eqn{g}, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.}
 \item{start_utc}{\if{latex}{\out{\sloppy}} UTC window start; POSIXct or parseable text.}
 \item{n_stages}{\if{latex}{\out{\sloppy}} Required positive integer number of excitation stages; not inferred from the data.}
 \item{stage_min}{\if{latex}{\out{\sloppy}} Required raw duration of each stage in minutes, before trimming.}
@@ -22,7 +22,7 @@ clip_dynamic_stages(x, start_utc, n_stages, stage_min,
 \item{verbose}{\if{latex}{\out{\sloppy}} Logical; print processing messages. Does not change calculations.}
 \item{time_offset_s}{\if{latex}{\out{\sloppy}} Additive schedule-anchor shift in seconds; sample timestamps are unchanged.}
 }
-\value{\if{latex}{\out{\sloppy}} A list with \code{full} (untrimmed full-assessment table), \code{stages} (named list, e.g. \code{rpm_50}), \code{schedule} (raw and trimmed UTC bounds, settings and labels), and \code{meta}. Each clip has freshly computed QC.}
+\value{\if{latex}{\out{\sloppy}} A list with \code{full} (untrimmed full-assessment table), \code{stages} (named list, e.\eqn{g}. \code{rpm_50}), \code{schedule} (raw and trimmed UTC bounds, settings and labels), and \code{meta}. Each clip has freshly computed QC.}
 \details{\if{latex}{\out{\sloppy}} All schedule parameters must be supplied explicitly for the experiment; this helper does not infer an excitation schedule from the recording. The input is sorted by timestamp within this operation; inspect whole-recording QC beforehand. Each stage spans \eqn{[start,end)}. The first raw stage starts at \code{start_utc + time_offset_s}; consecutive starts are separated by \code{stage_min + buffer_min}. Trims must total less than the raw stage duration. Missing stages remain positionally identifiable; resolve them before requesting paired metrology.}
 \seealso{\code{\link{metronautica-package}}}
 

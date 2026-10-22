@@ -7,13 +7,13 @@ as_accel_tbl(time, ax_g, ay_g, az_g, meta = list())
 }
 \arguments{
 \item{time}{\if{latex}{\out{\sloppy}} POSIXct sample timestamps. UTC is the common-format convention; existing instants and timezone attributes are retained.}
-\item{ax_g}{\if{latex}{\out{\sloppy}} Numeric X-axis acceleration in g.}
-\item{ay_g}{\if{latex}{\out{\sloppy}} Numeric Y-axis acceleration in g.}
-\item{az_g}{\if{latex}{\out{\sloppy}} Numeric Z-axis acceleration in g.}
+\item{ax_g}{\if{latex}{\out{\sloppy}} Numeric X-axis acceleration in \eqn{g}.}
+\item{ay_g}{\if{latex}{\out{\sloppy}} Numeric Y-axis acceleration in \eqn{g}.}
+\item{az_g}{\if{latex}{\out{\sloppy}} Numeric Z-axis acceleration in \eqn{g}.}
 \item{meta}{\if{latex}{\out{\sloppy}} Metadata list; see \code{\link{common-data-format}}.}
 }
 \value{\if{latex}{\out{\sloppy}} An \code{accel_tbl} inheriting from \code{tbl_df}, with exactly \code{time}, \code{ax_g}, \code{ay_g}, \code{az_g} and a \code{meta} attribute.}
-\details{\if{latex}{\out{\sloppy}} Axes must have the same length as time; scalar recycling is rejected. Non-finite observations and timestamp defects are retained for diagnostics. The constructor does not sort, resample, calibrate or infer acceleration units. The constructor preserves supplied metadata without estimating acquisition settings. The configured axis full-scale range is the peak-to-peak span: 16 g denotes +/-8 g.}
+\details{\if{latex}{\out{\sloppy}} Axes must have the same length as time; scalar recycling is rejected. Non-finite observations and timestamp defects are retained for diagnostics. The constructor does not sort, resample, calibrate or infer acceleration units. The constructor preserves supplied metadata without estimating acquisition settings. The configured axis full-scale range is the peak-to-peak span: 16 \eqn{g} denotes +/-8 \eqn{g}.}
 \seealso{\code{\link{metronautica-package}}}
 \examples{
 t0 <- as.POSIXct("2026-01-01 00:00:00", tz = "UTC")

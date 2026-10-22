@@ -1,13 +1,13 @@
 # Measurement definitions
 
-[Workflow](../README.md#processing-workflow) · [Function reference](reference.html) · [PDF](metronautica-reference.pdf)
+[Workflow](../README.md#processing-workflow) &middot; [Function reference](reference.html) &middot; [PDF](metronautica-reference.pdf)
 
 The R help sources are the maintained technical definitions. This index directs
 to the relevant definitions without maintaining a second set of equations.
 
 | Topic | Reference |
 |---|---|
-| Time, triaxial acceleration, g, metadata and container forms | [Common data format](reference.html#common-data-format) |
+| Time, triaxial acceleration, *g*, metadata and container forms | [Common data format](reference.html#common-data-format) |
 | Static offset bias, noise floor, drift and Allan deviation | [Measurement definitions](reference.html#measurement-definitions), [static outcomes](reference.html#static_metrology_from_tbl) |
 | Response slope, signed bias, VM integral non-linearity and composite error | [Measurement definitions](reference.html#measurement-definitions), [dynamic outcomes](reference.html#dynamic_metrology_report) |
 | Post-parse primary-five diagnostics | [Diagnostic rules, numerators and denominators](reference.html#qc_accel_tbl) |

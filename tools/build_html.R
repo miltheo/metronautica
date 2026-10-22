@@ -10,7 +10,13 @@ for (pkg in c("commonmark", "V8")) {
 }
 if (!exists("pkg2HTML", asNamespace("tools"), inherits = FALSE))
     stop("HTML reference generation requires R with tools::pkg2HTML().")
-read_text <- function(path) paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+read_text <- function(path) {
+    text <- paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+    if (grepl("\u00c2[\u0080-\u00bf]|\u00c3[\u0080-\u00bf\u0192\u201a]|\u00e2[\u0080-\u00bf\u2010-\u203f\u20ac]|\ufffd", text, perl = TRUE))
+        stop("Encoding-corrupted punctuation in ", path,
+            "; restore the source encoding before rebuilding HTML.")
+    text
+}
 write_text <- function(text, path) {
     # R's help converter can emit trailing spaces in tables and example headings.
     text <- gsub("(?m)[ \t]+$", "", enc2utf8(text), perl = TRUE)
@@ -52,6 +58,18 @@ for (name in names(blocks)) {
         paste(blocks[[name]], collapse = "\n"), "\n```\n", substring(text, b))
 }
 write_text(text, guide)
+comparison <- paste(example_code("feature-comparison.Rd"), collapse = "\n")
+comparison_guide <- file.path(docs, "REAL_DATA_EXAMPLES.md")
+text <- read_text(comparison_guide)
+begin <- "<!-- EXAMPLE:comparison:start -->"
+end <- "<!-- EXAMPLE:comparison:end -->"
+a <- regexpr(begin, text, fixed = TRUE)[[1L]]
+b <- regexpr(end, text, fixed = TRUE)[[1L]]
+if (a < 0L || b < a) stop("Missing feature comparison example markers.")
+text <- paste0(substr(text, 1L, a + nchar(begin) - 1L), "\n```r\n",
+    comparison, "\n```\n", substring(text, b))
+write_text(text, comparison_guide)
+
 escape <- function(x) {
     x <- gsub("&", "&amp;", x, fixed = TRUE)
     x <- gsub('"', "&quot;", x, fixed = TRUE)
@@ -146,6 +164,9 @@ tools::pkg2HTML("metronautica", dir = root, out = reference,
 html <- read_text(reference)
 # R's default navigation logo otherwise points at the build machine's R directory.
 html <- gsub('<img class="toplogo"[^>]*>', "", html)
+# Use the bundled R documentation icon offline; retain each ORCID profile link.
+html <- gsub("https://cloud.R-project.org/web/resources/orcid.svg",
+    "assets/orcid.svg", html, fixed = TRUE)
 html <- sub('<body>', paste0('<body>', nav), html, fixed = TRUE)
 html <- sub('<h2>Contents</h2>', paste0('<h2>Function and guide index</h2>',
     '<label for="topic-filter">Filter names</label>',

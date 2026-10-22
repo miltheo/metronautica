@@ -3,7 +3,7 @@
 \title{Acceleration data and metadata contract}
 \description{\if{latex}{\out{\sloppy}} The common data format shared by parsing, metrology and feature functions.}
 \details{\if{latex}{\out{\sloppy}}
-An \code{accel_tbl} is a tibble with exactly four columns: \code{time} (POSIXct), \code{ax_g}, \code{ay_g}, \code{az_g} (numeric acceleration in g, where 1 g corresponds to 9.80665 m/s squared). UTC is the storage convention. No unit inference is performed by the constructor. Preserve acquisition timestamps, gaps and invalid observations until the corresponding diagnostics have been inspected.
+An \code{accel_tbl} is a tibble with exactly four columns: \code{time} (POSIXct), \code{ax_g}, \code{ay_g}, \code{az_g} (numeric acceleration in \eqn{g}, where 1 \eqn{g} corresponds to 9.80665 m/s squared). UTC is the storage convention. No unit inference is performed by the constructor. Preserve acquisition timestamps, gaps and invalid observations until the corresponding diagnostics have been inspected.
 
 The \code{meta} attribute is a list. \code{acquisition} contains available device identifiers, \code{fs_nominal_hz}, \code{fs_derived_hz}, \code{full_scale_range_g}, recording bounds and time provenance. Range denotes the full axis span, not the positive limit. \code{file} records source information; \code{processing} records parser/calibration details, QC and history. Additional provenance can be retained. A parser bundle is \code{list(data = x, meta = accel_meta(x))}; keep these two metadata representations synchronised when constructing bundles externally.
 

@@ -602,21 +602,21 @@ dynamic_metrology_report <- function(test_clips,
         d <- dplyr::arrange(stages_tbl, rpm)
         plots$vm_mean_vs_rpm <- ggplot2::ggplot(d, ggplot2::aes(x = rpm, y = vm_mean)) +
             ggplot2::geom_line() + ggplot2::geom_point() +
-            ggplot2::labs(x = "RPM", y = "VM mean (g)", title = "Stage VM mean across RPM") + ggplot2::theme_bw()
+            ggplot2::labs(x = "RPM", y = expression("VM mean ("*italic(g)*")"), title = "Stage VM mean across RPM") + ggplot2::theme_bw()
         plots$linearity_vs_rpm <- ggplot2::ggplot(d, ggplot2::aes(x = rpm, y = linearity_error_vs_reference)) +
             ggplot2::geom_line() + ggplot2::geom_point() +
             ggplot2::labs(x = "RPM", y = "Linearity error (% test FSR_VM)", title = "Stage linearity error vs reference") + ggplot2::theme_bw()
         plots$test_vs_ref <- ggplot2::ggplot(data.frame(ref = all_ref_m, test = all_vm), ggplot2::aes(x = ref, y = test)) +
             ggplot2::geom_point(alpha = 0.25, size = 0.6) +
             ggplot2::geom_abline(intercept = overall_response_intercept, slope = overall_response_slope) +
-            ggplot2::labs(x = "Reference VM (g)", y = "Test VM (g)", title = "Composite response fit: test vs reference") + ggplot2::theme_bw()
+            ggplot2::labs(x = expression("Reference VM ("*italic(g)*")"), y = expression("Test VM ("*italic(g)*")"), title = "Composite response fit: test vs reference") + ggplot2::theme_bw()
         idx <- dm_downsample_idx(length(all_vm), as.integer(comp_plot_max_n))
         df_ce <- data.frame(sample = seq_along(idx), ref = all_ref_m[idx], test = all_vm[idx])
         p_ce <- ggplot2::ggplot(df_ce) +
             ggplot2::geom_segment(ggplot2::aes(x = sample, xend = sample, y = ref, yend = test), linewidth = 0.2, alpha = 0.25) +
             ggplot2::geom_point(ggplot2::aes(x = sample, y = ref), size = 0.6, alpha = 0.5) +
             ggplot2::geom_point(ggplot2::aes(x = sample, y = test), size = 0.6, alpha = 0.5) +
-            ggplot2::labs(x = "Sample index", y = "VM (g)", title = "Composite trace: reference vs test VM", subtitle = sprintf("Composite error = %.2f%% of 1/2 FSR; response slope = %.4f", composite_error, overall_response_slope)) +
+            ggplot2::labs(x = "Sample index", y = expression("VM ("*italic(g)*")"), title = "Composite trace: reference vs test VM", subtitle = sprintf("Composite error = %.2f%% of 1/2 FSR; response slope = %.4f", composite_error, overall_response_slope)) +
             ggplot2::theme_bw()
         if (!is.null(comp_plot_ylim) && length(comp_plot_ylim) == 2) p_ce <- p_ce + ggplot2::coord_cartesian(ylim = comp_plot_ylim)
         plots$composite_error_trace <- p_ce

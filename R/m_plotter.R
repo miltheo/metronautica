@@ -68,7 +68,7 @@ plot_accel_clip <- function(x, include_vm = FALSE, demean_vm = FALSE, title = NU
             hovertemplate = paste0(
                 "<b>", ch, "</b><br>",
                 "Time: %{x|%Y-%m-%d %H:%M:%OS3}<br>",
-                "Value: %{y:.4f} g",
+                "Value: %{y:.4f} <i>g</i>",
                 "<extra></extra>"
             )
         )
@@ -92,7 +92,7 @@ plot_accel_clip <- function(x, include_vm = FALSE, demean_vm = FALSE, title = NU
                 list(dtickrange = list(86400000, NULL), value = "%d %b\n%H:%M")
             )
         ),
-        yaxis = list(title = "Acceleration (g)"),
+        yaxis = list(title = "Acceleration (<i>g</i>)"),
         hovermode = "x unified",
         legend = list(orientation = "h", x = 0, y = 1.08)
     )
@@ -134,7 +134,9 @@ plot_processed_metric <- function(result, metric, unit = NULL,
                 type = "date",
                 rangeslider = list(visible = TRUE)
             ),
-            yaxis = list(title = paste0(metric, " (", unit, ")")),
+            yaxis = list(title = paste0(metric, " (",
+                gsub("(?<![[:alnum:]_])([mu]?)(g)(?![[:alnum:]_])",
+                    "\\1<i>g</i>", unit, perl = TRUE), ")")),
             hovermode = "x unified",
             dragmode = "zoom",
             legend = list(orientation = "h", y = 1.12)

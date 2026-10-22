@@ -10,7 +10,7 @@ static_noise_summary_from_tbl(x, instrument = NA_character_,
     verbose = FALSE, progress = TRUE)
 }
 \arguments{
-\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.}
+\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in \eqn{g}, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.}
 \item{instrument}{\if{latex}{\out{\sloppy}} Optional character label identifying the instrument in summaries and filenames; otherwise use vendor/model metadata when available.}
 \item{device_id}{\if{latex}{\out{\sloppy}} Optional unit identifier for summaries and filenames; otherwise use acquisition$device_id metadata. This label does not select calibration coefficients.}
 \item{device_vendor}{\if{latex}{\out{\sloppy}} Optional manufacturer label; otherwise use acquisition metadata. Does not alter decoding or calculations.}

@@ -1,7 +1,7 @@
 \name{parse_raw_auto}
 \alias{parse_raw_auto}
 \title{Decode a supported accelerometer file}
-\description{\if{latex}{\out{\sloppy}} Detect the device format, decode acceleration in g and retain timestamp, parser and calibration provenance.}
+\description{\if{latex}{\out{\sloppy}} Detect the device format, decode acceleration in \eqn{g} and retain timestamp, parser and calibration provenance.}
 \usage{
 parse_raw_auto(path, return = c("data", "bundle"), verbose = FALSE,
     progress = FALSE, time_shift_s = 0, tz_parsed = "UTC",
@@ -26,9 +26,9 @@ parse_raw_auto(path, return = c("data", "bundle"), verbose = FALSE,
 
 \section{Device-specific arguments through ...}{\if{latex}{\out{\sloppy}}
 \describe{
-\item{full_scale_range_g}{Configured symmetric peak-to-peak axis span in g; 16 means -8 to +8 g. Use file metadata when available or supply the documented acquisition setting. It affects range diagnostics and later normalisation, not already decoded CSV acceleration values. Observed minimum/maximum values are not a substitute for sensor limits.}
+\item{full_scale_range_g}{Configured symmetric peak-to-peak axis span in \eqn{g}; 16 means -8 to +8 \eqn{g}. Use file metadata when available or supply the documented acquisition setting. It affects range diagnostics and later normalisation, not already decoded CSV acceleration values. Observed minimum/maximum values are not a substitute for sensor limits.}
 \item{GENEActiv calibrate}{Logical, default TRUE. Forwarded to GENEAread::read.bin to control upstream coefficient application. This is device-file decoding/calibration, not the within-trial dynamic VM mapping. The returned provenance records whether upstream calibration was requested. mmap_load controls memory-mapped loading, default enabled on 64-bit R, without adding an analysis filter.}
-\item{SENS scale_g_per_lsb}{Acceleration scale converting signed axis counts to g; default 0.0078125 from the supported vendor binary specification. A different value requires device-format justification and changes decoded acceleration. No per-file offset or temperature correction is inferred.}
+\item{SENS scale_g_per_lsb}{Acceleration scale converting signed axis counts to \eqn{g}; default 0.0078125 from the supported vendor binary specification. A different value requires device-format justification and changes decoded acceleration. No per-file offset or temperature correction is inferred.}
 \item{GT3X precision}{Default \code{"native"} preserves original integer-sample precision through file-scale conversion for supported modern log.bin containers, using the validated read.gt3x 1.2.0 interface. \code{"legacy_3dp"} selects the earlier upstream scaled/rounded output. Precision and native recording start are recorded in metadata. Native mode does not impute gaps or extract light; choose the explicit legacy mode for those upstream options. Older activity.bin layouts require legacy mode. No lost precision is inferred from CSV or rounded input.}
 \item{GT3X imputeZeroes}{Logical, default FALSE: retain the supported upstream decoder's non-imputation route. Enabling it changes the decoded treatment of missing/idle data and must be reported. add_light defaults FALSE; cleanup controls upstream extraction-file cleanup.}
 \item{Axivity CWA settings}{use_ggir_fallback defaults TRUE and permits the optional GGIRread path when the fast packed-AX3 layout is unsupported. interpolationType is passed to the fallback reader (default 1). Fast and fallback implementations and their scaling/time policies are retained in metadata; the caller should inspect the selected parser.}

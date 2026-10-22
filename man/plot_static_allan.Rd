@@ -6,7 +6,7 @@
 plot_static_allan(allan_df, title_prefix = "Allan deviation")
 }
 \arguments{
-\item{allan_df}{\if{latex}{\out{\sloppy}} Allan-deviation table with axis, tau and adev columns: axis label, evaluated averaging time in seconds, and deviation in g. Obtain it with static_allan.}
+\item{allan_df}{\if{latex}{\out{\sloppy}} Allan-deviation table with axis, tau and adev columns: axis label, evaluated averaging time in seconds, and deviation in \eqn{g}. Obtain it with static_allan.}
 \item{title_prefix}{\if{latex}{\out{\sloppy}} Character prefix for diagnostic plot titles; does not change computed outcomes.}
 }
 \value{\if{latex}{\out{\sloppy}} A ggplot object; supplied data are unchanged.}

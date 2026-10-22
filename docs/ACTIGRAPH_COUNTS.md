@@ -1,6 +1,6 @@
 # Activity counts: implementation and validation
 
-[Workflow](../README.md#processing-workflow) · [HTML guide](index.html) · [HTML reference](reference.html) · [PDF reference](metronautica-reference.pdf)
+[Workflow](../README.md#processing-workflow) &middot; [HTML guide](index.html) &middot; [HTML reference](reference.html) &middot; [PDF reference](metronautica-reference.pdf)
 
 The standalone `accel_metric_agcounts()` API is implemented in `R/m_agcounts.R`.
 Its Rd help and generated reference manual are the parameter/method reference.

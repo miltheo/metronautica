@@ -6,7 +6,7 @@
 qc_accel_tbl(x)
 }
 \arguments{
-\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. For this diagnostic function the table must have exactly time, ax_g, ay_g and az_g in that order. No samples are repaired by input conversion.}
+\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in \eqn{g}, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. For this diagnostic function the table must have exactly time, ax_g, ay_g and az_g in that order. No samples are repaired by input conversion.}
 }
 \value{\if{latex}{\out{\sloppy}} A named list of scalar diagnostics. Counts are sample counts except \code{invalid_axis}, \code{near_limit_n} and \code{finite_axis_n}, which count axis observations. Percentages are on the 0--100 scale.}
 \details{\if{latex}{\out{\sloppy}}

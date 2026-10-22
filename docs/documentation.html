@@ -23,7 +23,7 @@ Rscript tools/build_manual.R
 <pre><code class="language-sh">Rscript tools/render_examples.R &quot;path/to/wam/samples&quot;
 </code></pre>
 <p>This explicitly processes the 24-hour static sample and full ten-stage dynamic
-trial, writing two PNG previews under <code>docs/assets/examples/</code>. The catalogue and
+trial, writing static, dynamic and combined-feature PNG previews under <code>docs/assets/examples/</code>. The catalogue and
 compressed attachments must be available locally. Then rebuild the HTML.
 Run <code>Rscript tools/validate.R</code> from the repository root for the package checks.</p>
 <p>HTML generation requires R &gt;= 4.5 with <code>tools::pkg2HTML()</code>, plus <code>commonmark</code> and

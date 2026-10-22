@@ -43,6 +43,7 @@ function processMathHTML() {
 <li><a href='#dm_apply_vm_calibration_tbl'>dm_apply_vm_calibration_tbl</a></li>
 <li><a href='#dm_fit_vm_calibration'>dm_fit_vm_calibration</a></li>
 <li><a href='#dynamic_metrology_report'>dynamic_metrology_report</a></li>
+<li><a href='#feature-comparison'>feature-comparison</a></li>
 <li><a href='#filter_accel_tbl'>filter_accel_tbl</a></li>
 <li><a href='#getting-started'>getting-started</a></li>
 <li><a href='#implementation-guide'>implementation-guide</a></li>
@@ -78,7 +79,7 @@ function processMathHTML() {
 </tr>
 <tr>
 <td>Title:</td>
-<td>Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports.</td>
+<td>Wearable Triaxial Accelerometer Metrology and Signal Processing</td>
 </tr>
 <tr>
 <td>Version:</td>
@@ -99,7 +100,7 @@ function processMathHTML() {
 <tr>
 <td>Author:</td>
 <td>Millen James Theophilus
-    <a href="https://orcid.org/0000-0001-9823-7177"><img alt="ORCID iD"  src="https://cloud.R-project.org/web/resources/orcid.svg" style="width:16px; height:16px; margin-left:4px; margin-right:4px; vertical-align:middle"></a> [aut, cre]</td>
+    <a href="https://orcid.org/0000-0001-9823-7177"><img alt="ORCID iD"  src="assets/orcid.svg" style="width:16px; height:16px; margin-left:4px; margin-right:4px; vertical-align:middle"></a> [aut, cre]</td>
 </tr>
 <tr>
 <td>Maintainer:</td>
@@ -109,6 +110,11 @@ function processMathHTML() {
 <td>Description:</td>
 <td>Native wearable triaxial accelerometer parsing, signal diagnostics,
     clipping, static and dynamic characterisation, filtering and reporting.
+    Metrological terminology follows the International Vocabulary of Metrology,
+    JCGM (2012) &lt;<a href="https://doi.org/10.59161%2FJCGM200-2012">doi:10.59161/JCGM200-2012</a>&gt;. Standalone activity counts implement
+    the published ActiGraph algorithm of Neishabouri et al. (2022)
+    &lt;<a href="https://doi.org/10.1038%2Fs41598-022-16003-x">doi:10.1038/s41598-022-16003-x</a>&gt;, with its published filter as the default
+    and configurable band-pass cutoffs for modified counts.
     Developed for the wearable-accelerometer metrology research article under
     submission for publication, with accompanying analyses and data in WAM
     <a href="https://github.com/miltheo/wam">https://github.com/miltheo/wam</a>.</td>
@@ -242,7 +248,7 @@ scales, stats, utils, grid, tools</td>
 <table role = "presentation">
 <tr><td><code id="accel_meta_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 </table>
 
@@ -298,7 +304,7 @@ accel_meta(x)$acquisition
 <table role = "presentation">
 <tr><td><code id="accel_metric_agcounts_+3A_tbl">tbl</code></td>
 <td>
-<p> Common-format data frame/tibble, parser bundle with data, or clip bundle with full. Required columns are POSIXct time and finite numeric ax_g, ay_g, az_g in g. Rows must be strictly time ordered on the supplied nominal sampling grid. Observed zero-valued samples are retained as observations.</p>
+<p> Common-format data frame/tibble, parser bundle with data, or clip bundle with full. Required columns are POSIXct time and finite numeric ax_g, ay_g, az_g in <code class="reqn">g</code>. Rows must be strictly time ordered on the supplied nominal sampling grid. Observed zero-valued samples are retained as observations.</p>
 </td></tr>
 <tr><td><code id="accel_metric_agcounts_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -338,7 +344,7 @@ accel_meta(x)$acquisition
 </td></tr>
 <tr><td><code id="accel_metric_agcounts_+3A_pad_value">pad_value</code></td>
 <td>
-<p> Three finite acceleration values in g for X, Y, Z, used only with boundary = &quot;pad&quot;. Both requested ends use these explicit values. The number and location of padded samples are reported. No constant-first-sample startup padding is inserted implicitly.</p>
+<p> Three finite acceleration values in <code class="reqn">g</code> for X, Y, Z, used only with boundary = &quot;pad&quot;. Both requested ends use these explicit values. The number and location of padded samples are reported. No constant-first-sample startup padding is inserted implicitly.</p>
 </td></tr>
 <tr><td><code id="accel_metric_agcounts_+3A_filter_guard_s">filter_guard_s</code></td>
 <td>
@@ -421,7 +427,7 @@ attr(modified, "settings")$algorithm
 <table role = "presentation">
 <tr><td><code id="accel_metric_ai_+3A_tbl">tbl</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
 </td></tr>
 <tr><td><code id="accel_metric_ai_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -437,7 +443,7 @@ attr(modified, "settings")$algorithm
 </td></tr>
 <tr><td><code id="accel_metric_ai_+3A_ai_noise_var">ai_noise_var</code></td>
 <td>
-<p> Mean per-axis stationary noise variance in g squared. Required by default when AI is requested; estimate with compute_ai_noise_var_from_static. An explicit zero requests no noise subtraction.</p>
+<p> Mean per-axis stationary noise variance in <code class="reqn">g</code> squared. Required by default when AI is requested; estimate with compute_ai_noise_var_from_static. An explicit zero requests no noise subtraction.</p>
 </td></tr>
 <tr><td><code id="accel_metric_ai_+3A_ai_noise_mode">ai_noise_mode</code></td>
 <td>
@@ -453,7 +459,7 @@ attr(modified, "settings")$algorithm
 </td></tr>
 <tr><td><code id="accel_metric_ai_+3A_ai_scale">ai_scale</code></td>
 <td>
-<p> Absolute Activity Index in g (default) or dimensionless noise-relative Activity Index.</p>
+<p> Absolute Activity Index in <code class="reqn">g</code> (default) or dimensionless noise-relative Activity Index.</p>
 </td></tr>
 <tr><td><code id="accel_metric_ai_+3A_ai_epoch_summary">ai_epoch_summary</code></td>
 <td>
@@ -464,12 +470,12 @@ attr(modified, "settings")$algorithm
 
 <h3>Details</h3>
 
-<p> Calculate sample variance per axis within one-second windows, average the three variances, subtract the stationary mean-axis noise variance, truncate negative excess to zero and take the square root. The absolute index is in g. Relative scaling divides excess variance by noise variance before the square root; zero noise variance gives undefined relative values. Aggregate the one-second indices by the selected sum or mean. See <code><a href="#topic+measurement-definitions">measurement-definitions</a></code> for calculation definitions. No additional device calibration is performed by choosing a feature.</p>
+<p> Calculate sample variance per axis within one-second windows, average the three variances, subtract the stationary mean-axis noise variance, truncate negative excess to zero and take the square root. The absolute index is in <code class="reqn">g</code>. Relative scaling divides excess variance by noise variance before the square root; zero noise variance gives undefined relative values. Aggregate the one-second indices by the selected sum or mean. See <code><a href="#topic+measurement-definitions">measurement-definitions</a></code> for calculation definitions. No additional device calibration is performed by choosing a feature.</p>
 
 
 <h3>Value</h3>
 
-<p>A tibble with <code>epoch_id</code>, <code>time</code> and <code>value</code>. Absolute output is in g; relative output is dimensionless. Sum and mean refer to the one-second indices, not acceleration samples. Timestamps select the first, last or middle one-second bin start within each output epoch. The <code>settings</code> attribute records noise variance/source, estimation settings, scale, aggregation, rate and duration; <code>ai_noise_var_used</code> also records the variance in g squared.</p>
+<p>A tibble with <code>epoch_id</code>, <code>time</code> and <code>value</code>. Absolute output is in <code class="reqn">g</code>; relative output is dimensionless. Sum and mean refer to the one-second indices, not acceleration samples. Timestamps select the first, last or middle one-second bin start within each output epoch. The <code>settings</code> attribute records noise variance/source, estimation settings, scale, aggregation, rate and duration; <code>ai_noise_var_used</code> also records the variance in <code class="reqn">g</code> squared.</p>
 
 
 <h3>Implementation</h3>
@@ -506,7 +512,7 @@ attr(modified, "settings")$algorithm
 <table role = "presentation">
 <tr><td><code id="accel_metric_enmo_+3A_tbl">tbl</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
 </td></tr>
 <tr><td><code id="accel_metric_enmo_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -518,7 +524,7 @@ attr(modified, "settings")$algorithm
 </td></tr>
 <tr><td><code id="accel_metric_enmo_+3A_out_unit">out_unit</code></td>
 <td>
-<p> Output acceleration unit: mg multiplies the epoch result by 1000; g retains the input scale.</p>
+<p> Output acceleration unit: m<code class="reqn">g</code> multiplies the epoch result by 1000; <code class="reqn">g</code> retains the input scale.</p>
 </td></tr>
 </table>
 
@@ -530,7 +536,7 @@ attr(modified, "settings")$algorithm
 
 <h3>Value</h3>
 
-<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (g or mg according to the selected output unit).</p>
+<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (<code class="reqn">g</code> or m<code class="reqn">g</code> according to the selected output unit).</p>
 
 
 <h3>Implementation</h3>
@@ -572,7 +578,7 @@ head(out)
 <table role = "presentation">
 <tr><td><code id="accel_metric_mad_+3A_tbl">tbl</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
 </td></tr>
 <tr><td><code id="accel_metric_mad_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -584,7 +590,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_mad_+3A_out_unit">out_unit</code></td>
 <td>
-<p> Output acceleration unit: mg multiplies the epoch result by 1000; g retains the input scale.</p>
+<p> Output acceleration unit: m<code class="reqn">g</code> multiplies the epoch result by 1000; <code class="reqn">g</code> retains the input scale.</p>
 </td></tr>
 </table>
 
@@ -596,7 +602,7 @@ head(out)
 
 <h3>Value</h3>
 
-<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (g or mg according to the selected output unit).</p>
+<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (<code class="reqn">g</code> or m<code class="reqn">g</code> according to the selected output unit).</p>
 
 
 <h3>Implementation</h3>
@@ -635,7 +641,7 @@ head(out)
 <table role = "presentation">
 <tr><td><code id="accel_metric_mims_+3A_tbl">tbl</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
 </td></tr>
 <tr><td><code id="accel_metric_mims_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -643,7 +649,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_mims_+3A_dynamic_range_g">dynamic_range_g</code></td>
 <td>
-<p> Peak-to-peak configured axis measurement span in g: 16 means -8 to +8 g. The summary function uses valid acquisition metadata when NULL; MIMS fails if neither is available. The direct MIMS function requires this argument. No range is inferred from observed values.</p>
+<p> Peak-to-peak configured axis measurement span in <code class="reqn">g</code>: 16 means -8 to +8 <code class="reqn">g</code>. The summary function uses valid acquisition metadata when NULL; MIMS fails if neither is available. The direct MIMS function requires this argument. No range is inferred from observed values.</p>
 </td></tr>
 <tr><td><code id="accel_metric_mims_+3A_mims_filter_type">mims_filter_type</code></td>
 <td>
@@ -674,12 +680,12 @@ head(out)
 
 <h3>Details</h3>
 
-<p> Call MIMSunit::custom_mims_unit with triaxial g inputs, configured axis limits and the selected internal processing. Retain its timestamps and combined MIMS output. Default 0.2-5 Hz and explicit altered 0.2-10 Hz are different pipelines; resolved settings and dependency version are returned. See <code><a href="#topic+measurement-definitions">measurement-definitions</a></code> for calculation definitions. No additional device calibration is performed by choosing a feature.</p>
+<p> Call MIMSunit::custom_mims_unit with triaxial <code class="reqn">g</code> inputs, configured axis limits and the selected internal processing. Retain its timestamps and combined MIMS output. Default 0.2-5 Hz and explicit altered 0.2-10 Hz are different pipelines; resolved settings and dependency version are returned. See <code><a href="#topic+measurement-definitions">measurement-definitions</a></code> for calculation definitions. No additional device calibration is performed by choosing a feature.</p>
 
 
 <h3>Value</h3>
 
-<p>A tibble with <code>time</code> (upstream MIMS epoch labels), <code>epoch_id</code> (sequential row number), and <code>value</code> (the combined MIMS-unit output per epoch). These values are not g or mg. The <code>settings</code> attribute records measurement span/limits, filter and cutoffs, extrapolation, truncation, combination, duration and MIMSunit version. Upstream epoch boundaries and partial-epoch handling are retained.</p>
+<p>A tibble with <code>time</code> (upstream MIMS epoch labels), <code>epoch_id</code> (sequential row number), and <code>value</code> (the combined MIMS-unit output per epoch). These values are not <code class="reqn">g</code> or m<code class="reqn">g</code>. The <code>settings</code> attribute records measurement span/limits, filter and cutoffs, extrapolation, truncation, combination, duration and MIMSunit version. Upstream epoch boundaries and partial-epoch handling are retained.</p>
 
 
 <h3>Implementation</h3>
@@ -725,7 +731,7 @@ head(out)
 <table role = "presentation">
 <tr><td><code id="accel_metric_odba_+3A_tbl">tbl</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
 </td></tr>
 <tr><td><code id="accel_metric_odba_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -781,7 +787,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_odba_+3A_out_unit">out_unit</code></td>
 <td>
-<p> Output acceleration unit: mg multiplies the epoch result by 1000; g retains the input scale.</p>
+<p> Output acceleration unit: m<code class="reqn">g</code> multiplies the epoch result by 1000; <code class="reqn">g</code> retains the input scale.</p>
 </td></tr>
 <tr><td><code id="accel_metric_odba_+3A_edge_handling">edge_handling</code></td>
 <td>
@@ -801,7 +807,7 @@ head(out)
 
 <h3>Value</h3>
 
-<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (g or mg according to the selected output unit).</p>
+<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (<code class="reqn">g</code> or m<code class="reqn">g</code> according to the selected output unit).</p>
 
 
 <h3>Implementation</h3>
@@ -839,7 +845,7 @@ head(out)
 <table role = "presentation">
 <tr><td><code id="accel_metric_rocam_+3A_tbl">tbl</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
 </td></tr>
 <tr><td><code id="accel_metric_rocam_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -862,12 +868,12 @@ head(out)
 
 <h3>Details</h3>
 
-<p> Take the Euclidean norm of successive triaxial sample differences, smooth the difference series by a running median, then average within epochs. There is no division by elapsed time or one-second resampling. The retained outcome is g/sample change, not g/s. See <code><a href="#topic+measurement-definitions">measurement-definitions</a></code> for calculation definitions. No additional device calibration is performed by choosing a feature.</p>
+<p> Take the Euclidean norm of successive triaxial sample differences, smooth the difference series by a running median, then average within epochs. There is no division by elapsed time or one-second resampling. The retained outcome is <code class="reqn">g</code>/sample change, not <code class="reqn">g</code>/s. See <code><a href="#topic+measurement-definitions">measurement-definitions</a></code> for calculation definitions. No additional device calibration is performed by choosing a feature.</p>
 
 
 <h3>Value</h3>
 
-<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (g per successive-sample change, without division by elapsed time).</p>
+<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (<code class="reqn">g</code> per successive-sample change, without division by elapsed time).</p>
 
 
 <h3>Implementation</h3>
@@ -901,7 +907,7 @@ head(out)
 <table role = "presentation">
 <tr><td><code id="accel_metric_svmbp_+3A_tbl">tbl</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
 </td></tr>
 <tr><td><code id="accel_metric_svmbp_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -925,7 +931,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_svmbp_+3A_output">output</code></td>
 <td>
-<p> Band-pass VM aggregation: mean_mg and mean_g return epoch means; sum_mg and sum_g return sample sums; g_seconds divides the g sample sum by fs_hz. Sample sums depend on the sample count.</p>
+<p> Band-pass VM aggregation: mean_mg and mean_g return epoch means; sum_mg and sum_g return sample sums; g_seconds divides the <code class="reqn">g</code> sample sum by fs_hz. Sample sums depend on the sample count.</p>
 </td></tr>
 <tr><td><code id="accel_metric_svmbp_+3A_nyquist_action">nyquist_action</code></td>
 <td>
@@ -945,7 +951,7 @@ head(out)
 
 <h3>Value</h3>
 
-<p>A tibble with <code>time</code>, <code>epoch_id</code> and <code>value</code>. Units are mg/g for means, mg/g sample sums for sum_mg/sum_g, or g seconds for g_seconds. The <code>settings</code> attribute records requested/applied cutoffs, filter order, sampling frequency, Nyquist policy, output aggregation, epoch duration and anchor.</p>
+<p>A tibble with <code>time</code>, <code>epoch_id</code> and <code>value</code>. Units are m<code class="reqn">g</code>/<code class="reqn">g</code> for means, m<code class="reqn">g</code>/<code class="reqn">g</code> sample sums for sum_mg/sum_g, or <code class="reqn">g</code> seconds for g_seconds. The <code>settings</code> attribute records requested/applied cutoffs, filter order, sampling frequency, Nyquist policy, output aggregation, epoch duration and anchor.</p>
 
 
 <h3>Implementation</h3>
@@ -989,7 +995,7 @@ head(out)
 <table role = "presentation">
 <tr><td><code id="accel_metric_svmg_+3A_tbl">tbl</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
 </td></tr>
 <tr><td><code id="accel_metric_svmg_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -1005,23 +1011,23 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_svmg_+3A_output">output</code></td>
 <td>
-<p> g_seconds integrates the gravity-subtracted series by sum/fs_hz; sample_sum_g returns its sample sum; mean_mg and mean_g return its epoch mean in mg/g.</p>
+<p> g_seconds integrates the gravity-subtracted series by sum/fs_hz; sample_sum_g returns its sample sum; mean_mg and mean_g return its epoch mean in m<code class="reqn">g</code>/<code class="reqn">g</code>.</p>
 </td></tr>
 <tr><td><code id="accel_metric_svmg_+3A_rectify">rectify</code></td>
 <td>
-<p> TRUE takes abs(VM - 1); FALSE retains the signed VM-minus-1-g series. This differs from the non-negative truncation used by ENMO.</p>
+<p> TRUE takes abs(VM - 1); FALSE retains the signed VM-minus-1-<code class="reqn">g</code> series. This differs from the non-negative truncation used by ENMO.</p>
 </td></tr>
 </table>
 
 
 <h3>Details</h3>
 
-<p> Subtract 1 g from sample VM, optionally take absolute differences, and aggregate by the selected output form. The SVMGS, SVMGSEC and SVMGMEAN variants use the absolute differences; ENMO instead truncates negative differences to zero. See <code><a href="#topic+measurement-definitions">measurement-definitions</a></code> for calculation definitions. No additional device calibration is performed by choosing a feature.</p>
+<p> Subtract 1 <code class="reqn">g</code> from sample VM, optionally take absolute differences, and aggregate by the selected output form. The SVMGS, SVMGSEC and SVMGMEAN variants use the absolute differences; ENMO instead truncates negative differences to zero. See <code><a href="#topic+measurement-definitions">measurement-definitions</a></code> for calculation definitions. No additional device calibration is performed by choosing a feature.</p>
 
 
 <h3>Value</h3>
 
-<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (g seconds for g_seconds, g sample sums for sample_sum_g, mg for mean_mg, or g for mean_g).</p>
+<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (<code class="reqn">g</code> seconds for g_seconds, <code class="reqn">g</code> sample sums for sample_sum_g, m<code class="reqn">g</code> for mean_mg, or <code class="reqn">g</code> for mean_g).</p>
 
 
 <h3>Implementation</h3>
@@ -1053,7 +1059,7 @@ head(out)
 <table role = "presentation">
 <tr><td><code id="accel_metric_vm_+3A_tbl">tbl</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
 </td></tr>
 <tr><td><code id="accel_metric_vm_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -1069,19 +1075,19 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_vm_+3A_out_unit">out_unit</code></td>
 <td>
-<p> g retains the VM statistic; mg multiplies it by 1000.</p>
+ <p><code class="reqn">g</code> retains the VM statistic; m<code class="reqn">g</code> multiplies it by 1000.</p>
 </td></tr>
 </table>
 
 
 <h3>Details</h3>
 
-<p> Compute sample vector magnitude and the selected within-epoch statistic; return g or mg. See <code><a href="#topic+measurement-definitions">measurement-definitions</a></code> for calculation definitions. No additional device calibration is performed by choosing a feature.</p>
+<p> Compute sample vector magnitude and the selected within-epoch statistic; return <code class="reqn">g</code> or m<code class="reqn">g</code>. See <code><a href="#topic+measurement-definitions">measurement-definitions</a></code> for calculation definitions. No additional device calibration is performed by choosing a feature.</p>
 
 
 <h3>Value</h3>
 
-<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (g or mg according to the selected output unit).</p>
+<p>A tibble with <code>time</code> (the selected observed-sample epoch label), <code>epoch_id</code> (integer elapsed-time bin starting at one), and <code>value</code> (<code class="reqn">g</code> or m<code class="reqn">g</code> according to the selected output unit).</p>
 
 
 <h3>Implementation</h3>
@@ -1113,7 +1119,7 @@ head(out)
 <table role = "presentation">
 <tr><td><code id="accel_metric_z_angle_+3A_tbl">tbl</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
 </td></tr>
 <tr><td><code id="accel_metric_z_angle_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -1170,7 +1176,7 @@ head(out)
 <table role = "presentation">
 <tr><td><code id="accel_metric_z_angle_change_+3A_tbl">tbl</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.</p>
 </td></tr>
 <tr><td><code id="accel_metric_z_angle_change_+3A_epoch_s">epoch_s</code></td>
 <td>
@@ -1233,7 +1239,7 @@ head(out)
 <table role = "presentation">
 <tr><td><code id="allan_nonoverlap_+3A_x">x</code></td>
 <td>
-<p> Numeric one-axis acceleration sequence in g, ordered at the supplied sampling frequency. It is not an acceleration table or parser bundle.</p>
+<p> Numeric one-axis acceleration sequence in <code class="reqn">g</code>, ordered at the supplied sampling frequency. It is not an acceleration table or parser bundle.</p>
 </td></tr>
 <tr><td><code id="allan_nonoverlap_+3A_fs_hz">fs_hz</code></td>
 <td>
@@ -1292,15 +1298,15 @@ head(out)
 </td></tr>
 <tr><td><code id="as_accel_tbl_+3A_ax_g">ax_g</code></td>
 <td>
-<p> Numeric X-axis acceleration in g.</p>
+<p> Numeric X-axis acceleration in <code class="reqn">g</code>.</p>
 </td></tr>
 <tr><td><code id="as_accel_tbl_+3A_ay_g">ay_g</code></td>
 <td>
-<p> Numeric Y-axis acceleration in g.</p>
+<p> Numeric Y-axis acceleration in <code class="reqn">g</code>.</p>
 </td></tr>
 <tr><td><code id="as_accel_tbl_+3A_az_g">az_g</code></td>
 <td>
-<p> Numeric Z-axis acceleration in g.</p>
+<p> Numeric Z-axis acceleration in <code class="reqn">g</code>.</p>
 </td></tr>
 <tr><td><code id="as_accel_tbl_+3A_meta">meta</code></td>
 <td>
@@ -1311,7 +1317,7 @@ head(out)
 
 <h3>Details</h3>
 
-<p> Axes must have the same length as time; scalar recycling is rejected. Non-finite observations and timestamp defects are retained for diagnostics. The constructor does not sort, resample, calibrate or infer acceleration units. The constructor preserves supplied metadata without estimating acquisition settings. The configured axis full-scale range is the peak-to-peak span: 16 g denotes +/-8 g.</p>
+<p> Axes must have the same length as time; scalar recycling is rejected. Non-finite observations and timestamp defects are retained for diagnostics. The constructor does not sort, resample, calibrate or infer acceleration units. The constructor preserves supplied metadata without estimating acquisition settings. The configured axis full-scale range is the peak-to-peak span: 16 <code class="reqn">g</code> denotes +/-8 <code class="reqn">g</code>.</p>
 
 
 <h3>Value</h3>
@@ -1361,7 +1367,7 @@ qc_accel_tbl(x)$n_samples
 <table role = "presentation">
 <tr><td><code id="attach_qc_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 <tr><td><code id="attach_qc_+3A_scope">scope</code></td>
 <td>
@@ -1477,7 +1483,7 @@ qc_accel_tbl(x)$n_samples
 <table role = "presentation">
 <tr><td><code id="clip_dynamic_stages_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 <tr><td><code id="clip_dynamic_stages_+3A_start_utc">start_utc</code></td>
 <td>
@@ -1533,7 +1539,7 @@ qc_accel_tbl(x)$n_samples
 
 <h3>Value</h3>
 
-<p> A list with <code>full</code> (untrimmed full-assessment table), <code>stages</code> (named list, e.g. <code>rpm_50</code>), <code>schedule</code> (raw and trimmed UTC bounds, settings and labels), and <code>meta</code>. Each clip has freshly computed QC.</p>
+<p> A list with <code>full</code> (untrimmed full-assessment table), <code>stages</code> (named list, e.<code class="reqn">g</code>. <code>rpm_50</code>), <code>schedule</code> (raw and trimmed UTC bounds, settings and labels), and <code>meta</code>. Each clip has freshly computed QC.</p>
 
 
 <h3>Implementation</h3>
@@ -1563,7 +1569,7 @@ qc_accel_tbl(x)$n_samples
 <h3>Details</h3>
 
 
-<p>An <code>accel_tbl</code> is a tibble with exactly four columns: <code>time</code> (POSIXct), <code>ax_g</code>, <code>ay_g</code>, <code>az_g</code> (numeric acceleration in g, where 1 g corresponds to 9.80665 m/s squared). UTC is the storage convention. No unit inference is performed by the constructor. Preserve acquisition timestamps, gaps and invalid observations until the corresponding diagnostics have been inspected.
+<p>An <code>accel_tbl</code> is a tibble with exactly four columns: <code>time</code> (POSIXct), <code>ax_g</code>, <code>ay_g</code>, <code>az_g</code> (numeric acceleration in <code class="reqn">g</code>, where 1 <code class="reqn">g</code> corresponds to 9.80665 m/s squared). UTC is the storage convention. No unit inference is performed by the constructor. Preserve acquisition timestamps, gaps and invalid observations until the corresponding diagnostics have been inspected.
 </p>
 <p>The <code>meta</code> attribute is a list. <code>acquisition</code> contains available device identifiers, <code>fs_nominal_hz</code>, <code>fs_derived_hz</code>, <code>full_scale_range_g</code>, recording bounds and time provenance. Range denotes the full axis span, not the positive limit. <code>file</code> records source information; <code>processing</code> records parser/calibration details, QC and history. Additional provenance can be retained. A parser bundle is <code>list(data = x, meta = accel_meta(x))</code>; keep these two metadata representations synchronised when constructing bundles externally.
 </p>
@@ -1654,7 +1660,7 @@ qc_accel_tbl(x)$n_samples
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_dynamic_range_g">dynamic_range_g</code></td>
 <td>
-<p> Peak-to-peak configured axis measurement span in g: 16 means -8 to +8 g. The summary function uses valid acquisition metadata when NULL; MIMS fails if neither is available. The direct MIMS function requires this argument. No range is inferred from observed values.</p>
+<p> Peak-to-peak configured axis measurement span in <code class="reqn">g</code>: 16 means -8 to +8 <code class="reqn">g</code>. The summary function uses valid acquisition metadata when NULL; MIMS fails if neither is available. The direct MIMS function requires this argument. No range is inferred from observed values.</p>
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_vm_summary">vm_summary</code></td>
 <td>
@@ -1662,15 +1668,15 @@ qc_accel_tbl(x)$n_samples
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_vm_unit">vm_unit</code></td>
 <td>
-<p> Output unit for the VM statistic: g, or mg after multiplication by 1000. No calibration is implied.</p>
+<p> Output unit for the VM statistic: <code class="reqn">g</code>, or m<code class="reqn">g</code> after multiplication by 1000. No calibration is implied.</p>
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_enmo_mg">enmo_mg</code></td>
 <td>
-<p> Logical; multiply the ENMO epoch mean by 1000 for mg when TRUE; otherwise retain g. Negative VM-minus-1-g samples are truncated before averaging.</p>
+<p> Logical; multiply the ENMO epoch mean by 1000 for m<code class="reqn">g</code> when TRUE; otherwise retain <code class="reqn">g</code>. Negative VM-minus-1-<code class="reqn">g</code> samples are truncated before averaging.</p>
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_mad_mg">mad_mg</code></td>
 <td>
-<p> Logical; multiply within-epoch mean absolute deviation of VM by 1000 for mg when TRUE; otherwise retain g.</p>
+<p> Logical; multiply within-epoch mean absolute deviation of VM by 1000 for m<code class="reqn">g</code> when TRUE; otherwise retain <code class="reqn">g</code>.</p>
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_odba_static_dynamic_method">odba_static_dynamic_method</code></td>
 <td>
@@ -1710,7 +1716,7 @@ qc_accel_tbl(x)$n_samples
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_odba_unit">odba_unit</code></td>
 <td>
-<p> Output unit for ODBA/VEDBA/PDBA epoch means: mg or g. mg applies a factor of 1000.</p>
+<p> Output unit for ODBA/VEDBA/PDBA epoch means: m<code class="reqn">g</code> or <code class="reqn">g</code>. m<code class="reqn">g</code> applies a factor of 1000.</p>
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_odba_sensitivity_windows_s">odba_sensitivity_windows_s</code></td>
 <td>
@@ -1730,7 +1736,7 @@ qc_accel_tbl(x)$n_samples
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_svmg_rectify">svmg_rectify</code></td>
 <td>
-<p> Apply the absolute value to VM minus 1 g for the gravity-subtracted VM family; this differs from ENMO truncation.</p>
+<p> Apply the absolute value to VM minus 1 <code class="reqn">g</code> for the gravity-subtracted VM family; this differs from ENMO truncation.</p>
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_svmbp_cutoffs">svmbp_cutoffs</code></td>
 <td>
@@ -1742,7 +1748,7 @@ qc_accel_tbl(x)$n_samples
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_svmbp_output">svmbp_output</code></td>
 <td>
-<p> Band-pass VM aggregation: mean_mg and mean_g return epoch means; sum_mg and sum_g return sample sums; g_seconds divides the g sample sum by fs_hz. Sample sums depend on the sample count.</p>
+<p> Band-pass VM aggregation: mean_mg and mean_g return epoch means; sum_mg and sum_g return sample sums; g_seconds divides the <code class="reqn">g</code> sample sum by fs_hz. Sample sums depend on the sample count.</p>
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_svmbp_nyquist_action">svmbp_nyquist_action</code></td>
 <td>
@@ -1754,7 +1760,7 @@ qc_accel_tbl(x)$n_samples
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_ai_noise_var">ai_noise_var</code></td>
 <td>
-<p> Mean per-axis stationary noise variance in g squared. Required by default when AI is requested; estimate with compute_ai_noise_var_from_static. An explicit zero requests no noise subtraction.</p>
+<p> Mean per-axis stationary noise variance in <code class="reqn">g</code> squared. Required by default when AI is requested; estimate with compute_ai_noise_var_from_static. An explicit zero requests no noise subtraction.</p>
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_ai_noise_mode">ai_noise_mode</code></td>
 <td>
@@ -1770,7 +1776,7 @@ qc_accel_tbl(x)$n_samples
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_ai_scale">ai_scale</code></td>
 <td>
-<p> Absolute Activity Index in g (default) or dimensionless noise-relative Activity Index.</p>
+<p> Absolute Activity Index in <code class="reqn">g</code> (default) or dimensionless noise-relative Activity Index.</p>
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_ai_epoch_summary">ai_epoch_summary</code></td>
 <td>
@@ -1865,59 +1871,59 @@ Identifier </td><td style="text-align: left;"> Direct function </td><td style="t
 </tr>
 <tr>
  <td style="text-align: left;">
-VM </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_vm">accel_metric_vm</a></code> </td><td style="text-align: left;"> Mean, g </td>
+VM </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_vm">accel_metric_vm</a></code> </td><td style="text-align: left;"> Mean, <code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-ENMO </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_enmo">accel_metric_enmo</a></code> </td><td style="text-align: left;"> Mean, mg </td>
+ENMO </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_enmo">accel_metric_enmo</a></code> </td><td style="text-align: left;"> Mean, m<code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-MAD </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_mad">accel_metric_mad</a></code> </td><td style="text-align: left;"> Mean, mg </td>
+MAD </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_mad">accel_metric_mad</a></code> </td><td style="text-align: left;"> Mean, m<code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-ODBA </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_odba">accel_metric_odba</a></code> </td><td style="text-align: left;"> Mean, mg </td>
+ODBA </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_odba">accel_metric_odba</a></code> </td><td style="text-align: left;"> Mean, m<code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-VEDBA </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_odba">accel_metric_odba</a></code> </td><td style="text-align: left;"> Mean, mg </td>
+VEDBA </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_odba">accel_metric_odba</a></code> </td><td style="text-align: left;"> Mean, m<code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-PDBA </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_odba">accel_metric_odba</a></code> </td><td style="text-align: left;"> Mean, mg </td>
+PDBA </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_odba">accel_metric_odba</a></code> </td><td style="text-align: left;"> Mean, m<code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-SVMGS </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmg">accel_metric_svmg</a></code> </td><td style="text-align: left;"> Sample sum, g </td>
+SVMGS </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmg">accel_metric_svmg</a></code> </td><td style="text-align: left;"> Sample sum, <code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-SVMGSEC </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmg">accel_metric_svmg</a></code> </td><td style="text-align: left;"> Integral, g seconds </td>
+SVMGSEC </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmg">accel_metric_svmg</a></code> </td><td style="text-align: left;"> Integral, <code class="reqn">g</code> seconds </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-SVMGMEAN </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmg">accel_metric_svmg</a></code> </td><td style="text-align: left;"> Mean, mg </td>
+SVMGMEAN </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmg">accel_metric_svmg</a></code> </td><td style="text-align: left;"> Mean, m<code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-SVMBP </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmbp">accel_metric_svmbp</a></code> </td><td style="text-align: left;"> Mean, mg </td>
+SVMBP </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmbp">accel_metric_svmbp</a></code> </td><td style="text-align: left;"> Mean, m<code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-SVMBP_02_15 </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmbp">accel_metric_svmbp</a></code> </td><td style="text-align: left;"> Mean, mg </td>
+SVMBP_02_15 </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmbp">accel_metric_svmbp</a></code> </td><td style="text-align: left;"> Mean, m<code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-SVMBP_069_10 </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmbp">accel_metric_svmbp</a></code> </td><td style="text-align: left;"> Mean, mg </td>
+SVMBP_069_10 </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_svmbp">accel_metric_svmbp</a></code> </td><td style="text-align: left;"> Mean, m<code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-ROCAM </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_rocam">accel_metric_rocam</a></code> </td><td style="text-align: left;"> Mean change, g </td>
+ROCAM </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_rocam">accel_metric_rocam</a></code> </td><td style="text-align: left;"> Mean change, <code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-AI </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_ai">accel_metric_ai</a></code> </td><td style="text-align: left;"> Sum of 1-s AI, g </td>
+AI </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_ai">accel_metric_ai</a></code> </td><td style="text-align: left;"> Sum of 1-s AI, <code class="reqn">g</code> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
@@ -2021,7 +2027,7 @@ unlink(output_file)             # Remove only this example's temporary output
 <table role = "presentation">
 <tr><td><code id="compute_ai_noise_var_from_static_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 <tr><td><code id="compute_ai_noise_var_from_static_+3A_window_s">window_s</code></td>
 <td>
@@ -2040,7 +2046,7 @@ unlink(output_file)             # Remove only this example's temporary output
 
 <h3>Value</h3>
 
-<p> A list with ai_noise_var (mean per-axis stationary variance, g squared), ai_noise_sd (its square root, g), window_values (per-window variances), n_windows, fs_hz and window_s. Trailing incomplete sample windows are discarded. No finite estimates or fewer than two samples per window raises an error.</p>
+<p> A list with ai_noise_var (mean per-axis stationary variance, <code class="reqn">g</code> squared), ai_noise_sd (its square root, <code class="reqn">g</code>), window_values (per-window variances), n_windows, fs_hz and window_s. Trailing incomplete sample windows are discarded. No finite estimates or fewer than two samples per window raises an error.</p>
 
 
 <h3>Method</h3>
@@ -2134,7 +2140,7 @@ noise[c("ai_noise_var", "ai_noise_sd", "n_windows")]
 <table role = "presentation">
 <tr><td><code id="dm_apply_vm_calibration_tbl_+3A_df">df</code></td>
 <td>
-<p> Acceleration table or parser/clip bundle with POSIXct time and numeric axes in g. Container type and timestamps are preserved.</p>
+<p> Acceleration table or parser/clip bundle with POSIXct time and numeric axes in <code class="reqn">g</code>. Container type and timestamps are preserved.</p>
 </td></tr>
 <tr><td><code id="dm_apply_vm_calibration_tbl_+3A_cal_row">cal_row</code></td>
 <td>
@@ -2284,11 +2290,11 @@ accel_meta(calibrated)$processing$signal_pipeline
 </td></tr>
 <tr><td><code id="dynamic_metrology_report_+3A_test_axis_fsr_g">test_axis_fsr_g</code></td>
 <td>
-<p> A supplied span must be a finite positive scalar; invalid supplied values error rather than falling back to metadata. A valid test span is required for range-normalised outcomes. Axis peak-to-peak spans in g; NULL uses acquisition metadata. Supply 16 for +/-8 g.</p>
+<p> A supplied span must be a finite positive scalar; invalid supplied values error rather than falling back to metadata. A valid test span is required for range-normalised outcomes. Axis peak-to-peak spans in <code class="reqn">g</code>; NULL uses acquisition metadata. Supply 16 for +/-8 <code class="reqn">g</code>.</p>
 </td></tr>
 <tr><td><code id="dynamic_metrology_report_+3A_ref_axis_fsr_g">ref_axis_fsr_g</code></td>
 <td>
-<p> A supplied span must be a finite positive scalar. Missing reference range is retained as unavailable when no valid metadata exists; it is not needed to normalise test-device errors. Axis peak-to-peak spans in g; NULL uses acquisition metadata. Supply 16 for +/-8 g.</p>
+<p> A supplied span must be a finite positive scalar. Missing reference range is retained as unavailable when no valid metadata exists; it is not needed to normalise test-device errors. Axis peak-to-peak spans in <code class="reqn">g</code>; NULL uses acquisition metadata. Supply 16 for +/-8 <code class="reqn">g</code>.</p>
 </td></tr>
 <tr><td><code id="dynamic_metrology_report_+3A_window_s">window_s</code></td>
 <td>
@@ -2356,7 +2362,7 @@ accel_meta(calibrated)$processing$signal_pipeline
 </td></tr>
 <tr><td><code id="dynamic_metrology_report_+3A_comp_plot_ylim">comp_plot_ylim</code></td>
 <td>
-<p> NULL uses the observed composite-trace plotting range; otherwise a numeric lower/upper g pair controls the displayed vertical interval. It does not exclude samples from fitting.</p>
+<p> NULL uses the observed composite-trace plotting range; otherwise a numeric lower/upper <code class="reqn">g</code> pair controls the displayed vertical interval. It does not exclude samples from fitting.</p>
 </td></tr>
 </table>
 
@@ -2368,7 +2374,7 @@ accel_meta(calibrated)$processing$signal_pipeline
 
 <h3>Value</h3>
 
-<p> A list: <code>stages</code> (one row per paired stage), <code>overall</code> (pooled response/composite error), <code>plots</code> (ggplot objects, possibly empty), and <code>meta</code> (ranges, windows, stage names and alignment diagnostics). Slope and scale-factor error are dimensionless; intercept/bias/SD are in g. VM integral non-linearity (retained field <code>linearity_error_vs_reference</code>) and composite error are percentages. Within-stage epoch-mean VM CV (retained field <code>repeatability_error_cv</code>) and other CV/utilisation fields are fractions. Trial-to-trial repeatability requires repeated assessments and separate aggregation.</p>
+<p> A list: <code>stages</code> (one row per paired stage), <code>overall</code> (pooled response/composite error), <code>plots</code> (ggplot objects, possibly empty), and <code>meta</code> (ranges, windows, stage names and alignment diagnostics). Slope and scale-factor error are dimensionless; intercept/bias/SD are in <code class="reqn">g</code>. VM integral non-linearity (retained field <code>linearity_error_vs_reference</code>) and composite error are percentages. Within-stage epoch-mean VM CV (retained field <code>repeatability_error_cv</code>) and other CV/utilisation fields are fractions. Trial-to-trial repeatability requires repeated assessments and separate aggregation.</p>
 
 
 <h3>Implementation</h3>
@@ -2379,7 +2385,7 @@ accel_meta(calibrated)$processing$signal_pipeline
 <h3>Returned stage fields</h3>
 
 
-<p>Let F denote the configured test-axis peak-to-peak span, v the test VM in g, and r the length-matched reference VM. Fields use the existing stage-level calculations.
+<p>Let F denote the configured test-axis peak-to-peak span, v the test VM in <code class="reqn">g</code>, and r the length-matched reference VM. Fields use the existing stage-level calculations.
 </p>
 
 <dl>
@@ -2387,11 +2393,11 @@ accel_meta(calibrated)$processing$signal_pipeline
 </dd>
 <dt>fs_hz_test, fs_hz_ref, n</dt><dd><p>Timestamp-derived sampling frequencies in Hz and the number of test samples.</p>
 </dd>
-<dt>vm_mean, vm_standard_deviation, vm_mean_amplitude_deviation</dt><dd><p>Mean, sample SD and mean absolute deviation from the stage mean of v, all in g.</p>
+<dt>vm_mean, vm_standard_deviation, vm_mean_amplitude_deviation</dt><dd><p>Mean, sample SD and mean absolute deviation from the stage mean of v, all in <code class="reqn">g</code>.</p>
 </dd>
 <dt>vm_coefficient_of_variation</dt><dd><p>Sample SD divided by mean VM, a fraction; undefined for zero mean.</p>
 </dd>
-<dt>signal_power_vm</dt><dd><p>Mean of squared sample VM, in g squared, including its mean component. This is a signal mean square, not physical mechanical power.</p>
+<dt>signal_power_vm</dt><dd><p>Mean of squared sample VM, in <code class="reqn">g</code> squared, including its mean component. This is a signal mean square, not physical mechanical power.</p>
 </dd>
 <dt>dominant_frequency</dt><dd><p>Frequency label in Hz of the maximum retained Fourier magnitude of demeaned stage VM. The retained frequency grid spans zero to half the derived rate across floor(N/2) entries, where N is the finite demeaned series length. This whole-stage diagnostic is separate from five-second pooled-triaxial feature frequency estimates.</p>
 </dd>
@@ -2399,9 +2405,9 @@ accel_meta(calibrated)$processing$signal_pipeline
 </dd>
 <dt>sample_entropy, approximate_entropy</dt><dd><p>Dimensionless SampEn/ApEn of standardised VM with the supplied parameters; NA when disabled, unavailable or unsuccessful.</p>
 </dd>
-<dt>vm_bias_vs_reference</dt><dd><p>Mean signed v minus r, in g; not mean absolute paired error.</p>
+<dt>vm_bias_vs_reference</dt><dd><p>Mean signed v minus r, in <code class="reqn">g</code>; not mean absolute paired error.</p>
 </dd>
-<dt>response_slope, response_intercept, scale_factor_error</dt><dd><p>OLS test-on-reference slope (dimensionless), intercept (g) and slope minus one (fraction).</p>
+<dt>response_slope, response_intercept, scale_factor_error</dt><dd><p>OLS test-on-reference slope (dimensionless), intercept (<code class="reqn">g</code>) and slope minus one (fraction).</p>
 </dd>
 <dt>linearity_error_vs_reference</dt><dd><p>100 times the maximum absolute fitted residual divided by sqrt(3) F, a percentage.</p>
 </dd>
@@ -2429,6 +2435,108 @@ accel_meta(calibrated)$processing$signal_pipeline
 
 <p><code><a href="#topic+metronautica-package">metronautica-package</a></code></p>
 
+<hr><span id='rdfile+feature-comparison'></span>
+<h2 id='feature-comparison'>Compare feature pipelines over one dynamic recording</h2><span id='topic+feature-comparison'></span>
+
+<h3>Description</h3>
+
+<p>Compare epoch summaries from the same decoded recording with common time bounds and explicit processing settings.</p>
+
+
+<h3>Details</h3>
+
+<p>ENMO, mean gravity-subtracted SVM and band-pass SVM are overlaid on a common m<code class="reqn">g</code> axis. MAD uses a separate scale in the same figure because its range is smaller in this recording. Values are not amplitude-normalised. The band-pass feature applies its own 0.69&ndash;10 Hz axis filter; do not prefilter the recording to request it. Five-second epochs use the same start label for these sample-level features. No resampling or additional VM calibration is requested. Shaded intervals indicate the ten six-minute excitation stages; the intervening adjustments remain visible. This is a within-recording comparison, not evidence of device equivalence or behavioural validity.</p>
+
+
+<h3>Value</h3>
+
+<p>The example creates <code>comparison</code>, containing long/wide feature tables and resolved settings, and <code>comparison_plot</code>, a ggplot object. Plot grouping changes only the display; retain the original result and settings for subsequent analysis.</p>
+
+
+<h3>Inputs</h3>
+
+<p> Obtain the LEAP dynamic attachment and catalogue from the canonical WAM sample guide, <a href="https://github.com/miltheo/wam/blob/main/samples/README.md">https://github.com/miltheo/wam/blob/main/samples/README.md</a>, then configure the <code>metronautica.sample_dir</code> option with the local sample directory. This comparison does not require the reference recording.</p>
+
+
+<h3>See Also</h3>
+
+
+<ul>
+<li> <p><code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>
+</p>
+</li>
+<li> <p><code><a href="#topic+accel_metric_enmo">accel_metric_enmo</a></code>
+</p>
+</li>
+<li> <p><code><a href="#topic+accel_metric_mad">accel_metric_mad</a></code>
+</p>
+</li>
+<li> <p><code><a href="#topic+accel_metric_svmg">accel_metric_svmg</a></code>
+</p>
+</li>
+<li> <p><code><a href="#topic+accel_metric_svmbp">accel_metric_svmbp</a></code>
+</p>
+</li></ul>
+
+
+<h3>Examples</h3>
+
+<pre><code class='language-R'>## Not run:
+library(metronautica)
+library(ggplot2)
+
+path &lt;- m_load_sample_data(device = "LEAP", type = "dynamic",
+    include_reference = FALSE)
+info &lt;- attr(path, "sample_info")
+recording &lt;- parse_raw_auto(path, return = "bundle",
+    time_shift_s = info$time_shift_s,
+    full_scale_range_g = info$full_scale_range_g)
+comparison &lt;- compute_accel_summaries(recording,
+    measures = c("ENMO", "SVMGMEAN", "SVMBP_069_10", "MAD"),
+    epoch_s = 5, epoch_anchor = "start", quiet = TRUE)
+comparison$settings$metric_units
+
+plot_data &lt;- comparison$data_long
+main_panel &lt;- "ENMO, mean gravity-subtracted SVM and band-pass SVM"
+plot_data$panel &lt;- factor(ifelse(plot_data$measure == "MAD",
+    "MAD", main_panel), levels = c(main_panel, "MAD"))
+start &lt;- as.POSIXct(info$trial_start_utc, tz = "UTC")
+stages &lt;- data.frame(start = start + (0:9) * 8 * 60,
+    end = start + (0:9) * 8 * 60 + 6 * 60, rpm = seq(50, 500, 50))
+comparison_plot &lt;- ggplot(plot_data, aes(time, value, colour = measure, linetype = measure)) +
+    geom_rect(data = stages, aes(xmin = start, xmax = end,
+        ymin = -Inf, ymax = Inf), inherit.aes = FALSE,
+        fill = "grey92", colour = NA) +
+    geom_line(linewidth = 0.5) +
+    geom_text(data = stages, aes(x = start + 3 * 60, y = Inf,
+        label = paste(rpm, "RPM")), inherit.aes = FALSE,
+        vjust = 1.4, size = 2.7) +
+    facet_wrap(~panel, ncol = 1, scales = "free_y") +
+    scale_colour_manual(values = c(ENMO = "#0072B2", SVMGMEAN = "#D55E00",
+        SVMBP_069_10 = "#009E73", MAD = "#CC79A7"),
+        breaks = c("ENMO", "SVMGMEAN", "SVMBP_069_10", "MAD"),
+        labels = c("ENMO", "Mean gravity-subtracted SVM",
+            "Band-pass SVM (0.69-10 Hz)", "MAD")) +
+    guides(colour = guide_legend(override.aes = list(
+        linetype = c("solid", "22", "solid", "solid")))) +
+    scale_linetype_manual(values = c(ENMO = "solid", SVMGMEAN = "22",
+        SVMBP_069_10 = "solid", MAD = "solid"), guide = "none") +
+    scale_x_datetime(date_labels = "%H:%M", date_breaks = "10 min",
+        timezone = "UTC", expand = expansion(mult = c(0, 0.01))) +
+    scale_y_continuous(expand = expansion(mult = c(0.03, 0.18))) +
+    labs(x = "Time (UTC)", y = expression("Epoch mean (m"*italic(g)*")"),
+        colour = NULL,
+        title = "LEAP: feature pipelines over one dynamic trial",
+        subtitle = paste("Five-second epochs; native decoded signal;",
+            "no additional VM calibration")) +
+    theme_bw(base_size = 11) +
+    theme(legend.position = "bottom", strip.text.y = element_text(angle = 0),
+        strip.background = element_rect(fill = "white"))
+comparison_plot
+
+## End(Not run)
+</code></pre>
+
 <hr><span id='rdfile+filter_accel_tbl'></span>
 <h2 id='filter_accel_tbl'>Filter axes with a compensated Butterworth filter</h2><span id='topic+filter_accel_tbl'></span>
 
@@ -2448,7 +2556,7 @@ accel_meta(calibrated)$processing$signal_pipeline
 <table role = "presentation">
 <tr><td><code id="filter_accel_tbl_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 <tr><td><code id="filter_accel_tbl_+3A_cutoff">cutoff</code></td>
 <td>
@@ -2552,7 +2660,7 @@ stopifnot(nrow(mixed$data_wide) == 8)
 <h3>Common data format and signal diagnostics</h3>
 
 
-<p><code>R/m_parsers.R</code> implements decoding to POSIXct time and triaxial acceleration in g. Stored device coefficients may already be applied during decoding; native does not mean unscaled integer counts. Consult <code><a href="#topic+parse_raw_auto">parse_raw_auto</a></code> for the supported format and validated LEAP scope.
+<p><code>R/m_parsers.R</code> implements decoding to POSIXct time and triaxial acceleration in <code class="reqn">g</code>. Stored device coefficients may already be applied during decoding; native does not mean unscaled integer counts. Consult <code><a href="#topic+parse_raw_auto">parse_raw_auto</a></code> for the supported format and validated LEAP scope.
 </p>
 <p><code>R/m_qc.R</code> implements five post-parse signal diagnostic groups. <code><a href="#topic+qc_accel_tbl">qc_accel_tbl</a></code> explains exact numerators, denominators, sequence eligibility and the near-limit threshold. These are operational screening rules, not a sensor acceptance standard. <code><a href="#topic+attach_qc">attach_qc</a></code> stores the results; <code><a href="#topic+invalidate_qc">invalidate_qc</a></code> removes diagnostics that no longer describe a modified signal.
 </p>
@@ -2561,7 +2669,7 @@ stopifnot(nrow(mixed$data_wide) == 8)
 <h3>Static characterisation</h3>
 
 
-<p><code>R/m_static.R</code> implements static characterisation outcomes. <code><a href="#topic+static_1hz_means">static_1hz_means</a></code> supplies one-second means; <code><a href="#topic+static_drift">static_drift</a></code> fits signed g/h slopes; <code><a href="#topic+static_offset_vm_5min">static_offset_vm_5min</a></code> estimates the specified initial VM offset relative to 1 g. <code><a href="#topic+static_axis_noise_metrics">static_axis_noise_metrics</a></code> separates raw sample SD from the residual SD after linear detrending. The static noise floor is the maximum axis-specific detrended residual SD, not the Activity Index stationary variance.
+<p><code>R/m_static.R</code> implements static characterisation outcomes. <code><a href="#topic+static_1hz_means">static_1hz_means</a></code> supplies one-second means; <code><a href="#topic+static_drift">static_drift</a></code> fits signed <code class="reqn">g</code>/h slopes; <code><a href="#topic+static_offset_vm_5min">static_offset_vm_5min</a></code> estimates the specified initial VM offset relative to 1 <code class="reqn">g</code>. <code><a href="#topic+static_axis_noise_metrics">static_axis_noise_metrics</a></code> separates raw sample SD from the residual SD after linear detrending. The static noise floor is the maximum axis-specific detrended residual SD, not the Activity Index stationary variance.
 </p>
 <p><code><a href="#topic+static_allan">static_allan</a></code> uses <code><a href="#topic+allan_nonoverlap">allan_nonoverlap</a></code> for non-overlapping cluster means. Its returned axis minima and evaluated averaging times are separate from the maximum across individual axis minima. Supplying a stationary window and assessing environmental stability remain experimental responsibilities.
 </p>
@@ -2583,7 +2691,7 @@ stopifnot(nrow(mixed$data_wide) == 8)
 
 <p><code>R/m_accel_summary_suite.R</code> implements time-domain feature definitions and configurable alternatives. The exact operation and unit are given in each <code>accel_metric_*</code> help page. <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code> combines requested features and returns resolved pipeline settings.
 </p>
-<p>Epoch duration, sampling treatment, axis filtering, noise correction, calibration state and aggregation are part of a feature pipeline. ENMO truncates negative VM-minus-1-g values per sample; SVMgs variants use absolute differences. MAD is centred within the epoch. ROCAM is a sample-to-sample acceleration-change outcome with no elapsed-time division. The package does not infer physical activity, sleep, energy expenditure or behavioural validity from these features.
+<p>Epoch duration, sampling treatment, axis filtering, noise correction, calibration state and aggregation are part of a feature pipeline. ENMO truncates negative VM-minus-1-<code class="reqn">g</code> values per sample; SVMgs variants use absolute differences. MAD is centred within the epoch. ROCAM is a sample-to-sample acceleration-change outcome with no elapsed-time division. The package does not infer physical activity, sleep, energy expenditure or behavioural validity from these features. See <code><a href="#topic+feature-comparison">feature-comparison</a></code> for a combined plot over one dynamic recording.
 </p>
 
 
@@ -2646,7 +2754,7 @@ stopifnot(nrow(mixed$data_wide) == 8)
 <table role = "presentation">
 <tr><td><code id="invalidate_qc_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 </table>
 
@@ -2684,15 +2792,15 @@ stopifnot(nrow(mixed$data_wide) == 8)
 <table role = "presentation">
 <tr><td><code id="m_dynamic_response_+3A_test">test</code></td>
 <td>
-<p> Test-device vector magnitude in g, or an acceleration table/bundle converted to vector magnitude.</p>
+<p> Test-device vector magnitude in <code class="reqn">g</code>, or an acceleration table/bundle converted to vector magnitude.</p>
 </td></tr>
 <tr><td><code id="m_dynamic_response_+3A_reference">reference</code></td>
 <td>
-<p> Reference vector magnitude in g, or an acceleration table/bundle. Nearest evenly spaced reference indices match the test length.</p>
+<p> Reference vector magnitude in <code class="reqn">g</code>, or an acceleration table/bundle. Nearest evenly spaced reference indices match the test length.</p>
 </td></tr>
 <tr><td><code id="m_dynamic_response_+3A_axis_fsr_g">axis_fsr_g</code></td>
 <td>
-<p> Required finite positive scalar. Configured single-axis peak-to-peak span in g. The VM normalising span is sqrt(3) times this value.</p>
+<p> Required finite positive scalar. Configured single-axis peak-to-peak span in <code class="reqn">g</code>. The VM normalising span is sqrt(3) times this value.</p>
 </td></tr>
 </table>
 
@@ -2704,7 +2812,7 @@ stopifnot(nrow(mixed$data_wide) == 8)
 
 <h3>Value</h3>
 
-<p> A list with vm_bias_vs_reference (signed mean difference, g), response_slope (dimensionless), response_intercept (g), scale_factor_error (slope minus one), linearity_error_vs_reference and composite_error (percentages using the full and half normalising spans respectively), maximum_absolute_residual_g, and predicted_vm_g (fitted test VM values in g).</p>
+<p> A list with vm_bias_vs_reference (signed mean difference, <code class="reqn">g</code>), response_slope (dimensionless), response_intercept (<code class="reqn">g</code>), scale_factor_error (slope minus one), linearity_error_vs_reference and composite_error (percentages using the full and half normalising spans respectively), maximum_absolute_residual_g, and predicted_vm_g (fitted test VM values in <code class="reqn">g</code>).</p>
 
 
 <h3>Implementation</h3>
@@ -2780,7 +2888,7 @@ response[c("response_slope", "response_intercept", "composite_error")]
 
 <p> Stationary and orbital-shaker recording examples are distributed separately through WAM (<a href="https://github.com/miltheo/wam">https://github.com/miltheo/wam</a>), not installed with this package. For local source checkouts, point sample_dir at WAM's samples directory. After publication, configure base_url with the fixed sample-data release-asset directory. The packaged catalogue fixes filenames and SHA-256 checksums. Installation, package loading and ordinary calculations do not require WAM or network access. If a sample cannot be obtained, an informative error explains local and remote configuration. Existing identical restored files are reused offline; existing different files are protected unless overwrite is TRUE. Downloads and decompression use temporary files and validation precedes replacement.
 </p>
-<p>Static files cover the analysed 24-hour stationary window, 15 August 2025 20:30 UTC to 16 August 2025 20:30 UTC. Dynamic files retain the complete first primary trial, 19 August 2025 13:18 to 14:36 UTC: ten six-minute stages from 50 to 500 RPM, including intervening two-minute adjustments. Files preserve native records, calibration coefficients and timestamps; boundary padding is retained where needed. Gzip is storage compression only. The SENS example and paired HBK reference each require their own documented +3600-second shift. This function does not parse, filter or calibrate data.</p>
+<p>Recording intervals, native-format boundary handling, provenance and distribution terms are maintained in the WAM sample guide and catalogue: <a href="https://github.com/miltheo/wam/blob/main/samples/README.md">https://github.com/miltheo/wam/blob/main/samples/README.md</a>. Apply each returned file's own timestamp shift and acquisition settings when parsing. This function does not parse, filter or calibrate data.</p>
 
 
 <h3>Value</h3>
@@ -2826,31 +2934,31 @@ accel_meta(x)$processing$qc$ruleset
 <h3>Details</h3>
 
 
-<p>Vector magnitude is <code class="reqn">v=\sqrt{a_x^2+a_y^2+a_z^2}</code> in g.
+<p>Vector magnitude is <code class="reqn">v=\sqrt{a_x^2+a_y^2+a_z^2}</code> in <code class="reqn">g</code>.
 </p>
 
 <dl>
-<dt>Signed 1-g VM offset bias</dt><dd><p> Initial one-second mean VM minus 1 g, averaged over elapsed time up to and including five minutes. This is a VM offset relative to gravity, not a complete axis calibration.</p>
+<dt>Signed 1-<code class="reqn">g</code> VM offset bias</dt><dd><p> Initial one-second mean VM minus 1 <code class="reqn">g</code>, averaged over elapsed time up to and including five minutes. This is a VM offset relative to gravity, not a complete axis calibration.</p>
 </dd>
-<dt>Signed VM drift rate</dt><dd><p> Ordinary least-squares slope against elapsed hours, g/h. Extrapolation beyond the stationary recording requires an explicitly stated model.</p>
+<dt>Signed VM drift rate</dt><dd><p> Ordinary least-squares slope against elapsed hours, <code class="reqn">g</code>/h. Extrapolation beyond the stationary recording requires an explicitly stated model.</p>
 </dd>
-<dt>Static noise floor</dt><dd><p> Maximum axis-specific residual SD after linear detrending over the selected stationary window; reporting in mg requires a factor of 1000. The first-five-minute maximum-axis SD is raw, not detrended. Raw sample SD uses denominator n-1; linearly detrended residual SD uses n-2. Static CV is 100 times SD divided by absolute mean, with a near-zero guard.</p>
+<dt>Static noise floor</dt><dd><p> Maximum axis-specific residual SD after linear detrending over the selected stationary window; reporting in m<code class="reqn">g</code> requires a factor of 1000. The first-five-minute maximum-axis SD is raw, not detrended. Raw sample SD uses denominator n-1; linearly detrended residual SD uses n-2. Static CV is 100 times SD divided by absolute mean, with a near-zero guard.</p>
 </dd>
-<dt>Allan deviation</dt><dd><p> For non-overlapping cluster means <code class="reqn">\bar{x}_j</code>, <code class="reqn">\sigma_A=\sqrt{\operatorname{mean}[(\bar{x}_{j+1}-\bar{x}_j)^2]/2}</code>. Cluster duration is in seconds and deviation is in g.</p>
+<dt>Allan deviation</dt><dd><p> For non-overlapping cluster means <code class="reqn">\bar{x}_j</code>, <code class="reqn">\sigma_A=\sqrt{\operatorname{mean}[(\bar{x}_{j+1}-\bar{x}_j)^2]/2}</code>. Cluster duration is in seconds and deviation is in <code class="reqn">g</code>.</p>
 </dd>
-<dt>Dynamic response and signed VM bias</dt><dd><p> OLS of test VM on length-matched reference VM. Slope is dimensionless; intercept and mean signed test-minus-reference bias are in g. Scale-factor error is slope minus one; multiply it by 100 for percentage reporting. Absolute VM bias is the absolute value of the stage-mean signed difference, not the mean absolute paired difference.</p>
+<dt>Dynamic response and signed VM bias</dt><dd><p> OLS of test VM on length-matched reference VM. Slope is dimensionless; intercept and mean signed test-minus-reference bias are in <code class="reqn">g</code>. Scale-factor error is slope minus one; multiply it by 100 for percentage reporting. Absolute VM bias is the absolute value of the stage-mean signed difference, not the mean absolute paired difference.</p>
 </dd>
-<dt>VM integral non-linearity</dt><dd><p> 100 times the maximum absolute fitted residual divided by <code class="reqn">\sqrt{3}F</code>, where F is the test-axis peak-to-peak span in g.</p>
+<dt>VM integral non-linearity</dt><dd><p> 100 times the maximum absolute fitted residual divided by <code class="reqn">\sqrt{3}F</code>, where F is the test-axis peak-to-peak span in <code class="reqn">g</code>.</p>
 </dd>
 <dt>Trial-level composite error</dt><dd><p> 100 times the maximum absolute residual from the pooled response fit divided by <code class="reqn">\sqrt{3}F/2</code>. This denominator differs from stage VM integral non-linearity by a factor of two. The implemented normalising span is not the nonnegative VM output range.</p>
 </dd>
 <dt>Within-stage epoch-mean VM CV</dt><dd><p> SD of within-stage epoch mean VM divided by their mean. The retained field <code>repeatability_error_cv</code> is a fraction. It is distinct from trial-to-trial VM repeatability CV, defined as 100 times SD divided by mean of stage-mean VM across repeated trials for the same unit, stage and pipeline.</p>
 </dd>
-<dt>Maximum-axis Allan minimum</dt><dd><p> Maximum across axes of their individual minimum Allan deviations over the evaluated averaging times; reporting in micro-g requires a factor of one million. This is distinct from the axis-specific curves.</p>
+<dt>Maximum-axis Allan minimum</dt><dd><p> Maximum across axes of their individual minimum Allan deviations over the evaluated averaging times; reporting in micro-<code class="reqn">g</code> requires a factor of one million. This is distinct from the axis-specific curves.</p>
 </dd>
 <dt>ENMO</dt><dd><p> Epoch mean of <code class="reqn">\max(v-1,0)</code>. Negative differences are truncated to zero per sample before averaging.</p>
 </dd>
-<dt>MAD</dt><dd><p> Epoch mean of <code class="reqn">|v-\bar{v}|</code>, with <code class="reqn">\bar{v}</code> defined within the epoch. ENMO and MAD are multiplied by 1000 for default mg output.</p>
+<dt>MAD</dt><dd><p> Epoch mean of <code class="reqn">|v-\bar{v}|</code>, with <code class="reqn">\bar{v}</code> defined within the epoch. ENMO and MAD are multiplied by 1000 for default m<code class="reqn">g</code> output.</p>
 </dd>
 </dl>
 
@@ -2886,7 +2994,7 @@ accel_meta(x)$processing$qc$ruleset
 
 <h3>Details</h3>
 
-<p> The examples contain one device each of LEAP, AX3, SENS or GENEActiv. Static recordings cover the analysed 24 hours. Dynamic recordings contain the continuous 78-minute first primary trial: ten six-minute stages at 50&ndash;500 RPM and nine two-minute adjustments. These files contain selected recording intervals rather than complete original downloads. Original measurement packets or CSV rows and stored coefficients are retained, with boundary padding and necessary container bookkeeping recorded in provenance. The recordings contain stationary conditions and controlled orbital-shaker excitation; they do not validate behavioural prediction.</p>
+<p> Recording contents, selection boundaries, provenance and distribution terms are documented in the canonical WAM sample guide: <a href="https://github.com/miltheo/wam/blob/main/samples/README.md">https://github.com/miltheo/wam/blob/main/samples/README.md</a>. The examples below demonstrate the loader and direct processing functions; they do not establish between-device equivalence or behavioural validity.</p>
 
 
 <h3>Input and processing</h3>
@@ -2901,7 +3009,7 @@ accel_meta(x)$processing$qc$ruleset
 
 <h3>Sample distribution</h3>
 
-<p> Native payloads are distributed as companion WAM release attachments outside Git history. For offline use, place attachments alongside the catalogue in WAM samples; provenance is documented there. These files are outside the installed R package. Configure <code>options(metronautica.sample_dir = path)</code> for local samples, or <code>metronautica.sample_base_url</code> with the fixed HTTPS release-asset directory after publication. Existing identical restored files are reused offline. No data are downloaded during package installation or loading.</p>
+<p> Distribution and provenance are specified by the canonical WAM sample guide linked above. Configure <code>options(metronautica.sample_dir = path)</code> for local samples, or <code>metronautica.sample_base_url</code> with the fixed HTTPS release-asset directory after publication. Existing identical restored files are reused offline. No data are downloaded during package installation or loading.</p>
 
 
 <h3>See Also</h3>
@@ -2988,7 +3096,7 @@ if (requireNamespace("plotly", quietly = TRUE)) {
 
 <h3>Description</h3>
 
-<p> Detect the device format, decode acceleration in g and retain timestamp, parser and calibration provenance.</p>
+<p> Detect the device format, decode acceleration in <code class="reqn">g</code> and retain timestamp, parser and calibration provenance.</p>
 
 
 <h3>Usage</h3>
@@ -3061,11 +3169,11 @@ if (requireNamespace("plotly", quietly = TRUE)) {
 
 
 <dl>
-<dt>full_scale_range_g</dt><dd><p>Configured symmetric peak-to-peak axis span in g; 16 means -8 to +8 g. Use file metadata when available or supply the documented acquisition setting. It affects range diagnostics and later normalisation, not already decoded CSV acceleration values. Observed minimum/maximum values are not a substitute for sensor limits.</p>
+<dt>full_scale_range_g</dt><dd><p>Configured symmetric peak-to-peak axis span in <code class="reqn">g</code>; 16 means -8 to +8 <code class="reqn">g</code>. Use file metadata when available or supply the documented acquisition setting. It affects range diagnostics and later normalisation, not already decoded CSV acceleration values. Observed minimum/maximum values are not a substitute for sensor limits.</p>
 </dd>
 <dt>GENEActiv calibrate</dt><dd><p>Logical, default TRUE. Forwarded to GENEAread::read.bin to control upstream coefficient application. This is device-file decoding/calibration, not the within-trial dynamic VM mapping. The returned provenance records whether upstream calibration was requested. mmap_load controls memory-mapped loading, default enabled on 64-bit R, without adding an analysis filter.</p>
 </dd>
-<dt>SENS scale_g_per_lsb</dt><dd><p>Acceleration scale converting signed axis counts to g; default 0.0078125 from the supported vendor binary specification. A different value requires device-format justification and changes decoded acceleration. No per-file offset or temperature correction is inferred.</p>
+<dt>SENS scale_g_per_lsb</dt><dd><p>Acceleration scale converting signed axis counts to <code class="reqn">g</code>; default 0.0078125 from the supported vendor binary specification. A different value requires device-format justification and changes decoded acceleration. No per-file offset or temperature correction is inferred.</p>
 </dd>
 <dt>GT3X precision</dt><dd><p>Default <code>"native"</code> preserves original integer-sample precision through file-scale conversion for supported modern log.bin containers, using the validated read.gt3x 1.2.0 interface. <code>"legacy_3dp"</code> selects the earlier upstream scaled/rounded output. Precision and native recording start are recorded in metadata. Native mode does not impute gaps or extract light; choose the explicit legacy mode for those upstream options. Older activity.bin layouts require legacy mode. No lost precision is inferred from CSV or rounded input.</p>
 </dd>
@@ -3103,7 +3211,7 @@ if (requireNamespace("plotly", quietly = TRUE)) {
 <table role = "presentation">
 <tr><td><code id="plot_accel_clip_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 <tr><td><code id="plot_accel_clip_+3A_include_vm">include_vm</code></td>
 <td>
@@ -3111,7 +3219,7 @@ if (requireNamespace("plotly", quietly = TRUE)) {
 </td></tr>
 <tr><td><code id="plot_accel_clip_+3A_demean_vm">demean_vm</code></td>
 <td>
-<p> For the optional VM trace, plot max(VM minus 1 g, 0) instead of VM.</p>
+<p> For the optional VM trace, plot max(VM minus 1 <code class="reqn">g</code>, 0) instead of VM.</p>
 </td></tr>
 <tr><td><code id="plot_accel_clip_+3A_title">title</code></td>
 <td>
@@ -3161,7 +3269,7 @@ if (requireNamespace("plotly", quietly = TRUE)) {
 </td></tr>
 <tr><td><code id="plot_processed_metric_+3A_unit">unit</code></td>
 <td>
-<p> Unit label displayed on the processed plot; does not rescale values. NULL uses result$settings$metric_units. Supply a label explicitly for a bare data_wide table or older outputs without this metadata; no mg unit is assumed.</p>
+<p> Unit label displayed on the processed plot; does not rescale values. NULL uses result$settings$metric_units. Supply a label explicitly for a bare data_wide table or older outputs without this metadata; no m<code class="reqn">g</code> unit is assumed.</p>
 </td></tr>
 <tr><td><code id="plot_processed_metric_+3A_title">title</code></td>
 <td>
@@ -3203,7 +3311,7 @@ if (requireNamespace("plotly", quietly = TRUE)) {
 <table role = "presentation">
 <tr><td><code id="plot_static_allan_+3A_allan_df">allan_df</code></td>
 <td>
-<p> Allan-deviation table with axis, tau and adev columns: axis label, evaluated averaging time in seconds, and deviation in g. Obtain it with static_allan.</p>
+<p> Allan-deviation table with axis, tau and adev columns: axis label, evaluated averaging time in seconds, and deviation in <code class="reqn">g</code>. Obtain it with static_allan.</p>
 </td></tr>
 <tr><td><code id="plot_static_allan_+3A_title_prefix">title_prefix</code></td>
 <td>
@@ -3296,7 +3404,7 @@ if (requireNamespace("plotly", quietly = TRUE)) {
 <table role = "presentation">
 <tr><td><code id="qc_accel_tbl_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. For this diagnostic function the table must have exactly time, ax_g, ay_g and az_g in that order. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. For this diagnostic function the table must have exactly time, ax_g, ay_g and az_g in that order. No samples are repaired by input conversion.</p>
 </td></tr>
 </table>
 
@@ -3371,14 +3479,14 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 <table role = "presentation">
 <tr><td><code id="static_1hz_means_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 </table>
 
 
 <h3>Value</h3>
 
-<p> A tibble with sec (UTC second-bin start), ax_mean, ay_mean, az_mean and vm_mean (one-second means in g), and elapsed_h (hours since the first populated bin).</p>
+<p> A tibble with sec (UTC second-bin start), ax_mean, ay_mean, az_mean and vm_mean (one-second means in <code class="reqn">g</code>), and elapsed_h (hours since the first populated bin).</p>
 
 
 <h3>Method</h3>
@@ -3414,14 +3522,14 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 <table role = "presentation">
 <tr><td><code id="static_allan_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 </table>
 
 
 <h3>Value</h3>
 
-<p> A tibble containing tau, adev in g and axis identifiers.</p>
+<p> A tibble containing tau, adev in <code class="reqn">g</code> and axis identifiers.</p>
 
 
 <h3>Method</h3>
@@ -3457,14 +3565,14 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 <table role = "presentation">
 <tr><td><code id="static_allan_minima_wide_+3A_allan_df">allan_df</code></td>
 <td>
-<p> Allan-deviation table with axis, tau and adev columns: axis label, evaluated averaging time in seconds, and deviation in g. Obtain it with static_allan.</p>
+<p> Allan-deviation table with axis, tau and adev columns: axis label, evaluated averaging time in seconds, and deviation in <code class="reqn">g</code>. Obtain it with static_allan.</p>
 </td></tr>
 </table>
 
 
 <h3>Value</h3>
 
-<p> A one-row tibble with x_allan_min_g, y_allan_min_g and z_allan_min_g (axis minima in g), plus x_cluster_time_s, y_cluster_time_s and z_cluster_time_s (the corresponding evaluated averaging times in seconds).</p>
+<p> A one-row tibble with x_allan_min_g, y_allan_min_g and z_allan_min_g (axis minima in <code class="reqn">g</code>), plus x_cluster_time_s, y_cluster_time_s and z_cluster_time_s (the corresponding evaluated averaging times in seconds).</p>
 
 
 <h3>Method</h3>
@@ -3500,18 +3608,18 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 <table role = "presentation">
 <tr><td><code id="static_axis_noise_metrics_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 <tr><td><code id="static_axis_noise_metrics_+3A_cv_min_abs_mean_g">cv_min_abs_mean_g</code></td>
 <td>
-<p> Absolute mean-acceleration threshold in g below which a coefficient of variation is returned as NA. Default 0.005 g avoids unstable division for axes close to zero mean.</p>
+<p> Absolute mean-acceleration threshold in <code class="reqn">g</code> below which a coefficient of variation is returned as NA. Default 0.005 <code class="reqn">g</code> avoids unstable division for axes close to zero mean.</p>
 </td></tr>
 </table>
 
 
 <h3>Value</h3>
 
-<p> One-row tibble with raw and linearly detrended sample SDs, first-five-minute raw SDs, CVs, ranges and maximum-/median-axis summaries. Acceleration fields use g unless their name explicitly specifies mg; CV fields are percentages.</p>
+<p> One-row tibble with raw and linearly detrended sample SDs, first-five-minute raw SDs, CVs, ranges and maximum-/median-axis summaries. Acceleration fields use <code class="reqn">g</code> unless their name explicitly specifies m<code class="reqn">g</code>; CV fields are percentages.</p>
 
 
 <h3>Implementation</h3>
@@ -3526,7 +3634,7 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 </p>
 <p><code>max_axis_sd_g</code> and <code>median_axis_sd_g</code> summarise raw X/Y/Z SDs; <code>max_axis_noise_sd_g</code> and <code>median_axis_noise_sd_g</code> summarise detrended X/Y/Z SDs. Their maximum-axis identifiers end in <code>_axis</code>; analogous <code>sd_5min</code> fields use the initial raw window. <code>static_n_samples</code> counts supplied rows.
 </p>
-<p><code>static_noise_floor_mg</code> is 1000 times maximum-axis detrended SD. The retained <code>static_noise_floor_5min_mg</code> field is instead 1000 times initial raw maximum-axis SD; it is not detrended. <code>static_raw_max_axis_sd_mg</code> is the full-window raw maximum-axis SD in mg. <code>vm_sd_mg</code>, <code>vm_noise_sd_mg</code> and <code>vm_sd_5min_mg</code> give VM raw, detrended and initial raw SDs in mg; <code>vm_noise_cv_percent</code> is detrended VM CV. These operational outcomes do not independently establish stationarity.
+<p><code>static_noise_floor_mg</code> is 1000 times maximum-axis detrended SD. The retained <code>static_noise_floor_5min_mg</code> field is instead 1000 times initial raw maximum-axis SD; it is not detrended. <code>static_raw_max_axis_sd_mg</code> is the full-window raw maximum-axis SD in m<code class="reqn">g</code>. <code>vm_sd_mg</code>, <code>vm_noise_sd_mg</code> and <code>vm_sd_5min_mg</code> give VM raw, detrended and initial raw SDs in m<code class="reqn">g</code>; <code>vm_noise_cv_percent</code> is detrended VM CV. These operational outcomes do not independently establish stationarity.
 </p>
 
 
@@ -3553,7 +3661,7 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 <table role = "presentation">
 <tr><td><code id="static_clip_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 <tr><td><code id="static_clip_+3A_start_utc">start_utc</code></td>
 <td>
@@ -3613,12 +3721,12 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 
 <h3>Value</h3>
 
-<p>A list with <code>vm_drift_g_per_h</code>, <code>x_drift_g_per_h</code>, <code>y_drift_g_per_h</code> and <code>z_drift_g_per_h</code>: signed slopes in g/h. <code>fit_vm</code> is the fitted VM <code>lm</code> object. Fitted axis-model objects are not returned.</p>
+<p>A list with <code>vm_drift_g_per_h</code>, <code>x_drift_g_per_h</code>, <code>y_drift_g_per_h</code> and <code>z_drift_g_per_h</code>: signed slopes in <code class="reqn">g</code>/h. <code>fit_vm</code> is the fitted VM <code>lm</code> object. Fitted axis-model objects are not returned.</p>
 
 
 <h3>Method</h3>
 
-<p> Fit separate ordinary least-squares models of one-second VM and axis means on elapsed_h. Return the signed slopes in g/h and the fitted VM model. Selection of a stationary interval is the caller's responsibility; fitting a slope does not establish physical sensor drift in uncontrolled movement.</p>
+<p> Fit separate ordinary least-squares models of one-second VM and axis means on elapsed_h. Return the signed slopes in <code class="reqn">g</code>/h and the fitted VM model. Selection of a stationary interval is the caller's responsibility; fitting a slope does not establish physical sensor drift in uncontrolled movement.</p>
 
 
 <h3>Implementation</h3>
@@ -3653,7 +3761,7 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 <table role = "presentation">
 <tr><td><code id="static_metrology_from_tbl_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 <tr><td><code id="static_metrology_from_tbl_+3A_instrument">instrument</code></td>
 <td>
@@ -3708,7 +3816,7 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 
 <h3>Details</h3>
 
-<p> Offset is the mean one-second vector magnitude over <code>elapsed_h &lt;= 5/60</code>, minus 1 g. Drift is the least-squares slope of one-second means against elapsed hours, in g/h. Static noise floor is the maximum axis-specific residual SD after linear detrending over the selected window, reported in mg. The first-five-minute maximum-axis SD is raw, not detrended. Raw SD uses <code class="reqn">n-1</code>; linearly detrended residual SD uses <code class="reqn">n-2</code>. The stationary coefficient of variation is a percentage with a near-zero mean guard. Allan deviation uses non-overlapping cluster means. The maximum-axis Allan minimum is derived as the maximum of the three individual axis minima over evaluated averaging times. Full definitions are in <code><a href="#topic+measurement-definitions">measurement-definitions</a></code>. The input window must be stationary; the function does not establish that condition or infer a sensor calibration.</p>
+<p> Offset is the mean one-second vector magnitude over <code>elapsed_h &lt;= 5/60</code>, minus 1 <code class="reqn">g</code>. Drift is the least-squares slope of one-second means against elapsed hours, in <code class="reqn">g</code>/h. Static noise floor is the maximum axis-specific residual SD after linear detrending over the selected window, reported in m<code class="reqn">g</code>. The first-five-minute maximum-axis SD is raw, not detrended. Raw SD uses <code class="reqn">n-1</code>; linearly detrended residual SD uses <code class="reqn">n-2</code>. The stationary coefficient of variation is a percentage with a near-zero mean guard. Allan deviation uses non-overlapping cluster means. The maximum-axis Allan minimum is derived as the maximum of the three individual axis minima over evaluated averaging times. Full definitions are in <code><a href="#topic+measurement-definitions">measurement-definitions</a></code>. The input window must be stationary; the function does not establish that condition or infer a sensor calibration.</p>
 
 
 <h3>Value</h3>
@@ -3755,7 +3863,7 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 <table role = "presentation">
 <tr><td><code id="static_noise_summary_from_tbl_+3A_x">x</code></td>
 <td>
-<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
+<p> Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in <code class="reqn">g</code>, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.</p>
 </td></tr>
 <tr><td><code id="static_noise_summary_from_tbl_+3A_instrument">instrument</code></td>
 <td>
@@ -3826,11 +3934,11 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 <p><code><a href="#topic+metronautica-package">metronautica-package</a></code></p>
 
 <hr><span id='rdfile+static_offset_vm_5min'></span>
-<h2 id='static_offset_vm_5min'>Estimate signed one-g vector-magnitude offset bias</h2><span id='topic+static_offset_vm_5min'></span>
+<h2 id='static_offset_vm_5min'>Estimate signed one-<code class="reqn">g</code> vector-magnitude offset bias</h2><span id='topic+static_offset_vm_5min'></span>
 
 <h3>Description</h3>
 
-<p> Estimate signed one-g vector-magnitude offset bias.</p>
+<p> Estimate signed one-<code class="reqn">g</code> vector-magnitude offset bias.</p>
 
 
 <h3>Usage</h3>
@@ -3851,12 +3959,12 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 
 <h3>Value</h3>
 
-<p> Signed initial-window VM offset in g relative to 1 g.</p>
+<p> Signed initial-window VM offset in <code class="reqn">g</code> relative to 1 <code class="reqn">g</code>.</p>
 
 
 <h3>Method</h3>
 
-<p> Select one-second bins satisfying elapsed_h &lt;= 5/60, average vm_mean and subtract 1 g. The inclusive elapsed-bin rule is retained exactly. This measures VM offset relative to gravity, not an axis-specific multi-orientation calibration.</p>
+<p> Select one-second bins satisfying elapsed_h &lt;= 5/60, average vm_mean and subtract 1 <code class="reqn">g</code>. The inclusive elapsed-bin rule is retained exactly. This measures VM offset relative to gravity, not an axis-specific multi-orientation calibration.</p>
 
 
 <h3>Implementation</h3>

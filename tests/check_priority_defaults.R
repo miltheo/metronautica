@@ -50,10 +50,10 @@ local({
         }
         a<-plotly::plotly_build(plot_processed_metric(values,'VM'))
         b<-plotly::plotly_build(plot_processed_metric(values,'MAD'))
-        stopifnot(axis_title(a)=='VM (g)',axis_title(b)=='MAD (mg)',
+        stopifnot(axis_title(a)=='VM (<i>g</i>)',axis_title(b)=='MAD (m<i>g</i>)',
             fails(plot_processed_metric(values$data_wide,'VM')))
         explicit<-plotly::plotly_build(plot_processed_metric(values$data_wide,'VM',unit='g'))
-        stopifnot(axis_title(explicit)=='VM (g)')
+        stopifnot(axis_title(explicit)=='VM (<i>g</i>)')
     }
     cat('Explicit schedules/durations, static coverage, strict Nyquist/range and plot-unit checks passed.\n')
 })

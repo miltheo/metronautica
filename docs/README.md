@@ -32,7 +32,7 @@ Rscript tools/render_examples.R "path/to/wam/samples"
 ```
 
 This explicitly processes the 24-hour static sample and full ten-stage dynamic
-trial, writing two PNG previews under `docs/assets/examples/`. The catalogue and
+trial, writing static, dynamic and combined-feature PNG previews under `docs/assets/examples/`. The catalogue and
 compressed attachments must be available locally. Then rebuild the HTML.
 Run `Rscript tools/validate.R` from the repository root for the package checks.
 

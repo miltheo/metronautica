@@ -1,6 +1,6 @@
 # Getting started
 
-[Workflow](../README.md#processing-workflow) · [Function reference](reference.html) · [PDF](metronautica-reference.pdf)
+[Workflow](../README.md#processing-workflow) &middot; [Function reference](reference.html) &middot; [PDF](metronautica-reference.pdf)
 
 Load the installed package with `library(metronautica)`. Individual scripts do not
 need to be sourced. Start offline, then substitute a native recording.
@@ -32,7 +32,7 @@ stopifnot(nrow(features$data_wide) == 4)
 ```
 <!-- EXAMPLE:offline:end -->
 
-The result contains four five-second ENMO/MAD epochs in mg. `data_long` retains
+The result contains four five-second ENMO/MAD epochs in m*g*. `data_long` retains
 feature-specific timestamps; `data_wide` joins exact timestamp labels. Keep
 `settings` with the values. The complete installed example also demonstrates
 mixed-feature timestamp conventions:
@@ -157,6 +157,7 @@ calibration is applied. Index-based pairing is not timestamp correction.
 
 ## Next steps
 
+- [Combined feature comparison over one dynamic trial](REAL_DATA_EXAMPLES.md#feature-comparison).
 - [Feature settings and output interpretation](REAL_DATA_EXAMPLES.md#feature-settings).
 - [Calibration and independent reassessment](REAL_DATA_EXAMPLES.md#calibration).
 - [Activity-count validation](ACTIGRAPH_COUNTS.md).

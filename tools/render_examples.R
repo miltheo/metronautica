@@ -30,3 +30,17 @@ save_pair(e$static_result$drift_plot + ggplot2::labs(title = "LEAP: VM drift"),
 save_pair(e$dynamic_result$plots$vm_mean_vs_rpm, e$dynamic_result$plots$linearity_vs_rpm,
     file.path(output, "dynamic-characterisation.png"))
 cat("Rendered full 24-hour static and ten-stage dynamic examples for LEAP.\n")
+
+# The comparison guide uses the same maintained help example as the HTML guide.
+comparison_code <- tempfile(fileext = ".R")
+tools::Rd2ex(tools::parse_Rd(file.path(root, "man/feature-comparison.Rd")),
+    out = comparison_code, commentDontrun = FALSE)
+local({
+    before <- setwd(tempdir())
+    on.exit(setwd(before), add = TRUE)
+    sys.source(comparison_code, envir = e)
+})
+unlink(comparison_code)
+ggplot2::ggsave(file.path(output, "feature-comparison.png"), e$comparison_plot,
+    width = 12, height = 7, dpi = 180, bg = "white")
+cat("Rendered combined feature comparison over the same ten-stage trial.\n")

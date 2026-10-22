@@ -6,7 +6,7 @@
 allan_nonoverlap(x, fs_hz, tau_s, min_M = 4L)
 }
 \arguments{
-\item{x}{\if{latex}{\out{\sloppy}} Numeric one-axis acceleration sequence in g, ordered at the supplied sampling frequency. It is not an acceleration table or parser bundle.}
+\item{x}{\if{latex}{\out{\sloppy}} Numeric one-axis acceleration sequence in \eqn{g}, ordered at the supplied sampling frequency. It is not an acceleration table or parser bundle.}
 \item{fs_hz}{\if{latex}{\out{\sloppy}} Sampling frequency in Hz. Used to convert durations to sample windows or sums to time integrals. Supply one finite positive scalar. A NULL estimate is available only where shown in Usage.}
 \item{tau_s}{\if{latex}{\out{\sloppy}} Requested Allan averaging times in seconds. Each is rounded to an integer number of samples; duplicate sample counts are removed and unsupported long windows are omitted.}
 \item{min_M}{\if{latex}{\out{\sloppy}} Minimum number of non-overlapping clusters required at a candidate averaging time. Default four; smaller supported averaging times provide more adjacent-cluster differences.}

@@ -16,7 +16,7 @@ accel_metric_odba(tbl, epoch_s, fs_hz, anchor = "center", output =
     missing_data_policy = "mean_na_rm")
 }
 \arguments{
-\item{tbl}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in g, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.}
+\item{tbl}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in \eqn{g}, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.}
 \item{epoch_s}{\if{latex}{\out{\sloppy}} Positive output-epoch duration in seconds. Samples are grouped by elapsed time from the first sample; the final partial epoch is retained. Different epoch lengths define different processing pipelines.}
 \item{fs_hz}{\if{latex}{\out{\sloppy}} Sampling frequency in Hz. Used to convert durations to sample windows or sums to time integrals. Supply one finite positive scalar. A NULL estimate is available only where shown in Usage.}
 \item{anchor}{\if{latex}{\out{\sloppy}} Output timestamp: start selects the first observed sample in an epoch, end the last, and center the middle observed sample (ceiling of half the epoch sample count). This labels the result without changing values.}
@@ -30,11 +30,11 @@ accel_metric_odba(tbl, epoch_s, fs_hz, anchor = "center", output =
 \item{filter_type}{\if{latex}{\out{\sloppy}} Implementation identifier: butterworth is supported for low-/high-pass separation. This is not an automatic choice among filter families.}
 \item{filter_order}{\if{latex}{\out{\sloppy}} Order passed to signal::butter for the forward/reverse separation filter. The double-pass frequency response differs from a single pass.}
 \item{pdba_axes}{\if{latex}{\out{\sloppy}} Axis names selected for PDBA, from x, y and z. Default x/y sums their absolute dynamic components. This option does not change ODBA or VEDBA.}
-\item{out_unit}{\if{latex}{\out{\sloppy}} Output acceleration unit: mg multiplies the epoch result by 1000; g retains the input scale.}
+\item{out_unit}{\if{latex}{\out{\sloppy}} Output acceleration unit: m\eqn{g} multiplies the epoch result by 1000; \eqn{g} retains the input scale.}
 \item{edge_handling}{\if{latex}{\out{\sloppy}} Supported rule partial_centered_window: near signal boundaries, average only the available samples within the centred running window; no external padding is added.}
 \item{missing_data_policy}{\if{latex}{\out{\sloppy}} Supported rule mean_na_rm: ignore missing observations when calculating local means and epoch means; all-missing estimates remain undefined. This is not gap repair.}
 }
-\value{A tibble with \code{time} (the selected observed-sample epoch label), \code{epoch_id} (integer elapsed-time bin starting at one), and \code{value} (g or mg according to the selected output unit).}
+\value{A tibble with \code{time} (the selected observed-sample epoch label), \code{epoch_id} (integer elapsed-time bin starting at one), and \code{value} (\eqn{g} or m\eqn{g} according to the selected output unit).}
 
 \details{\if{latex}{\out{\sloppy}} Separate static/dynamic axes by the selected implemented method, form ODBA, VEDBA or PDBA, then average within epochs. The centred-window method uses partial available windows at boundaries. A different separation window/filter defines a different pipeline. See \code{\link{measurement-definitions}} for calculation definitions. No additional device calibration is performed by choosing a feature.}
 \seealso{\code{\link{metronautica-package}}}

@@ -3,12 +3,12 @@
 \title{Framework and function map}
 \description{\if{latex}{\out{\sloppy}} Connect the public functions, source files and implemented measurement outcomes. Function help documents the resolved parameters; this guide identifies the measurement represented by each stage.}
 \section{Common data format and signal diagnostics}{\if{latex}{\out{\sloppy}}
-\code{R/m_parsers.R} implements decoding to POSIXct time and triaxial acceleration in g. Stored device coefficients may already be applied during decoding; native does not mean unscaled integer counts. Consult \code{\link{parse_raw_auto}} for the supported format and validated LEAP scope.
+\code{R/m_parsers.R} implements decoding to POSIXct time and triaxial acceleration in \eqn{g}. Stored device coefficients may already be applied during decoding; native does not mean unscaled integer counts. Consult \code{\link{parse_raw_auto}} for the supported format and validated LEAP scope.
 
 \code{R/m_qc.R} implements five post-parse signal diagnostic groups. \code{\link{qc_accel_tbl}} explains exact numerators, denominators, sequence eligibility and the near-limit threshold. These are operational screening rules, not a sensor acceptance standard. \code{\link{attach_qc}} stores the results; \code{\link{invalidate_qc}} removes diagnostics that no longer describe a modified signal.
 }
 \section{Static characterisation}{\if{latex}{\out{\sloppy}}
-\code{R/m_static.R} implements static characterisation outcomes. \code{\link{static_1hz_means}} supplies one-second means; \code{\link{static_drift}} fits signed g/h slopes; \code{\link{static_offset_vm_5min}} estimates the specified initial VM offset relative to 1 g. \code{\link{static_axis_noise_metrics}} separates raw sample SD from the residual SD after linear detrending. The static noise floor is the maximum axis-specific detrended residual SD, not the Activity Index stationary variance.
+\code{R/m_static.R} implements static characterisation outcomes. \code{\link{static_1hz_means}} supplies one-second means; \code{\link{static_drift}} fits signed \eqn{g}/h slopes; \code{\link{static_offset_vm_5min}} estimates the specified initial VM offset relative to 1 \eqn{g}. \code{\link{static_axis_noise_metrics}} separates raw sample SD from the residual SD after linear detrending. The static noise floor is the maximum axis-specific detrended residual SD, not the Activity Index stationary variance.
 
 \code{\link{static_allan}} uses \code{\link{allan_nonoverlap}} for non-overlapping cluster means. Its returned axis minima and evaluated averaging times are separate from the maximum across individual axis minima. Supplying a stationary window and assessing environmental stability remain experimental responsibilities.
 }
@@ -22,7 +22,7 @@ Reference length matching remains nearest selection on an evenly spaced sample-i
 \section{Application-specific features}{\if{latex}{\out{\sloppy}}
 \code{R/m_accel_summary_suite.R} implements time-domain feature definitions and configurable alternatives. The exact operation and unit are given in each \code{accel_metric_*} help page. \code{\link{compute_accel_summaries}} combines requested features and returns resolved pipeline settings.
 
-Epoch duration, sampling treatment, axis filtering, noise correction, calibration state and aggregation are part of a feature pipeline. ENMO truncates negative VM-minus-1-g values per sample; SVMgs variants use absolute differences. MAD is centred within the epoch. ROCAM is a sample-to-sample acceleration-change outcome with no elapsed-time division. The package does not infer physical activity, sleep, energy expenditure or behavioural validity from these features.
+Epoch duration, sampling treatment, axis filtering, noise correction, calibration state and aggregation are part of a feature pipeline. ENMO truncates negative VM-minus-1-\eqn{g} values per sample; SVMgs variants use absolute differences. MAD is centred within the epoch. ROCAM is a sample-to-sample acceleration-change outcome with no elapsed-time division. The package does not infer physical activity, sleep, energy expenditure or behavioural validity from these features. See \code{\link{feature-comparison}} for a combined plot over one dynamic recording.
 }
 \section{Standalone activity counts}{\code{\link{accel_metric_agcounts}} in R/m_agcounts.R implements the acknowledged published count algorithm and explicit custom-filter alternatives. It operates as a standalone function, outside the summary selector. Report input precision, gap and boundary policies as well as filter/epoch settings; processing flags are not a complete uncertainty budget.}
 \section{Error and uncertainty reporting}{\if{latex}{\out{\sloppy}}

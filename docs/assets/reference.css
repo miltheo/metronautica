@@ -3,7 +3,7 @@
 * { box-sizing:border-box; }
 html { scroll-padding-top:5rem; }
 body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif; }
-a { color:var(--link); text-underline-offset:.2em; }
+a { color:var(--link); text-underline-offset:.2em; overflow-wrap:anywhere; }
 a[href^="mailto:"] { overflow-wrap:anywhere; }
 a:hover { text-decoration-thickness:2px; }
 :focus-visible { outline:3px solid var(--link); outline-offset:4px; }

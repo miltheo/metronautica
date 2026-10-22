@@ -39,10 +39,10 @@ p <- withCallingHandlers(e$plot_static_drift_vm(d, fit), warning = function(w) {
 })
 check("static drift plot has no ignored-label-argument warning", !length(warnings))
 check("static drift plot preserves supplied data", identical(d, before) && identical(p$data, before))
-# The label argument was already ignored by annotate() on ggplot2 >= 4.0.0.
-check("static drift label text is unchanged",
+# The displayed slope remains identical; only the gravity symbol is italic.
+check("static drift label retains the fitted slope with italic gravity units",
       identical(p$layers[[3]]$aes_params$label,
-                sprintf("drift = %s g/h", formatC(unname(stats::coef(fit)[2]), format = "e", digits = 2))))
+                sprintf("paste(plain(drift), ' = %s ', italic(g), '/h')", formatC(unname(stats::coef(fit)[2]), format = "e", digits = 2))))
 
 # Render, rather than only construct, to exercise logarithmic tick drawing.
 allan <- expand.grid(tau = 10^seq(-1, 4, length.out = 60), axis = c("X", "Y", "Z"))

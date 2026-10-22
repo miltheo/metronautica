@@ -359,8 +359,8 @@ plot_static_drift_vm <- function(d1, drift_fit, title_prefix = "Static drift") {
     b1 <- unname(stats::coef(drift_fit)[2])                                    # Slope
     xlab <- max(d1$elapsed_h, na.rm = TRUE)                                    # X location for label
     ylab <- b0 + b1 * xlab                                                     # Y location for label
-    lbl <- sprintf("drift = %s g/h", formatC(b1, format = "e", digits = 2))    # Label text
-    label_args <- list(geom = "label", x = xlab, y = ylab, label = lbl,
+    lbl <- sprintf("paste(plain(drift), ' = %s ', italic(g), '/h')", formatC(b1, format = "e", digits = 2))    # Label text
+    label_args <- list(geom = "label", x = xlab, y = ylab, label = lbl, parse = TRUE,
                        fill = scales::alpha("white", 0.7),
                        hjust = 1, vjust = 1, size = 3.6)
     # ggplot2 >= 4 ignores label.size in annotate(); retain its existing default
@@ -370,7 +370,7 @@ plot_static_drift_vm <- function(d1, drift_fit, title_prefix = "Static drift") {
         ggplot2::geom_line() +
         ggplot2::geom_smooth(method = "lm", se = FALSE) +
         do.call(ggplot2::annotate, label_args) +
-        ggplot2::labs(title = title_prefix, x = "Elapsed time (hours)", y = "VM mean (g)") +
+        ggplot2::labs(title = title_prefix, x = "Elapsed time (hours)", y = expression("VM mean ("*italic(g)*")")) +
         ggplot2::theme_bw(base_size = 12)
 }
 
@@ -389,21 +389,21 @@ plot_static_allan <- function(allan_df, title_prefix = "Allan deviation") {    #
         dplyr::group_by(axis) %>%
         dplyr::slice_min(order_by = adev, n = 1, with_ties = FALSE) %>%
         dplyr::ungroup() %>%
-        dplyr::mutate(label = sprintf("\u03C4 = %s s\n\u03C3 = %s g",
+        dplyr::mutate(label = sprintf("atop(paste(tau, ' = %s s'), paste(sigma, ' = %s ', italic(g)))",
                                       scales::number(tau, accuracy = 0.1, trim = TRUE),
                                       scales::scientific(adev, digits = 2)))
     ggplot2::ggplot(allan_df, ggplot2::aes(tau, adev, colour = axis, group = axis)) +
         ggplot2::geom_line(linewidth = 0.7) +
         ggplot2::geom_point(size = 1.6) +
         ggplot2::geom_point(data = mins, size = 2.6) +
-        ggrepel::geom_label_repel(data = mins, ggplot2::aes(label = label),
+        ggrepel::geom_label_repel(data = mins, ggplot2::aes(label = label), parse = TRUE,
                                   size = 3.4, label.size = 0.3,
                                   label.padding = grid::unit(0.18, "lines"),
                                   label.r = grid::unit(0.2, "lines"),
                                   segment.size = 0.4, max.overlaps = Inf) +
         ggplot2::scale_x_log10() +
         ggplot2::scale_y_log10() +
-        ggplot2::labs(title = title_prefix, x = "Cluster time \u03C4 (s)", y = "Allan deviation (g)", colour = "Axis") +
+        ggplot2::labs(title = title_prefix, x = "Cluster time \u03C4 (s)", y = expression("Allan deviation ("*italic(g)*")"), colour = "Axis") +
         ggplot2::theme_bw(base_size = 12) +
         ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
         log_ticks

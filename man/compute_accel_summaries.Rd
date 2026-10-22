@@ -44,11 +44,11 @@ compute_accel_summaries(accel_input, measures = c("ENMO", "MAD"),
 \item{epoch_anchor}{\if{latex}{\out{\sloppy}} Timestamp assigned to an output epoch: start, end or center selects the first, last or middle observed sample respectively. Some upstream feature implementations retain their own anchors; inspect times before joining features.}
 \item{fs_hz}{\if{latex}{\out{\sloppy}} Optional explicit input frequency in Hz. Otherwise use valid acquisition metadata, then the median positive timestamp interval. target_fs, when supplied, controls a separate interpolation step; neither setting establishes regular sampling.}
 \item{target_fs}{\if{latex}{\out{\sloppy}} Optional positive target rate in Hz. Linear interpolation is applied when it differs from the input rate; this alone is not an anti-aliasing filter.}
-\item{dynamic_range_g}{\if{latex}{\out{\sloppy}} Peak-to-peak configured axis measurement span in g: 16 means -8 to +8 g. The summary function uses valid acquisition metadata when NULL; MIMS fails if neither is available. The direct MIMS function requires this argument. No range is inferred from observed values.}
+\item{dynamic_range_g}{\if{latex}{\out{\sloppy}} Peak-to-peak configured axis measurement span in \eqn{g}: 16 means -8 to +8 \eqn{g}. The summary function uses valid acquisition metadata when NULL; MIMS fails if neither is available. The direct MIMS function requires this argument. No range is inferred from observed values.}
 \item{vm_summary}{\if{latex}{\out{\sloppy}} Statistic of sample VM within each epoch: mean, sample SD, maximum, or the 95th percentile. All use sqrt(ax_g^2 + ay_g^2 + az_g^2).}
-\item{vm_unit}{\if{latex}{\out{\sloppy}} Output unit for the VM statistic: g, or mg after multiplication by 1000. No calibration is implied.}
-\item{enmo_mg}{\if{latex}{\out{\sloppy}} Logical; multiply the ENMO epoch mean by 1000 for mg when TRUE; otherwise retain g. Negative VM-minus-1-g samples are truncated before averaging.}
-\item{mad_mg}{\if{latex}{\out{\sloppy}} Logical; multiply within-epoch mean absolute deviation of VM by 1000 for mg when TRUE; otherwise retain g.}
+\item{vm_unit}{\if{latex}{\out{\sloppy}} Output unit for the VM statistic: \eqn{g}, or m\eqn{g} after multiplication by 1000. No calibration is implied.}
+\item{enmo_mg}{\if{latex}{\out{\sloppy}} Logical; multiply the ENMO epoch mean by 1000 for m\eqn{g} when TRUE; otherwise retain \eqn{g}. Negative VM-minus-1-\eqn{g} samples are truncated before averaging.}
+\item{mad_mg}{\if{latex}{\out{\sloppy}} Logical; multiply within-epoch mean absolute deviation of VM by 1000 for m\eqn{g} when TRUE; otherwise retain \eqn{g}.}
 \item{odba_static_dynamic_method}{\if{latex}{\out{\sloppy}} Axis separation method for ODBA/VEDBA/PDBA. Subtract a centred running mean or low-pass static component, or use high-pass-filtered axes directly. These are distinct signal-processing choices.}
 \item{odba_stroke_window_rule}{\if{latex}{\out{\sloppy}} Running-mean window rule: fixed three seconds; supplied custom duration; max(3, one or two supplied stroke periods); or a main-window result plus the specified sensitivity-window summaries.}
 \item{odba_running_mean_window_s}{\if{latex}{\out{\sloppy}} Requested running-mean duration in seconds for custom_window_s or the main sensitivity result. fixed_3s overrides it; the resolved duration is returned in settings$odba.}
@@ -58,22 +58,22 @@ compute_accel_summaries(accel_input, measures = c("ENMO", "MAD"),
 \item{odba_filter_type}{\if{latex}{\out{\sloppy}} Separation implementation identifier; butterworth is supported. The method/cutoff/order together define the processing pipeline.}
 \item{odba_filter_order}{\if{latex}{\out{\sloppy}} Butterworth order for low-/high-pass dynamic separation. The centred-running-mean method does not use this filter.}
 \item{pdba_axes}{\if{latex}{\out{\sloppy}} Axis names selected for PDBA, from x, y and z. Default x/y sums their absolute dynamic components. This option does not change ODBA or VEDBA.}
-\item{odba_unit}{\if{latex}{\out{\sloppy}} Output unit for ODBA/VEDBA/PDBA epoch means: mg or g. mg applies a factor of 1000.}
+\item{odba_unit}{\if{latex}{\out{\sloppy}} Output unit for ODBA/VEDBA/PDBA epoch means: m\eqn{g} or \eqn{g}. m\eqn{g} applies a factor of 1000.}
 \item{odba_sensitivity_windows_s}{\if{latex}{\out{\sloppy}} Vector of alternative running-mean durations in seconds for the sensitivity_windows rule. Results are returned separately in settings$odba$sensitivity_summary; they do not replace the main feature values.}
 \item{odba_edge_handling}{\if{latex}{\out{\sloppy}} partial_centered_window averages the available part of a centred window at the recording boundaries, rather than padding a stationary component.}
 \item{odba_missing_data_policy}{\if{latex}{\out{\sloppy}} mean_na_rm omits missing values from means; it does not interpolate gaps or establish sufficient coverage.}
 \item{svmg_output}{\if{latex}{\out{\sloppy}} Retained compatibility argument; the SVMGS/SVMGSEC/SVMGMEAN identifiers fix their output form.}
-\item{svmg_rectify}{\if{latex}{\out{\sloppy}} Apply the absolute value to VM minus 1 g for the gravity-subtracted VM family; this differs from ENMO truncation.}
+\item{svmg_rectify}{\if{latex}{\out{\sloppy}} Apply the absolute value to VM minus 1 \eqn{g} for the gravity-subtracted VM family; this differs from ENMO truncation.}
 \item{svmbp_cutoffs}{\if{latex}{\out{\sloppy}} Custom lower/upper axis band-pass cutoffs in Hz for SVMBP. Named variants fix their cutoffs.}
 \item{svmbp_order}{\if{latex}{\out{\sloppy}} Butterworth order for axis band-pass filtering before vector-magnitude recombination; default four with forward/reverse filtering.}
-\item{svmbp_output}{\if{latex}{\out{\sloppy}} Band-pass VM aggregation: mean_mg and mean_g return epoch means; sum_mg and sum_g return sample sums; g_seconds divides the g sample sum by fs_hz. Sample sums depend on the sample count.}
+\item{svmbp_output}{\if{latex}{\out{\sloppy}} Band-pass VM aggregation: mean_mg and mean_g return epoch means; sum_mg and sum_g return sample sums; g_seconds divides the \eqn{g} sample sum by fs_hz. Sample sums depend on the sample count.}
 \item{svmbp_nyquist_action}{\if{latex}{\out{\sloppy}} Default stop rejects an upper cutoff at or above Nyquist. Explicit clip preserves the historical adjustment to 99 percent of Nyquist.}
 \item{rocam_median_s}{\if{latex}{\out{\sloppy}} Duration in seconds of the running median on the sample-to-sample triaxial acceleration-change series. Rounded to samples, raised to at least three, and made odd. No division by elapsed time is performed.}
-\item{ai_noise_var}{\if{latex}{\out{\sloppy}} Mean per-axis stationary noise variance in g squared. Required by default when AI is requested; estimate with compute_ai_noise_var_from_static. An explicit zero requests no noise subtraction.}
+\item{ai_noise_var}{\if{latex}{\out{\sloppy}} Mean per-axis stationary noise variance in \eqn{g} squared. Required by default when AI is requested; estimate with compute_ai_noise_var_from_static. An explicit zero requests no noise subtraction.}
 \item{ai_noise_mode}{\if{latex}{\out{\sloppy}} Default supplied requires ai_noise_var. Explicit window_start or quiet_segments opts into estimation when ai_noise_var is NULL. The initial window must be stationary; quiet selection does not establish stationarity. Failed estimation errors rather than substituting zero. A supplied variance takes precedence.}
 \item{ai_noise_window_s}{\if{latex}{\out{\sloppy}} Initial noise-window duration in seconds; used only for window_start estimation.}
 \item{ai_quiet_quantile}{\if{latex}{\out{\sloppy}} Quantile strictly between zero and one for quiet_segments selection.}
-\item{ai_scale}{\if{latex}{\out{\sloppy}} Absolute Activity Index in g (default) or dimensionless noise-relative Activity Index.}
+\item{ai_scale}{\if{latex}{\out{\sloppy}} Absolute Activity Index in \eqn{g} (default) or dimensionless noise-relative Activity Index.}
 \item{ai_epoch_summary}{\if{latex}{\out{\sloppy}} Sum (default) or mean of the one-second Activity Index values within each output epoch.}
 \item{z_angle_output}{\if{latex}{\out{\sloppy}} mean_deg returns the epoch mean Z-angle; sd_deg returns its sample SD. Both are in degrees, using atan(z/sqrt(x^2+y^2)).}
 \item{z_angle_change_median_s}{\if{latex}{\out{\sloppy}} Running-median duration in seconds applied to the Z-angle series before absolute successive differences. Rounded to an odd sample count of at least three.}
@@ -147,20 +147,20 @@ unlink(output_file)             # Remove only this example's temporary output
 \if{latex}{\out{\sloppy}}
 \tabular{lll}{
 Identifier \tab Direct function \tab Default output \cr
-VM \tab \code{\link{accel_metric_vm}} \tab Mean, g \cr
-ENMO \tab \code{\link{accel_metric_enmo}} \tab Mean, mg \cr
-MAD \tab \code{\link{accel_metric_mad}} \tab Mean, mg \cr
-ODBA \tab \code{\link{accel_metric_odba}} \tab Mean, mg \cr
-VEDBA \tab \code{\link{accel_metric_odba}} \tab Mean, mg \cr
-PDBA \tab \code{\link{accel_metric_odba}} \tab Mean, mg \cr
-SVMGS \tab \code{\link{accel_metric_svmg}} \tab Sample sum, g \cr
-SVMGSEC \tab \code{\link{accel_metric_svmg}} \tab Integral, g seconds \cr
-SVMGMEAN \tab \code{\link{accel_metric_svmg}} \tab Mean, mg \cr
-SVMBP \tab \code{\link{accel_metric_svmbp}} \tab Mean, mg \cr
-SVMBP_02_15 \tab \code{\link{accel_metric_svmbp}} \tab Mean, mg \cr
-SVMBP_069_10 \tab \code{\link{accel_metric_svmbp}} \tab Mean, mg \cr
-ROCAM \tab \code{\link{accel_metric_rocam}} \tab Mean change, g \cr
-AI \tab \code{\link{accel_metric_ai}} \tab Sum of 1-s AI, g \cr
+VM \tab \code{\link{accel_metric_vm}} \tab Mean, \eqn{g} \cr
+ENMO \tab \code{\link{accel_metric_enmo}} \tab Mean, m\eqn{g} \cr
+MAD \tab \code{\link{accel_metric_mad}} \tab Mean, m\eqn{g} \cr
+ODBA \tab \code{\link{accel_metric_odba}} \tab Mean, m\eqn{g} \cr
+VEDBA \tab \code{\link{accel_metric_odba}} \tab Mean, m\eqn{g} \cr
+PDBA \tab \code{\link{accel_metric_odba}} \tab Mean, m\eqn{g} \cr
+SVMGS \tab \code{\link{accel_metric_svmg}} \tab Sample sum, \eqn{g} \cr
+SVMGSEC \tab \code{\link{accel_metric_svmg}} \tab Integral, \eqn{g} seconds \cr
+SVMGMEAN \tab \code{\link{accel_metric_svmg}} \tab Mean, m\eqn{g} \cr
+SVMBP \tab \code{\link{accel_metric_svmbp}} \tab Mean, m\eqn{g} \cr
+SVMBP_02_15 \tab \code{\link{accel_metric_svmbp}} \tab Mean, m\eqn{g} \cr
+SVMBP_069_10 \tab \code{\link{accel_metric_svmbp}} \tab Mean, m\eqn{g} \cr
+ROCAM \tab \code{\link{accel_metric_rocam}} \tab Mean change, \eqn{g} \cr
+AI \tab \code{\link{accel_metric_ai}} \tab Sum of 1-s AI, \eqn{g} \cr
 ZANGLE \tab \code{\link{accel_metric_z_angle}} \tab Mean, degrees \cr
 ZANGLE_CHANGE \tab \code{\link{accel_metric_z_angle_change}} \tab Mean change, degrees \cr
 MIMS \tab \code{\link{accel_metric_mims}} \tab MIMS-units per epoch \cr

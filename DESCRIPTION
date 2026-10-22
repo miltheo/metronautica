@@ -1,6 +1,6 @@
 Package: metronautica
 Type: Package
-Title: Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports.
+Title: Wearable Triaxial Accelerometer Metrology and Signal Processing
 Version: 0.1.0
 Date: 2026-10-22
 Language: en-GB
@@ -13,6 +13,11 @@ Author: Millen James Theophilus [aut, cre]
 Maintainer: Millen James Theophilus <m.j.theophilus@lboro.ac.uk>
 Description: Native wearable triaxial accelerometer parsing, signal diagnostics,
     clipping, static and dynamic characterisation, filtering and reporting.
+    Metrological terminology follows the International Vocabulary of Metrology,
+    JCGM (2012) <doi:10.59161/JCGM200-2012>. Standalone activity counts implement
+    the published ActiGraph algorithm of Neishabouri et al. (2022)
+    <doi:10.1038/s41598-022-16003-x>, with its published filter as the default
+    and configurable band-pass cutoffs for modified counts.
     Developed for the wearable-accelerometer metrology research article under
     submission for publication, with accompanying analyses and data in WAM
     <https://github.com/miltheo/wam>.

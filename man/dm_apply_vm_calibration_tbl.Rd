@@ -6,7 +6,7 @@
 dm_apply_vm_calibration_tbl(df, cal_row)
 }
 \arguments{
-\item{df}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle with POSIXct time and numeric axes in g. Container type and timestamps are preserved.}
+\item{df}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle with POSIXct time and numeric axes in \eqn{g}. Container type and timestamps are preserved.}
 \item{cal_row}{\if{latex}{\out{\sloppy}} One-row data frame/tibble or named scalar list containing finite numeric vm_calibration_intercept, vm_calibration_slope and vm_calibration_quadratic. Supply zero for the quadratic term of a linear model. If vm_calibration_direction is present it must be ref_on_test. Invalid/ambiguous rows raise an error.}
 }
 \value{\if{latex}{\out{\sloppy}} The same input container type, with calibrated axes and unchanged timestamps. A parser bundle retains its data/meta structure; a stage bundle also calibrates its stages. Metadata records the applied row and processing event, marks the signal calibrated and removes pre-calibration QC. Call attach_qc to obtain diagnostics for the changed signal.}

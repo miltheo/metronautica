@@ -5,17 +5,16 @@
 This guide covers sample retrieval and processing choices.</p>
 <p><a name="sample-retrieval"></a></p>
 <h2>Sample retrieval</h2>
+<p>The <a href="https://github.com/miltheo/wam/blob/main/samples/README.md">WAM sample guide</a>
+is the canonical source for recording contents, distribution, provenance and
+licensing. Obtain the selected attachments and catalogue there before use.</p>
 <p><code>m_load_sample_data()</code> accepts <code>device = &quot;LEAP&quot;</code>, <code>&quot;AX3&quot;</code>, <code>&quot;SENS&quot;</code> or <code>&quot;GENEActiv&quot;</code>
-and <code>type = &quot;static&quot;</code> or <code>&quot;dynamic&quot;</code>. Static recordings cover the selected 24 hours;
-dynamic recordings include all ten stages of the first primary trial. They retain
-native payloads and stored coefficients, with boundary handling documented in provenance.
-They are selected recording intervals, not complete original downloads.</p>
-<p>The compressed recordings are separate WAM release attachments, outside Git history.
-Before running an example, place the required attachments beside <code>sample_index.csv</code>
-and set <code>options(metronautica.sample_dir = &quot;path/to/samples&quot;)</code>. A repository clone
-without attachments is insufficient. Alternatively, explicitly configure
-<code>options(metronautica.sample_base_url = &quot;https://…/release-asset-directory&quot;)</code> with
-an actual published release directory. No URL is configured by default.</p>
+and <code>type = &quot;static&quot;</code> or <code>&quot;dynamic&quot;</code>. Configure the local sample directory:</p>
+<pre><code class="language-r">options(metronautica.sample_dir = &quot;path/to/wam/samples&quot;)
+path &lt;- m_load_sample_data(device = &quot;LEAP&quot;, type = &quot;dynamic&quot;)
+</code></pre>
+<p>For remote retrieval, explicitly set <code>metronautica.sample_base_url</code> to the
+published release-attachment directory. No URL is configured by default.</p>
 <p>Dynamic retrieval includes the HBK reference unless <code>include_reference = FALSE</code>.
 The returned path carries <code>sample_info</code>, <code>reference_file</code> and <code>reference_info</code>
 attributes. Use each file's own time shift and measurement span when parsing.
@@ -35,7 +34,7 @@ intended filtering before constructing stage bundles. Filtering or generic clipp
 of a stage bundle modifies <code>full</code>, leaving its existing <code>stages</code> unchanged.
 <a href="reference.html#implementation-guide">Container contracts</a>.</p>
 <p>A test-axis peak-to-peak measurement span is required for normalised dynamic
-errors: 16 g means -8 to +8 g. Observed signal extrema do not establish this span.
+errors: 16 <em>g</em> means -8 to +8 <em>g</em>. Observed signal extrema do not establish this span.
 Review time alignment independently of sample-index matching.
 <a href="reference.html#dynamic_metrology_report">Dynamic methods</a>.</p>
 <p><a name="feature-settings"></a></p>
@@ -53,7 +52,7 @@ feature pipeline. Retain <code>settings</code> with the results. Use the direct
 <tbody>
 <tr>
 <td>Activity Index</td>
-<td>Supply stationary per-axis noise variance (<code>ai_noise_var</code>, g²), estimated with <code>compute_ai_noise_var_from_static()</code>; noise-floor SD is a different quantity</td>
+<td>Supply stationary per-axis noise variance (<code>ai_noise_var</code>, <em>g</em>²), estimated with <code>compute_ai_noise_var_from_static()</code>; noise-floor SD is a different quantity</td>
 </tr>
 <tr>
 <td>MIMS</td>
@@ -78,6 +77,77 @@ feature pipeline. Retain <code>settings</code> with the results. Use the direct
 necessarily indicate missing acceleration. Inspect intervals before joining or
 comparing features, and do not replace unpaired values with zero.
 <a href="reference.html#compute_accel_summaries">Feature parameters</a>.</p>
+<p><a name="feature-comparison"></a></p>
+<h2>Feature comparison</h2>
+<p>Apply feature pipelines to the same recording before comparing their outputs.
+The example below overlays ENMO, mean gravity-subtracted SVM and band-pass SVM
+where their ranges are comparable; MAD occupies a second scale in the same figure.
+All values remain in m<em>g</em> with no amplitude normalisation. Coincident ENMO/SVM
+curves are shown using solid/dashed lines. These are different calculations,
+not interchangeable definitions.</p>
+<!-- EXAMPLE:comparison:start -->
+<pre><code class="language-r">library(metronautica)
+library(ggplot2)
+
+path &lt;- m_load_sample_data(device = &quot;LEAP&quot;, type = &quot;dynamic&quot;,
+    include_reference = FALSE)
+info &lt;- attr(path, &quot;sample_info&quot;)
+recording &lt;- parse_raw_auto(path, return = &quot;bundle&quot;,
+    time_shift_s = info$time_shift_s,
+    full_scale_range_g = info$full_scale_range_g)
+comparison &lt;- compute_accel_summaries(recording,
+    measures = c(&quot;ENMO&quot;, &quot;SVMGMEAN&quot;, &quot;SVMBP_069_10&quot;, &quot;MAD&quot;),
+    epoch_s = 5, epoch_anchor = &quot;start&quot;, quiet = TRUE)
+comparison$settings$metric_units
+
+plot_data &lt;- comparison$data_long
+main_panel &lt;- &quot;ENMO, mean gravity-subtracted SVM and band-pass SVM&quot;
+plot_data$panel &lt;- factor(ifelse(plot_data$measure == &quot;MAD&quot;,
+    &quot;MAD&quot;, main_panel), levels = c(main_panel, &quot;MAD&quot;))
+start &lt;- as.POSIXct(info$trial_start_utc, tz = &quot;UTC&quot;)
+stages &lt;- data.frame(start = start + (0:9) * 8 * 60,
+    end = start + (0:9) * 8 * 60 + 6 * 60, rpm = seq(50, 500, 50))
+comparison_plot &lt;- ggplot(plot_data, aes(time, value, colour = measure, linetype = measure)) +
+    geom_rect(data = stages, aes(xmin = start, xmax = end,
+        ymin = -Inf, ymax = Inf), inherit.aes = FALSE,
+        fill = &quot;grey92&quot;, colour = NA) +
+    geom_line(linewidth = 0.5) +
+    geom_text(data = stages, aes(x = start + 3 * 60, y = Inf,
+        label = paste(rpm, &quot;RPM&quot;)), inherit.aes = FALSE,
+        vjust = 1.4, size = 2.7) +
+    facet_wrap(~panel, ncol = 1, scales = &quot;free_y&quot;) +
+    scale_colour_manual(values = c(ENMO = &quot;#0072B2&quot;, SVMGMEAN = &quot;#D55E00&quot;,
+        SVMBP_069_10 = &quot;#009E73&quot;, MAD = &quot;#CC79A7&quot;),
+        breaks = c(&quot;ENMO&quot;, &quot;SVMGMEAN&quot;, &quot;SVMBP_069_10&quot;, &quot;MAD&quot;),
+        labels = c(&quot;ENMO&quot;, &quot;Mean gravity-subtracted SVM&quot;,
+            &quot;Band-pass SVM (0.69-10 Hz)&quot;, &quot;MAD&quot;)) +
+    guides(colour = guide_legend(override.aes = list(
+        linetype = c(&quot;solid&quot;, &quot;22&quot;, &quot;solid&quot;, &quot;solid&quot;)))) +
+    scale_linetype_manual(values = c(ENMO = &quot;solid&quot;, SVMGMEAN = &quot;22&quot;,
+        SVMBP_069_10 = &quot;solid&quot;, MAD = &quot;solid&quot;), guide = &quot;none&quot;) +
+    scale_x_datetime(date_labels = &quot;%H:%M&quot;, date_breaks = &quot;10 min&quot;,
+        timezone = &quot;UTC&quot;, expand = expansion(mult = c(0, 0.01))) +
+    scale_y_continuous(expand = expansion(mult = c(0.03, 0.18))) +
+    labs(x = &quot;Time (UTC)&quot;, y = expression(&quot;Epoch mean (m&quot;*italic(g)*&quot;)&quot;),
+        colour = NULL,
+        title = &quot;LEAP: feature pipelines over one dynamic trial&quot;,
+        subtitle = paste(&quot;Five-second epochs; native decoded signal;&quot;,
+            &quot;no additional VM calibration&quot;)) +
+    theme_bw(base_size = 11) +
+    theme(legend.position = &quot;bottom&quot;, strip.text.y = element_text(angle = 0),
+        strip.background = element_rect(fill = &quot;white&quot;))
+comparison_plot
+</code></pre>
+<!-- EXAMPLE:comparison:end -->
+<p><img src="assets/examples/feature-comparison.png" alt="Four feature pipelines over the same LEAP dynamic trial, grouped by their observed ranges." /></p>
+<p>Shading marks six-minute excitation stages; unshaded intervals retain the
+adjustments. The five-second summaries use start-labelled epochs. The named
+band-pass SVM selector applies its own 0.69–10 Hz filter; the other requested
+features do not receive that filter. No additional VM calibration is applied.</p>
+<p>Use <code>data_long</code> to retain feature labels and timestamps, and keep <code>settings</code>
+with the values. A shared unit does not establish equivalent features. This
+within-recording illustration does not test device equivalence or behavioural
+validity. <a href="reference.html#feature-comparison">Function details</a>.</p>
 <p><a name="calibration"></a></p>
 <h2>Calibration</h2>
 <p><code>dm_fit_vm_calibration()</code> fits linear/quadratic VM mappings in the specified
