@@ -1,7 +1,7 @@
 \name{accel_metric_odba}
 \alias{accel_metric_odba}
 \title{Compute dynamic body acceleration}
-\description{\if{latex}{\out{\sloppy}} Compute dynamic body acceleration.}
+\description{\if{latex}{\out{\sloppy}} Epoch means of overall, vectorial or partial dynamic body acceleration.}
 \usage{
 accel_metric_odba(tbl, epoch_s, fs_hz, anchor = "center", output =
     c("ODBA", "VEDBA", "PDBA"), static_dynamic_method =
@@ -16,10 +16,10 @@ accel_metric_odba(tbl, epoch_s, fs_hz, anchor = "center", output =
     missing_data_policy = "mean_na_rm")
 }
 \arguments{
-\item{tbl}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in \eqn{g}, or a parser/clip bundle containing data/full. Input conversion preserves values and metadata.}
-\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive output-epoch duration in seconds. Samples are grouped by elapsed time from the first sample; the final partial epoch is retained. Different epoch lengths define different processing pipelines.}
-\item{fs_hz}{\if{latex}{\out{\sloppy}} Sampling frequency in Hz. Used to convert durations to sample windows or sums to time integrals. Supply one finite positive scalar. A NULL estimate is available only where shown in Usage.}
-\item{anchor}{\if{latex}{\out{\sloppy}} Output timestamp: start selects the first observed sample in an epoch, end the last, and center the middle observed sample (ceiling of half the epoch sample count). This labels the result without changing values.}
+\item{tbl}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
+\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); boundaries follow the common data format.}
+\item{fs_hz}{\if{latex}{\out{\sloppy}} Finite positive sampling frequency (Hz), used for sample windows or time integrals.}
+\item{anchor}{\if{latex}{\out{\sloppy}} Observed-sample label: first (start), last (end), or ceiling of half the sample count (center). Labels do not change values.}
 \item{output}{\if{latex}{\out{\sloppy}} ODBA sums absolute dynamic components across all three axes; VEDBA uses their Euclidean norm; PDBA sums the selected absolute components. Each is averaged within the output epoch.}
 \item{static_dynamic_method}{\if{latex}{\out{\sloppy}} Axis separation method. centered_running_mean subtracts the centred local axis mean; low_pass_static_filter subtracts a low-pass axis estimate; high_pass_dynamic_filter uses high-pass-filtered axes directly.}
 \item{stroke_window_rule}{\if{latex}{\out{\sloppy}} Window selection for running-mean separation. fixed_3s uses three seconds; custom_window_s uses running_mean_window_s; stroke_period_1x/2x use max(3, stroke_period_s) or max(3, 2*stroke_period_s). sensitivity_windows uses the requested main window and permits a separate sensitivity summary.}
@@ -29,18 +29,16 @@ accel_metric_odba(tbl, epoch_s, fs_hz, anchor = "center", output =
 \item{highpass_cutoff_hz}{\if{latex}{\out{\sloppy}} High-pass cutoff in Hz when static_dynamic_method is high_pass_dynamic_filter. The filtered axes are the dynamic components.}
 \item{filter_type}{\if{latex}{\out{\sloppy}} Implementation identifier: butterworth is supported for low-/high-pass separation. This is not an automatic choice among filter families.}
 \item{filter_order}{\if{latex}{\out{\sloppy}} Order passed to signal::butter for the forward/reverse separation filter. The double-pass frequency response differs from a single pass.}
-\item{pdba_axes}{\if{latex}{\out{\sloppy}} Axis names selected for PDBA, from x, y and z. Default x/y sums their absolute dynamic components. This option does not change ODBA or VEDBA.}
-\item{out_unit}{\if{latex}{\out{\sloppy}} Output acceleration unit: m\eqn{g} multiplies the epoch result by 1000; \eqn{g} retains the input scale.}
+\item{pdba_axes}{\if{latex}{\out{\sloppy}} PDBA axes: x, y and/or z; default x/y sums their absolute dynamic components. ODBA/VEDBA are unaffected.}
+\item{out_unit}{\if{latex}{\out{\sloppy}} Output unit: \eqn{g}, or m\eqn{g} (result multiplied by 1000).}
 \item{edge_handling}{\if{latex}{\out{\sloppy}} Supported rule partial_centered_window: near signal boundaries, average only the available samples within the centred running window; no external padding is added.}
 \item{missing_data_policy}{\if{latex}{\out{\sloppy}} Supported rule mean_na_rm: ignore missing observations when calculating local means and epoch means; all-missing estimates remain undefined. This is not gap repair.}
 }
-\value{A tibble with \code{time} (the selected observed-sample epoch label), \code{epoch_id} (integer elapsed-time bin starting at one), and \code{value} (\eqn{g} or m\eqn{g} according to the selected output unit).}
+\value{\if{latex}{\out{\sloppy}} Tibble: \code{time} (selected epoch label), \code{epoch_id} (elapsed-time bin, starting at one), \code{value} (selected \eqn{g} or m\eqn{g} unit).}
 
-\details{\if{latex}{\out{\sloppy}} Separate static/dynamic axes by the selected implemented method, form ODBA, VEDBA or PDBA, then average within epochs. The centred-window method uses partial available windows at boundaries. A different separation window/filter defines a different pipeline. See \code{\link{measurement-definitions}} for calculation definitions. No additional device calibration is performed by choosing a feature.}
-\seealso{\code{\link{metronautica-package}}}
+\details{\if{latex}{\out{\sloppy}} Separate static/dynamic axes by the selected implemented method, form ODBA, VEDBA or PDBA, then average within epochs. The centred-window method uses partial available windows at boundaries. A different separation window/filter defines a different pipeline.}
+\seealso{\code{\link{compute_accel_summaries}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{accel_metric_odba} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}
-
-\section{Output settings}{
+\section{Output settings}{\if{latex}{\out{\sloppy}}
 The \code{odba_settings} attribute records the selected metric, separation method, requested/resolved window duration, cycle-period rule, filter settings, selected axes, output unit and missing-data/edge policies. The direct helper returns one selected metric, not a list of multiple features. The summary function provides separately requested ODBA, VEDBA and PDBA columns.
 }

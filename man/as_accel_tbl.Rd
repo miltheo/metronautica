@@ -26,5 +26,3 @@ x <- as_accel_tbl(t0 + s, 0.1 * sin(2 * pi * 2 * s),
 class(x)
 qc_accel_tbl(x)$n_samples
 }
-
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{as_accel_tbl} in \code{R/m_parsers.R}. See \code{\link{implementation-guide}} for the framework and function map.}

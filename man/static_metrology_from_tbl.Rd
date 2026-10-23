@@ -1,7 +1,7 @@
 \name{static_metrology_from_tbl}
 \alias{static_metrology_from_tbl}
 \title{Characterise a stationary recording}
-\description{\if{latex}{\out{\sloppy}} Estimate stationary offset, linear drift, signal noise and non-overlapping Allan deviation.}
+\description{\if{latex}{\out{\sloppy}} Estimate signed 1-\eqn{g} VM offset bias, drift rate, static noise floor and non-overlapping Allan deviation.}
 \usage{
 static_metrology_from_tbl(x, instrument = NA_character_, device_id =
     NA_character_, device_vendor = NA_character_, device_model =
@@ -10,25 +10,23 @@ static_metrology_from_tbl(x, instrument = NA_character_, device_id =
     title_prefix = NULL, verbose = FALSE, progress = TRUE)
 }
 \arguments{
-\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in \eqn{g}, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.}
-\item{instrument}{\if{latex}{\out{\sloppy}} Optional character label identifying the instrument in summaries and filenames; otherwise use vendor/model metadata when available.}
-\item{device_id}{\if{latex}{\out{\sloppy}} Optional unit identifier for summaries and filenames; otherwise use acquisition$device_id metadata. This label does not select calibration coefficients.}
-\item{device_vendor}{\if{latex}{\out{\sloppy}} Optional manufacturer label; otherwise use acquisition metadata. Does not alter decoding or calculations.}
-\item{device_model}{\if{latex}{\out{\sloppy}} Optional device-model label; otherwise use acquisition metadata. Does not alter decoding or calculations.}
-\item{fs_nominal_hz}{\if{latex}{\out{\sloppy}} Optional nominal recording frequency in Hz for summary identification; acquisition metadata supplies the fallback. Static calculations use their implemented timestamp-derived frequency, rather than this label.}
-\item{fs_derived_hz}{\if{latex}{\out{\sloppy}} Optional timestamp-derived frequency label in Hz for the summary; metadata/timestamps provide a fallback. It does not override the implemented static calculation windows.}
-\item{out_dir}{\if{latex}{\out{\sloppy}} NULL returns results in memory without writing files. Otherwise, create/use this output directory for the documented CSV, RDS and diagnostic plot files.}
+\item{x}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
+\item{instrument}{\if{latex}{\out{\sloppy}} Instrument label for summaries/filenames; defaults to available vendor/model metadata.}
+\item{device_id}{\if{latex}{\out{\sloppy}} Summary/filename unit label from acquisition$device_id; does not select calibration coefficients.}
+\item{device_vendor}{\if{latex}{\out{\sloppy}} Manufacturer label from acquisition metadata; affects neither decoding nor calculations.}
+\item{device_model}{\if{latex}{\out{\sloppy}} Model label from acquisition metadata; affects neither decoding nor calculations.}
+\item{fs_nominal_hz}{\if{latex}{\out{\sloppy}} Nominal frequency label (Hz); defaults to acquisition metadata. Calculations retain their timestamp-derived rate.}
+\item{fs_derived_hz}{\if{latex}{\out{\sloppy}} Derived frequency label (Hz); defaults to metadata/timestamps, without overriding calculation windows.}
+\item{out_dir}{\if{latex}{\out{\sloppy}} Output directory for CSV, RDS and diagnostic plots; NULL keeps results in memory.}
 \item{start_utc}{\if{latex}{\out{\sloppy}} UTC window start; POSIXct or parseable text.}
-\item{duration_h}{\if{latex}{\out{\sloppy}} Required positive window duration in hours; the end is exclusive. No duration is assumed. Requested bounds, actual sample span and boundary coverage are retained in processing$static_window metadata. Incomplete boundary coverage warns; this is not an internal-gap or stationarity test.}
-\item{title_prefix}{\if{latex}{\out{\sloppy}} Character prefix for diagnostic plot titles; does not change computed outcomes.}
-\item{verbose}{\if{latex}{\out{\sloppy}} Logical; print processing messages. Does not change calculations.}
-\item{progress}{\if{latex}{\out{\sloppy}} Logical; display a text progress bar. Does not change calculations.}
+\item{duration_h}{\if{latex}{\out{\sloppy}} Required positive duration (h), with exclusive end. processing$static_window records requested bounds, observed span and boundary coverage. Incomplete boundary coverage warns; internal gaps and stationarity are not tested.}
+\item{title_prefix}{\if{latex}{\out{\sloppy}} Plot-title prefix.}
+\item{verbose}{\if{latex}{\out{\sloppy}} Print processing messages.}
+\item{progress}{\if{latex}{\out{\sloppy}} Show a text progress bar.}
 }
 \value{\if{latex}{\out{\sloppy}} An invisible list: \code{summary} (one-row table), \code{allan} (cluster durations and deviations), \code{drift_plot}, \code{allan_plot}, \code{clipped_data}, \code{one_hz} (axis/VM means and elapsed hours), \code{meta} and \code{files} (written paths, if requested).}
-\details{\if{latex}{\out{\sloppy}} Offset is the mean one-second vector magnitude over \code{elapsed_h <= 5/60}, minus 1 \eqn{g}. Drift is the least-squares slope of one-second means against elapsed hours, in \eqn{g}/h. Static noise floor is the maximum axis-specific residual SD after linear detrending over the selected window, reported in m\eqn{g}. The first-five-minute maximum-axis SD is raw, not detrended. Raw SD uses \eqn{n-1}; linearly detrended residual SD uses \eqn{n-2}. The stationary coefficient of variation is a percentage with a near-zero mean guard. Allan deviation uses non-overlapping cluster means. The maximum-axis Allan minimum is derived as the maximum of the three individual axis minima over evaluated averaging times. Full definitions are in \code{\link{measurement-definitions}}. The input window must be stationary; the function does not establish that condition or infer a sensor calibration.}
-\seealso{\code{\link{metronautica-package}}}
-
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_metrology_from_tbl} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and function map.}
+\details{\if{latex}{\out{\sloppy}} Stationarity must be established separately. The initial five-minute SD is raw; the full-window noise floor is detrended. \code{\link{measurement-definitions}} defines the outcomes and normalisation.}
+\seealso{\code{\link{native-recording-examples}}}
 
 \section{Summary fields}{
 \if{latex}{\out{\sloppy}}

@@ -1,18 +1,16 @@
 \name{static_axis_noise_metrics}
 \alias{static_axis_noise_metrics}
 \title{Compute axis-specific stationary noise measures}
-\description{\if{latex}{\out{\sloppy}} Compute axis-specific stationary noise measures.}
+\description{\if{latex}{\out{\sloppy}} Raw, detrended and initial-window axis/VM variability.}
 \usage{
 static_axis_noise_metrics(x, cv_min_abs_mean_g = 0.005)
 }
 \arguments{
-\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in \eqn{g}, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.}
-\item{cv_min_abs_mean_g}{\if{latex}{\out{\sloppy}} Absolute mean-acceleration threshold in \eqn{g} below which a coefficient of variation is returned as NA. Default 0.005 \eqn{g} avoids unstable division for axes close to zero mean.}
+\item{x}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
+\item{cv_min_abs_mean_g}{\if{latex}{\out{\sloppy}} Absolute-mean threshold (\eqn{g}) below which CV is NA; default 0.005 \eqn{g} guards near-zero division.}
 }
 \value{\if{latex}{\out{\sloppy}} One-row tibble with raw and linearly detrended sample SDs, first-five-minute raw SDs, CVs, ranges and maximum-/median-axis summaries. Acceleration fields use \eqn{g} unless their name explicitly specifies m\eqn{g}; CV fields are percentages.}
-\seealso{\code{\link{metronautica-package}}}
-
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_axis_noise_metrics} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and function map.}
+\seealso{\code{\link{static_noise_summary_from_tbl}}, \code{\link{measurement-definitions}}}
 
 \section{Returned fields}{
 \if{latex}{\out{\sloppy}}

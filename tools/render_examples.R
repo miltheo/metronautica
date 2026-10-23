@@ -1,4 +1,4 @@
-# Render the canonical real-recording examples; no engine calculations are changed.
+# Render canonical recording examples.
 # Rscript tools/render_examples.R SAMPLE_DIR [OUTPUT_DIR]
 args <- commandArgs(trailingOnly = TRUE)
 script <- sub("^--file=", "", grep("^--file=", commandArgs(), value = TRUE)[1L])
@@ -10,7 +10,7 @@ dir.create(output, recursive = TRUE, showWarnings = FALSE)
 output <- normalizePath(output, winslash = "/", mustWork = TRUE)
 options(metronautica.sample_dir = sample_dir)
 e <- new.env(parent = globalenv())
-# The loader writes into the working project; render in a session-local directory.
+# Write sample outputs under tempdir().
 local({
     before <- setwd(tempdir())
     on.exit(setwd(before), add = TRUE)
@@ -24,23 +24,19 @@ save_pair <- function(left, right, path) {
     print(left, vp = grid::viewport(layout.pos.row = 1L, layout.pos.col = 1L))
     print(right, vp = grid::viewport(layout.pos.row = 1L, layout.pos.col = 2L))
 }
-save_pair(e$static_result$drift_plot + ggplot2::labs(title = "LEAP: VM drift"),
-    e$static_result$allan_plot + ggplot2::labs(title = "LEAP: Allan deviation"),
-    file.path(output, "static-characterisation.png"))
-save_pair(e$dynamic_result$plots$vm_mean_vs_rpm, e$dynamic_result$plots$linearity_vs_rpm,
-    file.path(output, "dynamic-characterisation.png"))
+save_pair(e$static_result$drift_plot +
+    ggplot2::labs(title = "LEAP: VM drift"), e$static_result$allan_plot +
+        ggplot2::labs(title = "LEAP: Allan deviation"), file.path(output, "static-characterisation.png"))
+save_pair(e$dynamic_result$plots$vm_mean_vs_rpm, e$dynamic_result$plots$linearity_vs_rpm, file.path(output,
+    "dynamic-characterisation.png"))
 cat("Rendered full 24-hour static and ten-stage dynamic examples for LEAP.\n")
 
-# The comparison guide uses the same maintained help example as the HTML guide.
-comparison_code <- tempfile(fileext = ".R")
-tools::Rd2ex(tools::parse_Rd(file.path(root, "man/feature-comparison.Rd")),
-    out = comparison_code, commentDontrun = FALSE)
+# Render the maintained comparison recipe.
 local({
     before <- setwd(tempdir())
     on.exit(setwd(before), add = TRUE)
-    sys.source(comparison_code, envir = e)
+    sys.source(file.path(root, "examples", "feature_comparison.R"), envir = e)
 })
-unlink(comparison_code)
-ggplot2::ggsave(file.path(output, "feature-comparison.png"), e$comparison_plot,
-    width = 12, height = 7, dpi = 180, bg = "white")
+ggplot2::ggsave(file.path(output, "feature-comparison.png"), e$comparison_plot, width = 12, height = 7,
+    dpi = 180, bg = "white")
 cat("Rendered combined feature comparison over the same ten-stage trial.\n")

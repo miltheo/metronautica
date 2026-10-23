@@ -1,7 +1,7 @@
 \name{dynamic_metrology_report}
 \alias{dynamic_metrology_report}
 \title{Characterise response relative to a reference}
-\description{\if{latex}{\out{\sloppy}} Compute paired-stage response and full-range error metrics from explicitly supplied device and reference signals.}
+\description{\if{latex}{\out{\sloppy}} Estimate VM response slope, signed VM bias, integral non-linearity and pooled composite error against a reference.}
 \usage{
 dynamic_metrology_report(test_clips, ref_clips, test_axis_fsr_g =
     NULL, ref_axis_fsr_g = NULL, window_s = 5, epoch_time = c("end",
@@ -15,54 +15,56 @@ dynamic_metrology_report(test_clips, ref_clips, test_axis_fsr_g =
 \arguments{
 \item{test_clips}{\if{latex}{\out{\sloppy}} Test-device stage bundle returned by \code{clip_dynamic_stages}.}
 \item{ref_clips}{\if{latex}{\out{\sloppy}} Reference-device stage bundle with matching stage names.}
-\item{test_axis_fsr_g}{\if{latex}{\out{\sloppy}} A supplied span must be a finite positive scalar; invalid supplied values error rather than falling back to metadata. A valid test span is required for range-normalised outcomes. Axis peak-to-peak spans in \eqn{g}; NULL uses acquisition metadata. Supply 16 for +/-8 \eqn{g}.}
-\item{ref_axis_fsr_g}{\if{latex}{\out{\sloppy}} A supplied span must be a finite positive scalar. Missing reference range is retained as unavailable when no valid metadata exists; it is not needed to normalise test-device errors. Axis peak-to-peak spans in \eqn{g}; NULL uses acquisition metadata. Supply 16 for +/-8 \eqn{g}.}
-\item{window_s}{\if{latex}{\out{\sloppy}} Duration in seconds of within-stage VM averaging bins used for the repeatability_error_cv diagnostic. It is separate from the pooled sample-level response fit and the trial-to-trial repeatability calculation.}
-\item{epoch_time}{\if{latex}{\out{\sloppy}} Retained metadata setting end/center/start. In this report it does not change the epoch bins used for within-stage repeatability.}
-\item{compute_entropy}{\if{latex}{\out{\sloppy}} Logical; calculate sample and approximate entropy using optional TSEntropies. Disabled or unavailable implementations return NA; this is a diagnostic, not an equivalence decision.}
-\item{entropy_m}{\if{latex}{\out{\sloppy}} Embedding dimension for entropy calculations, passed as dim to SampEn/ApEn. Default two on the standardised VM series.}
-\item{entropy_r}{\if{latex}{\out{\sloppy}} Entropy matching tolerance in units of the standardised VM series. NULL uses 0.2 times its sample SD. This is not an acceleration equivalence margin.}
-\item{entropy_tau}{\if{latex}{\out{\sloppy}} Sample lag between embedded entropy coordinates, passed as lag to TSEntropies. Default one sample; its time duration depends on sampling rate.}
-\item{verbose}{\if{latex}{\out{\sloppy}} Logical; print processing messages. Does not change calculations.}
-\item{progress}{\if{latex}{\out{\sloppy}} Logical; display a text progress bar. Does not change calculations.}
-\item{add_plot}{\if{latex}{\out{\sloppy}} Generate diagnostic ggplot objects.}
-\item{inspect_alignment}{\if{latex}{\out{\sloppy}} Enable alignment diagnostics. These estimate lags without correcting timestamps or response metrics.}
-\item{align_hz}{\if{latex}{\out{\sloppy}} Frequency in Hz of the uniformly resampled diagnostic signal used for lag estimation. It does not resample the data used in response/error calculations.}
-\item{align_max_lag_s}{\if{latex}{\out{\sloppy}} Maximum lag magnitude in seconds searched by diagnostic cross-correlation; default 7200. Repetitive excitation can yield ambiguous peaks. The estimated lag is not applied as a timestamp correction.}
-\item{align_by}{\if{latex}{\out{\sloppy}} Diagnostic channel: vm recombines all axes as vector magnitude; ax, ay or az selects one axis. This choice affects lag inspection only.}
-\item{align_plot_stages_n}{\if{latex}{\out{\sloppy}} Retained compatibility argument; currently does not limit plotting or change calculations. It is not an active stage-selection control.}
-\item{compute_stage_xcorr}{\if{latex}{\out{\sloppy}} Logical; also estimate a lag separately for each matched stage when inspect_alignment is TRUE. Whole-trial lag diagnostics are separate; no lag is applied automatically.}
-\item{comp_plot_max_n}{\if{latex}{\out{\sloppy}} Maximum number of samples displayed in composite-response diagnostic plots, selected at evenly spaced indices. Fits and errors continue to use the full data.}
-\item{comp_plot_ylim}{\if{latex}{\out{\sloppy}} NULL uses the observed composite-trace plotting range; otherwise a numeric lower/upper \eqn{g} pair controls the displayed vertical interval. It does not exclude samples from fitting.}
+\item{test_axis_fsr_g}{\if{latex}{\out{\sloppy}} Test-axis peak-to-peak span (\eqn{g}); NULL uses acquisition metadata. Supplied values must be finite positive scalars; invalid values error without fallback. Required for range-normalised errors. Example: 16 for +/-8 \eqn{g}.}
+\item{ref_axis_fsr_g}{\if{latex}{\out{\sloppy}} Reference-axis peak-to-peak span (\eqn{g}); NULL uses acquisition metadata. Supplied values must be finite positive scalars. Missing range remains unavailable; test-error normalisation does not require it. Example: 16 for +/-8 \eqn{g}.}
+\item{window_s}{\if{latex}{\out{\sloppy}} Within-stage VM averaging-bin duration (s), for repeatability_error_cv; separate from pooled sample-level fitting and trial-to-trial repeatability.}
+\item{epoch_time}{\if{latex}{\out{\sloppy}} Retained end/center/start metadata setting; does not change within-stage repeatability bins.}
+\item{compute_entropy}{\if{latex}{\out{\sloppy}} Compute diagnostic sample/approximate entropy through optional TSEntropies. Disabled/unavailable implementations return NA; not an equivalence decision.}
+\item{entropy_m}{\if{latex}{\out{\sloppy}} Embedding dimension passed as dim to SampEn/ApEn; default two, on standardised VM.}
+\item{entropy_r}{\if{latex}{\out{\sloppy}} Matching tolerance in standardised-VM units; NULL uses 0.2 times sample SD. Not an acceleration equivalence margin.}
+\item{entropy_tau}{\if{latex}{\out{\sloppy}} Embedding lag passed to TSEntropies; default one sample, with duration dependent on sampling rate.}
+\item{verbose}{\if{latex}{\out{\sloppy}} Print processing messages.}
+\item{progress}{\if{latex}{\out{\sloppy}} Show a text progress bar.}
+\item{add_plot}{\if{latex}{\out{\sloppy}} Return diagnostic ggplot objects.}
+\item{inspect_alignment}{\if{latex}{\out{\sloppy}} Estimate diagnostic lags without correcting timestamps or response metrics.}
+\item{align_hz}{\if{latex}{\out{\sloppy}} Uniform diagnostic resampling rate (Hz) for lag estimation; response/error inputs are unchanged.}
+\item{align_max_lag_s}{\if{latex}{\out{\sloppy}} Maximum cross-correlation lag magnitude (s), default 7200. Repetitive excitation can produce ambiguous peaks; estimated lags are not applied.}
+\item{align_by}{\if{latex}{\out{\sloppy}} Lag-inspection channel: vm (recombined axes), ax, ay or az.}
+\item{align_plot_stages_n}{\if{latex}{\out{\sloppy}} Inactive compatibility argument; does not select stages or limit plots/calculations.}
+\item{compute_stage_xcorr}{\if{latex}{\out{\sloppy}} Also estimate matched-stage lags when inspect_alignment is TRUE, separately from whole-trial diagnostics. No lag is applied.}
+\item{comp_plot_max_n}{\if{latex}{\out{\sloppy}} Maximum displayed composite-trace samples, selected at evenly spaced indices. Fitting/errors use all data.}
+\item{comp_plot_ylim}{\if{latex}{\out{\sloppy}} Composite-trace display limits: lower/upper \eqn{g} pair, or NULL for observed range. Fitting is unaffected.}
 }
 \value{\if{latex}{\out{\sloppy}} A list: \code{stages} (one row per paired stage), \code{overall} (pooled response/composite error), \code{plots} (ggplot objects, possibly empty), and \code{meta} (ranges, windows, stage names and alignment diagnostics). Slope and scale-factor error are dimensionless; intercept/bias/SD are in \eqn{g}. VM integral non-linearity (retained field \code{linearity_error_vs_reference}) and composite error are percentages. Within-stage epoch-mean VM CV (retained field \code{repeatability_error_cv}) and other CV/utilisation fields are fractions. Trial-to-trial repeatability requires repeated assessments and separate aggregation.}
-\details{\if{latex}{\out{\sloppy}} Test vector magnitude is regressed on reference vector magnitude by ordinary least squares. Unequal lengths are matched by nearest positions on an evenly spaced sample-index grid, not by timestamp alignment or continuous interpolation. Stage matching is separate from pooled matching: pooled reference concatenation is length-matched once after concatenation. The caller must select synchronous, suitable stages and assess timing sensitivity. The pairing policy and measurement-range sources are reported in meta. The stage VM integral non-linearity denominator is \eqn{\sqrt{3}F}; the composite denominator is \eqn{\sqrt{3}F/2}, where F is test-axis peak-to-peak span. This implemented VM normalising span is not the nonnegative VM output range. Signed VM bias is the stage mean test-minus-reference difference; take its absolute value for absolute VM bias and convert slope minus one to percent for scale-factor error. Whole-stage VM FFT diagnostics are distinct from five-second pooled-triaxial spectral feature estimators. \code{dead_band} and \code{activation_threshold} are unestimated NA placeholders. Dynamic frequency diagnostics remain available; frequency-domain feature extraction and inter-device equivalence analyses are provided by WAM (\url{https://github.com/miltheo/wam}).}
-\seealso{\code{\link{metronautica-package}}}
+\details{\if{latex}{\out{\sloppy}} OLS regresses test VM on reference VM. Unequal lengths use nearest positions on an evenly spaced sample-index grid, without timestamp alignment or continuous interpolation. Stage and pooled matching differ: the pooled reference is length-matched once after concatenation. Select synchronous, suitable stages and assess timing sensitivity; meta records pairing policy/range sources.
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{dynamic_metrology_report} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and function map.}
+With F the test-axis peak-to-peak span, stage VM integral non-linearity uses \eqn{\sqrt{3}F}; pooled composite error uses \eqn{\sqrt{3}F/2}. Neither is the nonnegative VM output range. Absolute VM bias is abs(mean(test - reference)); percentage scale-factor error is 100(slope - 1).
+
+Frequency diagnostics are included; frequency-domain features and inter-device equivalence tests are in WAM (\url{https://github.com/miltheo/wam}).}
+\seealso{\code{\link{clip_dynamic_stages}}, \code{\link{m_dynamic_response}}, \code{\link{measurement-definitions}}}
 
 \section{Returned stage fields}{
 \if{latex}{\out{\sloppy}}
-Let F denote the configured test-axis peak-to-peak span, v the test VM in \eqn{g}, and r the length-matched reference VM. Fields use the existing stage-level calculations.
+Here F is the test-axis peak-to-peak span; v and r are paired test/reference VM in \eqn{g}.
 \describe{
-\item{stage, rpm}{Matched stage name and its parsed numerical RPM label.}
-\item{fs_hz_test, fs_hz_ref, n}{Timestamp-derived sampling frequencies in Hz and the number of test samples.}
-\item{vm_mean, vm_standard_deviation, vm_mean_amplitude_deviation}{Mean, sample SD and mean absolute deviation from the stage mean of v, all in \eqn{g}.}
-\item{vm_coefficient_of_variation}{Sample SD divided by mean VM, a fraction; undefined for zero mean.}
-\item{signal_power_vm}{Mean of squared sample VM, in \eqn{g} squared, including its mean component. This is a signal mean square, not physical mechanical power.}
-\item{dominant_frequency}{Frequency label in Hz of the maximum retained Fourier magnitude of demeaned stage VM. The retained frequency grid spans zero to half the derived rate across floor(N/2) entries, where N is the finite demeaned series length. This whole-stage diagnostic is separate from five-second pooled-triaxial feature frequency estimates.}
-\item{dominant_frequency_magnitude}{Maximum unnormalised absolute discrete Fourier coefficient of demeaned stage VM over the retained half spectrum. It scales with record length; no division by sample count, single-sided amplitude scaling or spectral-density normalisation is applied. It is not a calibrated sinusoidal amplitude or a power spectral density.}
-\item{sample_entropy, approximate_entropy}{Dimensionless SampEn/ApEn of standardised VM with the supplied parameters; NA when disabled, unavailable or unsuccessful.}
-\item{vm_bias_vs_reference}{Mean signed v minus r, in \eqn{g}; not mean absolute paired error.}
-\item{response_slope, response_intercept, scale_factor_error}{OLS test-on-reference slope (dimensionless), intercept (\eqn{g}) and slope minus one (fraction).}
-\item{linearity_error_vs_reference}{100 times the maximum absolute fitted residual divided by sqrt(3) F, a percentage.}
-\item{snr_time_domain}{Mean VM divided by sample SD of VM. A linear dimensionless ratio, not decibels or a separately measured signal/noise decomposition.}
-\item{snr_frequency_domain}{Squared dominant Fourier magnitude divided by the sum of squared remaining retained magnitudes. A linear dimensionless ratio; zero remainder gives NA.}
-\item{repeatability_error_cv}{SD divided by mean of within-stage window-mean VM, a fraction. It is not trial-to-trial repeatability.}
-\item{full_scale_utilisation_axis}{Maximum absolute scalar axis observation divided by F, a fraction. The denominator is the full peak-to-peak span, not the positive axis limit F/2.}
-\item{full_scale_utilisation_vm}{Maximum VM divided by sqrt(3) F, a fraction. It uses the implemented normalising span, not the maximum nonnegative VM supported by a symmetric three-axis sensor.}
-\item{dead_band, activation_threshold}{Unestimated NA placeholders.}
-\item{alignment_lag_s}{Optional stage cross-correlation lag in seconds; not applied to sample timestamps or errors.}
+\item{stage, rpm}{\if{latex}{\out{\sloppy}} Matched stage name and its parsed numerical RPM label.}
+\item{fs_hz_test, fs_hz_ref, n}{\if{latex}{\out{\sloppy}} Timestamp-derived sampling frequencies in Hz and the number of test samples.}
+\item{vm_mean, vm_standard_deviation, vm_mean_amplitude_deviation}{\if{latex}{\out{\sloppy}} Mean, sample SD and mean absolute deviation from the stage mean of v, all in \eqn{g}.}
+\item{vm_coefficient_of_variation}{\if{latex}{\out{\sloppy}} Sample SD divided by mean VM, a fraction; undefined for zero mean.}
+\item{signal_power_vm}{\if{latex}{\out{\sloppy}} Mean of squared sample VM, in \eqn{g} squared, including its mean component. This is a signal mean square, not physical mechanical power.}
+\item{dominant_frequency}{\if{latex}{\out{\sloppy}} Maximum-magnitude Fourier bin of demeaned stage VM (Hz). The grid has floor(N/2) entries spanning zero to half the derived rate; N is the finite series length. This whole-stage diagnostic differs from five-second pooled-triaxial features.}
+\item{dominant_frequency_magnitude}{\if{latex}{\out{\sloppy}} Maximum absolute Fourier coefficient of demeaned stage VM over the retained half spectrum. No sample-count, single-sided-amplitude or spectral-density normalisation is applied. It scales with record length; it is neither calibrated sinusoidal amplitude nor power spectral density.}
+\item{sample_entropy, approximate_entropy}{\if{latex}{\out{\sloppy}} Dimensionless SampEn/ApEn of standardised VM with the supplied parameters; NA when disabled, unavailable or unsuccessful.}
+\item{vm_bias_vs_reference}{\if{latex}{\out{\sloppy}} Mean signed v minus r, in \eqn{g}; not mean absolute paired error.}
+\item{response_slope, response_intercept, scale_factor_error}{\if{latex}{\out{\sloppy}} OLS test-on-reference slope (dimensionless), intercept (\eqn{g}) and slope minus one (fraction).}
+\item{linearity_error_vs_reference}{\if{latex}{\out{\sloppy}} 100 times the maximum absolute fitted residual divided by sqrt(3) F, a percentage.}
+\item{snr_time_domain}{\if{latex}{\out{\sloppy}} Mean VM divided by sample SD of VM. A linear dimensionless ratio, not decibels or a separately measured signal/noise decomposition.}
+\item{snr_frequency_domain}{\if{latex}{\out{\sloppy}} Squared dominant Fourier magnitude divided by the sum of squared remaining retained magnitudes. A linear dimensionless ratio; zero remainder gives NA.}
+\item{repeatability_error_cv}{\if{latex}{\out{\sloppy}} SD divided by mean of within-stage window-mean VM, a fraction. It is not trial-to-trial repeatability.}
+\item{full_scale_utilisation_axis}{\if{latex}{\out{\sloppy}} Maximum absolute scalar axis observation divided by F, a fraction. The denominator is the full peak-to-peak span, not the positive axis limit F/2.}
+\item{full_scale_utilisation_vm}{\if{latex}{\out{\sloppy}} Maximum VM divided by sqrt(3) F, a fraction. It uses the implemented normalising span, not the maximum nonnegative VM supported by a symmetric three-axis sensor.}
+\item{dead_band, activation_threshold}{\if{latex}{\out{\sloppy}} Unestimated NA placeholders.}
+\item{alignment_lag_s}{\if{latex}{\out{\sloppy}} Optional stage cross-correlation lag in seconds; not applied to sample timestamps or errors.}
 }
-The one-row \code{overall} table contains \code{composite_error} (100 times the pooled maximum absolute fitted residual divided by sqrt(3) F/2), \code{response_slope}, \code{response_intercept} and \code{scale_factor_error}. Pooled fitting uses concatenated matched stages. See Details for its distinct reference length matching. The diagnostic plots and metadata accompany these tables; they do not alter the response fits.
+The one-row \code{overall} table returns \code{composite_error} (100 times pooled maximum absolute fitted residual divided by sqrt(3) F/2), \code{response_slope}, \code{response_intercept} and \code{scale_factor_error}. Pooled fitting concatenates matched stages, with distinct reference length matching as described above. Diagnostic plots/metadata do not alter fits.
 }

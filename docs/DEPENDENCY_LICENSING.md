@@ -1,7 +1,5 @@
 # Software and dependency licences
 
-[Workflow](../README.md#processing-workflow) &middot; [HTML guide](index.html) &middot; [HTML reference](reference.html) &middot; [PDF reference](metronautica-reference.pdf)
-
 Metronautica's original software is GPL version 3 only (`GPL-3` in DESCRIPTION).
 Dependencies remain separately licensed; they are not included or relicensed by
 this repository's licence. Preserve their copyright and licence notices if

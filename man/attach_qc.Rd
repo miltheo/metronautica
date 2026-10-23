@@ -1,15 +1,13 @@
 \name{attach_qc}
 \alias{attach_qc}
 \title{Attach signal diagnostics to recording metadata}
-\description{\if{latex}{\out{\sloppy}} Attach signal diagnostics to recording metadata.}
+\description{\if{latex}{\out{\sloppy}} Compute and attach current primary-five signal diagnostics.}
 \usage{
 attach_qc(x, scope = "whole parsed recording")
 }
 \arguments{
-\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in \eqn{g}, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.}
+\item{x}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
 \item{scope}{\if{latex}{\out{\sloppy}} Text describing the recording interval to which the diagnostics apply.}
 }
 \value{\if{latex}{\out{\sloppy}} The same input container, with primary-five diagnostics in meta$processing$qc. Bundle and data metadata are synchronised.}
-\seealso{\code{\link{metronautica-package}}}
-
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{attach_qc} in \code{R/m_qc.R}. See \code{\link{implementation-guide}} for the framework and function map.}
+\seealso{\code{\link{qc_accel_tbl}}, \code{\link{invalidate_qc}}}

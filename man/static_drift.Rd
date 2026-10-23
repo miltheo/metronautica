@@ -1,17 +1,15 @@
 \name{static_drift}
 \alias{static_drift}
 \title{Estimate signed drift from one-second means}
-\description{\if{latex}{\out{\sloppy}} Estimate signed drift from one-second means.}
+\description{\if{latex}{\out{\sloppy}} Signed OLS slopes of one-second axis and VM means against elapsed hours.}
 \usage{
 static_drift(d1)
 }
 \arguments{
-\item{d1}{\if{latex}{\out{\sloppy}} One-second summary table returned by static_1hz_means, with elapsed_h and axis/VM mean columns. elapsed_h is time since the first populated UTC-second bin, in hours. This is a derived table, not a raw parser bundle.}
+\item{d1}{\if{latex}{\out{\sloppy}} One-second means from \code{\link{static_1hz_means}}, including elapsed_h (hours since the first populated UTC-second bin).}
 }
-\value{A list with \code{vm_drift_g_per_h}, \code{x_drift_g_per_h}, \code{y_drift_g_per_h} and \code{z_drift_g_per_h}: signed slopes in \eqn{g}/h. \code{fit_vm} is the fitted VM \code{lm} object. Fitted axis-model objects are not returned.}
+\value{\if{latex}{\out{\sloppy}} A list with \code{vm_drift_g_per_h}, \code{x_drift_g_per_h}, \code{y_drift_g_per_h} and \code{z_drift_g_per_h}: signed slopes in \eqn{g}/h. \code{fit_vm} is the fitted VM \code{lm} object. Fitted axis-model objects are not returned.}
 
-\seealso{\code{\link{metronautica-package}}}
+\seealso{\code{\link{static_1hz_means}}, \code{\link{plot_static_drift_vm}}, \code{\link{measurement-definitions}}}
 
-\section{Method}{\if{latex}{\out{\sloppy}} Fit separate ordinary least-squares models of one-second VM and axis means on elapsed_h. Return the signed slopes in \eqn{g}/h and the fitted VM model. Selection of a stationary interval is the caller's responsibility; fitting a slope does not establish physical sensor drift in uncontrolled movement.}
-
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{static_drift} in \code{R/m_static.R}. See \code{\link{implementation-guide}} for the framework and function map.}
+\section{Method}{\if{latex}{\out{\sloppy}} Fit separate OLS models of one-second axis/VM means against elapsed_h. Requires a stationary interval; a slope fitted to uncontrolled movement does not establish sensor drift.}

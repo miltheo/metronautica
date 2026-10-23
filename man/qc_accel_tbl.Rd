@@ -6,32 +6,52 @@
 qc_accel_tbl(x)
 }
 \arguments{
-\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in \eqn{g}, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. For this diagnostic function the table must have exactly time, ax_g, ay_g and az_g in that order. No samples are repaired by input conversion.}
+\item{x}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle. Requires exactly time (POSIXct), ax_g, ay_g, az_g (numeric \eqn{g}), in that order; metadata precedence follows \code{\link{common-data-format}}.}
 }
 \value{\if{latex}{\out{\sloppy}} A named list of scalar diagnostics. Counts are sample counts except \code{invalid_axis}, \code{near_limit_n} and \code{finite_axis_n}, which count axis observations. Percentages are on the 0--100 scale.}
 \details{\if{latex}{\out{\sloppy}}
-The ruleset is named primary-five. The five groups below describe the decoded recording, without exclusion, sorting, interpolation or repair. Finite means neither missing, NaN nor infinite. Rounding tolerances are not introduced into exact equality tests.
+The primary-five rules follow Supplementary Table S2 of the research article under submission.
 \describe{
-\item{1. Data integrity}{\if{latex}{\out{\sloppy}} n_samples counts recorded rows. missing_time counts non-finite timestamps. duplicate_time counts repeated finite timestamps after their first occurrence. backward_time counts negative finite differences between adjacent timestamps. invalid_axis counts non-finite scalar axis values across X, Y and Z, so its denominator is three times the row count rather than the number of rows.}
-\item{2. Sample timing}{\if{latex}{\out{\sloppy}} Select only finite, strictly positive differences between adjacent recorded timestamps. median_dt_ms is their median, iqr_dt_ms is their interquartile range using R type-7 quartiles, and longest_dt_ms is their maximum, all in milliseconds. IQR requires at least two positive intervals. No positive intervals yields NA. These summaries expose spacing and gaps; they do not count missing samples or establish synchronisation with another recording.}
-\item{3. Axis-zero proportion}{\if{latex}{\out{\sloppy}} For each axis, zero_x_n/zero_y_n/zero_z_n count exact zero values. finite_x_n/finite_y_n/finite_z_n count finite values independently. Each zero percentage is 100 times its axis zero count divided by its finite count; no finite values gives NA. A single zero axis can be expected at some stationary orientations and is not an automatic failure.}
-\item{4. Unusual cross-axis patterns}{\if{latex}{\out{\sloppy}} all_zero_samples counts rows with X=Y=Z=0; equal_nonzero_samples counts rows with X=Y=Z and X not zero. Pattern counts require finite XYZ values. Each sequence flag is TRUE if its pattern occurs in at least two adjacent eligible rows: both timestamps and all axes must be finite and the timestamp step must be strictly positive. An invalid row, repeated timestamp or reversal breaks the sequence. No gap-duration limit is imposed. Equal non-zero values may differ between adjacent rows. These sample-level rules adapt the NHANES pattern concepts; they do not reproduce its minute-level algorithm or imply every flagged sample is defective.}
-\item{5. Near-limit values}{\if{latex}{\out{\sloppy}} limit_g is half the configured symmetric peak-to-peak axis span from acquisition$full_scale_range_g. near_limit_fraction is the fixed screening fraction 0.98. Pool finite scalar observations from all three axes and count those satisfying abs(a) >= 0.98*limit_g as near_limit_n. finite_axis_n is the pooled finite count, and near_limit_pct is 100 times their ratio. Missing/invalid range metadata yields an undefined limit/count and percentage. This is a proximity-to-range screen, not proof of clipping or a calibrated saturation threshold.}
+\item{1. Data integrity}{\if{latex}{\out{\sloppy}} Count non-finite timestamps. Count repeated finite timestamps after their first occurrence. Count negative differences between adjacent finite timestamps. Count non-finite acceleration values across X, Y and Z.
+
+\emph{Reported output:} Four separate counts; total rows and total axis values retained as denominators.
+
+\emph{Source:} Study-defined availability and ordering checks.}
+\item{2. Sample timing}{\if{latex}{\out{\sloppy}} Select finite, positive differences between adjacent timestamps. Report their median, interquartile range (IQR) and maximum.
+
+\emph{Reported output:} Typical spacing, spacing spread and longest spacing (ms).
+
+\emph{Source:} Study-defined application; IQR is an established measure of spread (NIST/SEMATECH, n.d.).}
+\item{3. Axis-zero proportion}{\if{latex}{\out{\sloppy}} For each axis, divide the number of exact-zero values by the number of finite values and multiply by 100.
+
+\emph{Reported output:} Zero values (\%) separately for X, Y and Z.
+
+\emph{Source:} Study-defined descriptive diagnostic.}
+\item{4. Unusual cross-axis patterns}{\if{latex}{\out{\sloppy}} Count samples with \eqn{X = Y = Z = 0}. Count samples with \eqn{X = Y = Z} and \eqn{X \neq 0}. Flag each pattern separately when it occurs in at least two consecutive eligible samples.
+
+\emph{Reported output:} Sample count and sequence-present flag for each pattern.
+
+\emph{Source:} Adapted from NHANES all-zero and equal-axis flags (CDC/NCHS, 2022); the two-sample all-zero minimum is study-defined.}
+\item{5. Near-limit values}{\if{latex}{\out{\sloppy}} Pool the finite acceleration values from X, Y and Z. Report the percentage whose absolute value is at least \eqn{0.98L}, where \eqn{L} is the configured positive axis limit.
+
+\emph{Reported output:} Near-limit values (\%); retain \eqn{L}, threshold, numerator and denominator.
+
+\emph{Source:} NHANES range-limit concept (CDC/NCHS, 2022); 98\% and pooling are study-defined. Span terminology follows JCGM (2012, entries 4.4--4.5).}
 }
-The diagnostic thresholds, numerators and denominators are retained with the output so they can be reported. The 0.98 near-limit fraction and pooled-axis denominator are screening conventions; VIM measurement-span terminology does not prescribe that fraction. Stored QC describes only the signal and interval on which it was calculated. Recompute after processing changes or a new clip.
+Finite excludes missing values, NaN and infinities. Unavailable quantities are reported as NA. IQR requires at least two positive intervals and uses linearly interpolated quartiles. For symmetric limits, \eqn{L} is half the configured full-scale span. Eligible pattern samples have finite timestamps and XYZ values. Consecutive samples are adjacent recorded rows with strictly increasing timestamps; an ineligible row or non-increasing step breaks a sequence. The equal non-zero value may vary between samples. No gap-duration cutoff is imposed. The intended all-axis NHANES zero condition is used, not its documented X-only implementation error; the original minute-level flag algorithm is not reproduced.
 }
 
-\seealso{\code{\link{metronautica-package}}}
+\seealso{\code{\link{attach_qc}}, \code{\link{common-data-format}}}
 \examples{
-t0 <- as.POSIXct("2026-01-01 00:00:00", tz = "UTC")
-fs <- 100
-s <- (0:5999) / fs
-meta <- list(acquisition = list(fs_derived_hz = fs,
-    fs_nominal_hz = fs, full_scale_range_g = 16))
-x <- as_accel_tbl(t0 + s, 0.1 * sin(2 * pi * 2 * s),
-    0.1 * cos(2 * pi * 2 * s), 1 + 0.1 * sin(2 * pi * s), meta)
+path <- system.file("extdata", "example_motion.csv",
+    package = "metronautica", mustWork = TRUE)
+x <- parse_raw_auto(path)
 q <- qc_accel_tbl(x)
 q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 }
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{qc_accel_tbl} in \code{R/m_qc.R}. See \code{\link{implementation-guide}} for the framework and function map.}
+\references{NIST/SEMATECH (n.d.). e-Handbook of Statistical Methods, Section 1.3.5.6: Measures of Scale. \url{https://www.itl.nist.gov/div898/handbook/eda/section3/eda356.htm}.
+
+CDC/NCHS (2022). Data Quality Flag Summary Table for the Physical Activity Monitor (PAM) Data Collected in NHANES 2011--2014 and NNYFS. \url{https://wwwn.cdc.gov/nchs/nhanes/Pam/}.
+
+JCGM (2012). International vocabulary of metrology, JCGM 200:2012, entries 4.4--4.5. \doi{10.59161/JCGM200-2012}.}

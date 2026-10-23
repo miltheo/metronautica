@@ -1,59 +1,85 @@
 <!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Activity counts: implementation and validation | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="activity-counts-implementation-and-validation"></a></p>
 <h1>Activity counts: implementation and validation</h1>
-<p><a href="index.html#processing-workflow">Workflow</a> · <a href="index.html">HTML guide</a> · <a href="reference.html">HTML reference</a> · <a href="metronautica-reference.pdf">PDF reference</a></p>
-<p>The standalone <code>accel_metric_agcounts()</code> API is implemented in <code>R/m_agcounts.R</code>.
-Its Rd help and generated reference manual are the parameter/method reference.
-This is an implementation of the published algorithm, not a newly proposed
-historical count definition. Published coefficients are acknowledged from
-ActiGraph/agcounts under GPL-3.0, commit
-3137c9b9a26539ae2d9645d396586fe15faece59; see
+<p><code>accel_metric_agcounts()</code> implements the published algorithm with optional custom
+band-pass cutoffs. Published coefficients: ActiGraph/agcounts, GPL-3.0, commit
+3137c9b9a26539ae2d9645d396586fe15faece59;
 <a href="https://doi.org/10.1038/s41598-022-16003-x">Neishabouri et al. (2022)</a>.</p>
 <p><a name="use-and-interpretation"></a></p>
 <h2>Use and interpretation</h2>
-<p>Use <code>accel_metric_agcounts()</code> for the published-filter calculation or explicit
-custom cutoffs. Input precision, gap handling and boundary policies are part of
-the pipeline; modified counts do not inherit behavioural-threshold validation.
-<a href="reference.html#accel_metric_agcounts">Function parameters and method</a> define
-these settings. <a href="recording-examples.html#feature-settings">The processing guide</a>
-links count computation to the acceleration workflow.</p>
+<p>The <a href="reference.html#accel_metric_agcounts">function reference</a> defines inputs,
+precision, gap and boundary policies. Counts are standalone; <code>AG</code> is not a
+<code>compute_accel_summaries()</code> selector. Neither Python nor R agcounts is required.
+Custom filters produce modified counts without inherited behavioural-threshold validation.</p>
+<p><a name="calculation-stages"></a></p>
+<h2>Calculation stages</h2>
+<ol>
+<li>Convert axes to 30 Hz using the rate-specific historical method, including
+its separate power-of-two path and finite-record behaviour.</li>
+<li>Round to three decimals; apply the published causal filter with steady-state
+initialisation.</li>
+<li>Rescale by <code>(3/4096)/(2.6/256) * 237.5</code>, rectify, threshold, saturate and quantise.</li>
+<li>Average and floor groups of three samples to 10 Hz, then accumulate epochs.</li>
+</ol>
+<p>Normal quantisation suppresses values below 4, saturates at 128 and floors.
+Low-frequency extension suppresses values below 1, uses <code>floor(value)-1</code> for
+<code>1 &lt;= value &lt; 4</code>, and otherwise floors after saturation at 128. It changes
+thresholds, not filter coefficients; AGD validation used the Normal filter.</p>
+<p>Custom filtering replaces only the band-pass stage: Butterworth prototype order
+1-8 (default 4), twice that transfer order, with peak gain matched to the published
+filter. Unstable designs error; subsequent scaling/count operations are retained.</p>
+<p>GT3X parsing defaults to native precision; <code>precision = &quot;legacy_3dp&quot;</code> selects the
+earlier rounded conversion. Lost digits cannot be reconstructed. Parsing does
+not repair source timestamps or gaps.</p>
 <p><a name="original-experimental-validation"></a></p>
 <h2>Original experimental validation</h2>
-<p>The experiment included 89 paired native/ActiLife 7.1.0 Normal-filter AGD
-recordings: 45 static files and 44 secondary-shaker files. Static checks used
-initial, central stationary and final 30-minute windows, with preceding context
-for internal windows. They did not cover every static-recording second.
-Secondary checks used all matching raw coverage. GT9X startup prefixes were
-explicitly derived from native-header timing. No lag or parameter was fitted.</p>
-<p>Across 3,763,659 paired one-second axis values, the calculation matched the
-pinned official Python reference exactly, including nonzero counts. Synthetic
-checks covered all 12 supported rates; all eight legacy rates also matched R
-agcounts 0.7.0. A custom 0.69-10 Hz example matched an independently designed
-SciPy calculation. These are computational comparisons, not behavioural tests.</p>
-<p>AGD agreement in the controlled-shaker interval was 100% for wGT3X-BT and LEAP,
-and 99.996693% for GT9X. The latter involved eight affected seconds around a one-second
-missing interval. A targeted carry-forward test reproduced those AGD values, whereas zero
-filling did not. Other residuals concerned startup and idle/download transitions.
-R agcounts also modifies zero-valued periods internally, so its public wrapper
-need not evaluate the supplied values unchanged. Matching the calculation does
-not establish universal export reproduction under different input conventions.</p>
-<p>The accompanying CSV files report full-record/window agreement, nonzero-count
-agreement, maximum differences and coverage. Python and R agcounts were external
-benchmarks only; neither is required to install or use Metronautica.</p>
+<p>The benchmark used 89 paired native/ActiLife 7.1.0 Normal-filter AGD recordings:
+45 static and 44 secondary-shaker files. Static comparisons covered initial,
+central stationary and final 30-minute windows, retaining preceding context for
+internal windows. They did not cover every recording second. Shaker comparisons
+used all matching raw coverage. GT9X startup prefixes came from native-header
+timing; no lag or parameter was fitted.</p>
+<table>
+<thead>
+<tr>
+<th>Comparison</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pinned official Python reference</td>
+<td>Exact match for 3,763,659 one-second axis values, including nonzero counts</td>
+</tr>
+<tr>
+<td>Synthetic rate checks</td>
+<td>All 12 supported rates; eight legacy rates also matched R agcounts 0.7.0</td>
+</tr>
+<tr>
+<td>Custom 0.69-10 Hz filter</td>
+<td>Matched independently designed SciPy calculation</td>
+</tr>
+<tr>
+<td>Controlled-shaker AGD</td>
+<td>100% for wGT3X-BT and LEAP; 99.996693% for GT9X</td>
+</tr>
+</tbody>
+</table>
+<p>The GT9X difference affected eight seconds around one missing second.
+Carry-forward reproduced those AGD values; zero filling did not. Other residuals
+occurred at startup and idle/download transitions. R agcounts also modifies
+zero-valued periods internally. These computational comparisons do not establish
+universal export reproduction or behavioural validity.</p>
 <p><a name="api-verification-and-benchmark-scope"></a></p>
 <h2>API verification and benchmark scope</h2>
-<p>The standalone API reproduced all 3,763,659 pinned published-reference axis
-values over the 89-recording benchmark. Benchmark inputs use explicit zero-fill
-and GT9X startup-padding conventions; this does not imply that recordings with
-gaps satisfy the function's strict default policy.</p>
-<p>Native parser-to-count checks cover complete first shaker trials for LEAP,
-wGT3X-BT and GT9X. Explicit legacy precision reproduces the upstream conversion.
-The audited GT9X recording has two one-second missing intervals; only one lies
-within the controlled-shaker window. Gap rejection, explicit carry-forward,
-boundary padding and affected-epoch flags are checked separately.</p>
-<p>Package tests use synthetic signals and small deterministic reference fixtures;
-they do not download recordings or require external benchmark software. Run
-<code>Rscript tools/validate.R</code> after installing the package to execute all eight
-checks, including counts.</p>
+<p>The installed API reproduced the same 3,763,659 published-reference axis values.
+Benchmark inputs explicitly used zero filling and GT9X startup padding; recordings
+with gaps therefore do not satisfy the strict default policy.</p>
+<p>Parser-to-count checks cover complete first trials for LEAP, wGT3X-BT and GT9X.
+Legacy precision reproduces the upstream conversion. The audited GT9X trial
+contains two one-second gaps, one within controlled excitation. Separate checks
+cover gap rejection, carry-forward, boundary padding and affected-epoch flags.</p>
+<p><code>Rscript tools/validate.R</code> runs all eight package checks using synthetic signals
+and deterministic fixtures, without downloads or external benchmark software.</p>
 <p><a name="benchmark-tables"></a></p>
 <h2>Benchmark tables</h2>
 <p>Tables are in <a href="https://github.com/miltheo/metronautica/blob/main/docs/validation/">validation</a>. The recording/window summaries include

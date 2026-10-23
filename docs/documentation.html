@@ -1,68 +1,24 @@
 <!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Documentation | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="documentation"></a></p>
 <h1>Documentation</h1>
-<p>The root <a href="index.html">README</a> is the entry point. The HTML guide renders that
-README and the Markdown guides; the HTML and PDF references both use <code>man/*.Rd</code>.
-Edit those sources, then rebuild rather than editing generated HTML.</p>
-<p><a name="repository-roles"></a></p>
-<h2>Repository roles</h2>
-<p><code>R/</code> and <code>man/</code> define the installed interface. <code>inst/extdata/</code> supplies installed
-offline data and the sample catalogue; R installs its contents at <code>extdata/</code>.
-<code>tests/</code> contains numerical/interface checks. <code>tools/</code> contains developer utilities;
-ordinary users load the package with <code>library(metronautica)</code>.</p>
-<p>The R help examples are the maintained example-code source. The HTML builder
-extracts them into Getting Started and <code>examples/quick_start.R</code>. Do not edit those
-generated code blocks independently. The recording guide covers processing choices;
-the measurement-definitions page is an index into canonical R help.</p>
-<p><a name="build"></a></p>
-<h2>Build</h2>
-<p>From the repository root, with R available:</p>
-<pre><code class="language-sh">Rscript tools/build_html.R
-Rscript tools/build_manual.R
-</code></pre>
-<p>To regenerate the real-recording plot previews after installing the package:</p>
-<pre><code class="language-sh">Rscript tools/render_examples.R &quot;path/to/wam/samples&quot;
-</code></pre>
-<p>This explicitly processes the 24-hour static sample and full ten-stage dynamic
-trial, writing static, dynamic and combined-feature PNG previews under <code>docs/assets/examples/</code>. The catalogue and
-compressed attachments must be available locally. Then rebuild the HTML.
-Run <code>Rscript tools/validate.R</code> from the repository root for the package checks.</p>
-<p>HTML generation requires R &gt;= 4.5 with <code>tools::pkg2HTML()</code>, plus <code>commonmark</code> and
-<code>V8</code> for Markdown and R's equation conversion. These are documentation-build
-tools, not package runtime dependencies. Install missing tools explicitly with
-<code>install.packages(c(&quot;commonmark&quot;, &quot;V8&quot;))</code>.</p>
-<p>Open <code>docs/index.html</code> in a browser. Diagram regions provide keyboard-accessible
-links and hover descriptions. The reference has a filterable contents list.
-Equations use KaTeX from a CDN; plain equation source remains visible if it is
-unavailable. All explanatory content and navigation are local.</p>
-<p><a name="github-display-and-hosting"></a></p>
-<h2>GitHub display and hosting</h2>
-<p>The GitHub README shows the diagram image and linked stage navigation. Hover
-titles on links supplement the visible format and data-contract sections; they
-are not required to understand or use the package.</p>
-<p>GitHub's repository viewer shows HTML source. To serve the generated HTML later,
-configure GitHub Pages to publish the <code>docs/</code> directory from the chosen branch.
-Then link the README to the resulting Pages URL. No hosting is enabled by the
-build script. Local HTML use requires no hosting.</p>
-<p>The workflow asset is <code>assets/workflow-dark.svg</code>. Its interactive regions are
-defined in <code>tools/build_html.R</code>; update their coordinates if the diagram changes.
-The tibble, static rectangle and connecting arrow share x = 840 in its view box.</p>
-<p><a name="files"></a></p>
-<h2>Files</h2>
+<p>Edit Markdown guides, <code>man/*.Rd</code> and maintained <code>examples/*.R</code>; rebuild generated
+HTML/PDF rather than editing them directly.</p>
+<p><a name="sources"></a></p>
+<h2>Sources</h2>
 <table>
 <thead>
 <tr>
 <th>Source</th>
-<th>Browser output</th>
+<th>Output</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>README.md</code> at repository root</td>
+<td>Root <code>README.md</code></td>
 <td><code>index.html</code></td>
 </tr>
 <tr>
 <td><code>man/*.Rd</code></td>
-<td><code>reference.html</code></td>
+<td><code>reference.html</code>, PDF manual and installed R help</td>
 </tr>
 <tr>
 <td><code>GETTING_STARTED.md</code></td>
@@ -86,6 +42,37 @@ The tibble, static rectangle and connecting arrow share x = 840 in its view box.
 </tr>
 </tbody>
 </table>
-<p><code>validation/</code> retains activity-count benchmark tables. Function calculations and
-R help are unchanged by generating this documentation.</p>
+<p>The HTML builder embeds maintained example scripts into marked guide blocks.
+<code>quick_start.R</code> supplies static/dynamic examples; the other recipes cover offline
+features, settings, comparison and calibration. Edit the scripts, not embedded copies.</p>
+<p><a name="build-and-check"></a></p>
+<h2>Build and check</h2>
+<p>From the repository root:</p>
+<pre><code class="language-sh">Rscript tools/build_html.R
+Rscript tools/build_manual.R
+Rscript tools/validate.R
+</code></pre>
+<p>HTML requires R &gt;= 4.5 (<code>tools::pkg2HTML()</code>), <code>commonmark</code> and <code>V8</code>.
+PDF generation requires a working R/LaTeX documentation toolchain.
+These are build tools, not package runtime dependencies.</p>
+<p>After installing the package, regenerate recording plots only when needed:</p>
+<pre><code class="language-sh">Rscript tools/render_examples.R &quot;path/to/wam/samples&quot;
+</code></pre>
+<p>This processes the 24-hour static sample and ten-stage trial, saving previews
+under <code>assets/examples/</code>. Compressed attachments and their catalogue must be local.
+Then rebuild HTML.</p>
+<p><a name="repository-roles"></a></p>
+<h2>Repository roles</h2>
+<p><code>R/</code> defines functions; <code>man/</code> defines their reference documentation.
+<code>inst/extdata/</code> installs small fixtures and the sample catalogue under <code>extdata/</code>.
+<code>tests/</code> checks calculations/interfaces; <code>tools/</code> builds and validates documentation.
+<code>validation/</code> contains activity-count benchmark tables.</p>
+<p><a name="browser-guide"></a></p>
+<h2>Browser guide</h2>
+<p>Open <code>index.html</code> locally. Diagram boxes provide keyboard-accessible links and
+hover details; the reference has a filterable index. Equation rendering uses
+CDN-hosted KaTeX, with plain equation source available offline.</p>
+<p>GitHub's file viewer shows HTML source. GitHub Pages remains on hold; builds do
+not enable hosting. Workflow hotspots are maintained in <code>tools/build_html.R</code> and
+must match <code>assets/workflow-dark.svg</code> if the diagram changes.</p>
 </main></body></html>

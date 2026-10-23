@@ -1,7 +1,7 @@
 \name{m_dynamic_response}
 \alias{m_dynamic_response}
 \title{Compute vector-magnitude response and reference-dependent error}
-\description{\if{latex}{\out{\sloppy}} Compute vector-magnitude response and reference-dependent error.}
+\description{\if{latex}{\out{\sloppy}} OLS test-on-reference VM response with signed bias and range-normalised residual errors.}
 \usage{
 m_dynamic_response(test, reference, axis_fsr_g)
 }
@@ -11,10 +11,8 @@ m_dynamic_response(test, reference, axis_fsr_g)
 \item{axis_fsr_g}{\if{latex}{\out{\sloppy}} Required finite positive scalar. Configured single-axis peak-to-peak span in \eqn{g}. The VM normalising span is sqrt(3) times this value.}
 }
 \value{\if{latex}{\out{\sloppy}} A list with vm_bias_vs_reference (signed mean difference, \eqn{g}), response_slope (dimensionless), response_intercept (\eqn{g}), scale_factor_error (slope minus one), linearity_error_vs_reference and composite_error (percentages using the full and half normalising spans respectively), maximum_absolute_residual_g, and predicted_vm_g (fitted test VM values in \eqn{g}).}
-\details{\if{latex}{\out{\sloppy}} The least-squares test-VM-on-reference-VM regression and nearest-index length matching are the same calculations used by dynamic_metrology_report. The signed bias is the mean test-minus-reference VM. Scale-factor error is slope minus one, dimensionless. Integral non-linearity uses the maximum absolute residual divided by the VM normalising span, times 100. The composite-error field uses half that span; it represents trial composite error only when the supplied vectors contain the complete pooled trial assessment. It is not a measurement-uncertainty budget. This function applies no new calibration or timestamp correction.}
-\seealso{\code{\link{metronautica-package}}}
-
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{m_dynamic_response} in \code{R/m_dynamic.R}. See \code{\link{implementation-guide}} for the framework and function map.}
+\details{\if{latex}{\out{\sloppy}} Uses the OLS and nearest-index pairing in \code{\link{dynamic_metrology_report}}. Integral non-linearity = 100 times maximum absolute residual/VM normalising span; composite error uses half that span. The latter represents trial composite error only for complete pooled-trial vectors. No calibration, timestamp correction or uncertainty budget is supplied.}
+\seealso{\code{\link{dynamic_metrology_report}}, \code{\link{measurement-definitions}}}
 
 \examples{
 reference_vm <- seq(.1, 2, length.out = 100)

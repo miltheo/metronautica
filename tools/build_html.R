@@ -1,5 +1,5 @@
-# Generate browser documentation from the README, Markdown guides and R help.
-# Run from any directory: Rscript tools/build_html.R
+# Build HTML from maintained documentation.
+# Run tools/build_html.R from anywhere.
 args <- commandArgs(trailingOnly = FALSE)
 script <- sub("^--file=", "", grep("^--file=", args, value = TRUE)[1L])
 root <- dirname(dirname(normalizePath(script, winslash = "/", mustWork = TRUE)))
@@ -18,27 +18,13 @@ read_text <- function(path) {
     text
 }
 write_text <- function(text, path) {
-    # R's help converter can emit trailing spaces in tables and example headings.
+# Remove generated trailing whitespace.
     text <- gsub("(?m)[ \t]+$", "", enc2utf8(text), perl = TRUE)
     writeLines(text, path, useBytes = TRUE)
 }
-# The installed help examples are the maintained code source for guides/scripts.
-example_code <- function(file) {
-    out <- tempfile(fileext = ".R")
-    on.exit(unlink(out), add = TRUE)
-    tools::Rd2ex(tools::parse_Rd(file.path(root, "man", file)), out = out,
-        commentDontrun = FALSE)
-    lines <- readLines(out, warn = FALSE, encoding = "UTF-8")
-    lines <- lines[!grepl("^(###|## Not run:|## End\\(Not run\\))", lines)]
-    while (length(lines) && !nzchar(trimws(lines[[1L]]))) lines <- lines[-1L]
-    while (length(lines) && !nzchar(trimws(tail(lines, 1L)))) lines <- head(lines, -1L)
-    lines
-}
-native <- example_code("native-study-examples.Rd")
-write_text(paste(c("# Generated from man/native-study-examples.Rd by tools/build_html.R.",
-    "# Set options(metronautica.sample_dir = \"path/to/wam/samples\") before running.",
-    native), collapse = "\n"), file.path(root, "examples", "quick_start.R"))
-offline <- example_code("getting-started.Rd")
+# Embed maintained example scripts.
+native <- strsplit(read_text(file.path(root, "examples", "quick_start.R")), "\n", fixed = TRUE)[[1L]]
+offline <- strsplit(read_text(file.path(root, "examples", "offline_workflow.R")), "\n", fixed = TRUE)[[1L]]
 offline <- offline[seq_len(grep("^# AI uses", offline)[[1L]] - 1L)]
 static_start <- grep("^# Static characterisation", native)[[1L]]
 dynamic_start <- grep("^# Dynamic characterisation", native)[[1L]]
@@ -58,16 +44,22 @@ for (name in names(blocks)) {
         paste(blocks[[name]], collapse = "\n"), "\n```\n", substring(text, b))
 }
 write_text(text, guide)
-comparison <- paste(example_code("feature-comparison.Rd"), collapse = "\n")
+# Embed extended recipes from examples/.
 comparison_guide <- file.path(docs, "REAL_DATA_EXAMPLES.md")
 text <- read_text(comparison_guide)
-begin <- "<!-- EXAMPLE:comparison:start -->"
-end <- "<!-- EXAMPLE:comparison:end -->"
-a <- regexpr(begin, text, fixed = TRUE)[[1L]]
-b <- regexpr(end, text, fixed = TRUE)[[1L]]
-if (a < 0L || b < a) stop("Missing feature comparison example markers.")
-text <- paste0(substr(text, 1L, a + nchar(begin) - 1L), "\n```r\n",
-    comparison, "\n```\n", substring(text, b))
+for (spec in list(c("settings", "feature_settings.R"),
+                  c("comparison", "feature_comparison.R"),
+                  c("epochs", "offline_workflow.R"),
+                  c("calibration", "calibration.R"))) {
+    begin <- paste0("<!-- EXAMPLE:", spec[[1L]], ":start -->")
+    end <- paste0("<!-- EXAMPLE:", spec[[1L]], ":end -->")
+    a <- regexpr(begin, text, fixed = TRUE)[[1L]]
+    b <- regexpr(end, text, fixed = TRUE)[[1L]]
+    if (a < 0L || b < a) stop("Missing extended example markers: ", spec[[1L]])
+    code <- read_text(file.path(root, "examples", spec[[2L]]))
+    text <- paste0(substr(text, 1L, a + nchar(begin) - 1L), "\n```r\n",
+        code, "\n```\n", substring(text, b))
+}
 write_text(text, comparison_guide)
 
 escape <- function(x) {
@@ -94,8 +86,8 @@ wrap <- function(body, title) paste0('<!doctype html><html lang="en-GB"><head>',
     '<link rel="stylesheet" href="assets/reference.css"></head><body>',
     nav, '<main class="guide">', body, '</main></body></html>')
 
-# Coordinates refer to the approved 2048 x 768 image. The image is not altered.
-# Each SVG link has an accessible name, native tooltip and visible focus outline.
+# Retain approved workflow image coordinates.
+# Provide accessible workflow links.
 regions <- list(
     list("native-recordings", 25, 90, 310, 126, "Native recordings: GENEActiv/SENS BIN, Axivity CWA/AX3 CSV, ActiGraph GT3X/LEAP CSV/LEAP AGSD, HBK G-Link CSV. See decoder limits below."),
     list(paste0(repo, "R/m_parsers.R"), 347, 89, 328, 72, "Open m_parsers.R: parse_raw_auto(qc = TRUE) decodes the native recording and attaches primary-five diagnostics."),
@@ -115,7 +107,7 @@ diagram <- paste0('<svg class="workflow" viewBox="0 0 2048 768" role="group" ari
     '<image href="assets/workflow-dark.svg" width="2048" height="768"/>',
     paste(hotspots, collapse = "\n"), '</svg>')
 markdown_html <- function(text, home = FALSE) {
-    # Supply stable section anchors for CommonMark, which does not add GitHub IDs.
+# Add stable Markdown section anchors.
     lines <- strsplit(text, "\n", fixed = TRUE)[[1L]]
     in_code <- FALSE
     for (i in seq_along(lines)) {
@@ -137,14 +129,17 @@ markdown_html <- function(text, home = FALSE) {
     body <- gsub('href="docs/index.html', 'href="index.html', body, fixed = TRUE)
     body <- gsub('href="docs/reference.html', 'href="reference.html', body, fixed = TRUE)
     body <- gsub('href="docs/metronautica-reference.pdf', 'href="metronautica-reference.pdf', body, fixed = TRUE)
-    # Repository-only source, citation and validation links stay on GitHub.
+# Keep repository-only links on GitHub.
     body <- gsub('href="(R/|man/|tools/|examples/|inst/|tests/)', paste0('href="', repo, '\\1'), body)
     body <- gsub('href="(DESCRIPTION|CITATION.cff|LICENSE.md)', paste0('href="', repo, '\\1'), body)
     body <- gsub('href="(validation/)', paste0('href="', repo, 'docs/\\1'), body)
     if (home) {
         body <- sub('<p><img[^>]*src="docs/assets/workflow-dark.svg"[^>]*></p>', diagram, body)
-        # The browser guide needs no GitHub-viewer instruction.
-        body <- sub('The <a href="index.html">HTML guide</a> makes the diagram boxes interactive\\. Open HTML\nlocally in a browser; GitHub\x27s file viewer displays its source\\.', "Click a diagram box to open its stage description.", body)
+# Omit duplicated browser navigation.
+        body <- sub('(?s)<p><a href="getting-started.html">Getting started</a> \\|.*?</p>\\n', "", body, perl = TRUE)
+        body <- sub('(?s)<p><a href="#native-recordings"[^>]*>Native recordings</a>.*?</p>\\n', "", body, perl = TRUE)
+        body <- sub('The browser guide provides clickable diagram boxes\\.',
+            "Click a diagram box for details.", body)
     }
     body
 }
@@ -162,16 +157,17 @@ tools::pkg2HTML("metronautica", dir = root, out = reference,
     hooks = list(pkg_href = function(pkg)
         sprintf("https://stat.ethz.ch/R-manual/R-release/library/%s/html/00Index.html", pkg)))
 html <- read_text(reference)
-# R's default navigation logo otherwise points at the build machine's R directory.
+for (source in names(pages)) {
+    html <- gsub(paste0(repo, "docs/", source), pages[[source]], html, fixed = TRUE)
+}
+
+# Remove build-machine logo references.
 html <- gsub('<img class="toplogo"[^>]*>', "", html)
-# Use the bundled R documentation icon offline; retain each ORCID profile link.
+# Use the offline ORCID icon.
 html <- gsub("https://cloud.R-project.org/web/resources/orcid.svg",
     "assets/orcid.svg", html, fixed = TRUE)
 html <- sub('<body>', paste0('<body>', nav), html, fixed = TRUE)
-html <- sub('<h2>Contents</h2>', paste0('<h2>Function and guide index</h2>',
-    '<label for="topic-filter">Filter names</label>',
-    '<input id="topic-filter" type="search" placeholder="e.g. static, QC, counts" autocomplete="off">'), html, fixed = TRUE)
-search <- '<script>document.getElementById("topic-filter").addEventListener("input", function () { const query = this.value.toLowerCase(); document.querySelectorAll("nav.package li").forEach(function (item) { item.hidden = !item.textContent.toLowerCase().includes(query); }); });</script>'
-html <- sub('</body>', paste0(search, '</body>'), html, fixed = TRUE)
+source(file.path(root, "tools", "reference_navigation.R"))
+html <- reference_navigation(html, escape)
 write_text(html, reference)
 cat("Built HTML guide, six linked guides and reference from current sources.\n")

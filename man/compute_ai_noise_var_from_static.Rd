@@ -1,23 +1,21 @@
 \name{compute_ai_noise_var_from_static}
 \alias{compute_ai_noise_var_from_static}
 \title{Estimate stationary variance for the Activity Index}
-\description{\if{latex}{\out{\sloppy}} Estimate stationary variance for the Activity Index.}
+\description{\if{latex}{\out{\sloppy}} Mean-axis sample variance across complete stationary windows.}
 \usage{
 compute_ai_noise_var_from_static(x, window_s = 1, fs_hz = NULL,
     use_middle_prop = 1)
 }
 \arguments{
-\item{x}{\if{latex}{\out{\sloppy}} Acceleration data frame/tibble with POSIXct time and numeric ax_g, ay_g, az_g in \eqn{g}, or a parser/clip bundle containing data/full and optional meta. The data attribute takes precedence over bundle metadata. No samples are repaired by input conversion.}
-\item{window_s}{\if{latex}{\out{\sloppy}} Duration in seconds of each non-overlapping stationary noise window. round(fs_hz * window_s) must be at least two samples. Axis sample variances are averaged within each window, then across retained complete windows.}
+\item{x}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
+\item{window_s}{\if{latex}{\out{\sloppy}} Non-overlapping window duration (s); round(fs_hz * window_s) must be at least two samples. Average axis sample variances within windows, then across complete windows.}
 \item{fs_hz}{\if{latex}{\out{\sloppy}} NULL derives Hz from the median finite positive timestamp interval; otherwise use the supplied finite positive Hz to convert window_s to samples.}
-\item{use_middle_prop}{\if{latex}{\out{\sloppy}} Fraction in (0, 1] of the central recording retained before windowing. One uses the complete supplied interval; 0.8 selects its middle 80 percent. No stationarity is inferred.}
+\item{use_middle_prop}{\if{latex}{\out{\sloppy}} Central fraction retained before windowing, in (0, 1]: 1 uses all input; 0.8 uses the middle 80 percent. Stationarity is not tested.}
 }
 \value{\if{latex}{\out{\sloppy}} A list with ai_noise_var (mean per-axis stationary variance, \eqn{g} squared), ai_noise_sd (its square root, \eqn{g}), window_values (per-window variances), n_windows, fs_hz and window_s. Trailing incomplete sample windows are discarded. No finite estimates or fewer than two samples per window raises an error.}
-\seealso{\code{\link{metronautica-package}}}
+\seealso{\code{\link{accel_metric_ai}}, \code{\link{static_axis_noise_metrics}}}
 
-\section{Method}{\if{latex}{\out{\sloppy}} For every complete stationary window calculate (var(x)+var(y)+var(z))/3 using sample variances. Average these window variances for the Activity Index noise correction. The estimate differs from the maximum-axis detrended noise floor. The supported table/bundle forms feed the same calculation; no calibration, detrending or stationarity detection is added.}
-
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{compute_ai_noise_var_from_static} in \code{R/m_accel_summary_suite.R}. See \code{\link{implementation-guide}} for the framework and function map.}
+\section{Method}{\if{latex}{\out{\sloppy}} Average (var(x)+var(y)+var(z))/3 across complete windows for AI noise correction. Unlike the maximum-axis noise floor, this uses sample variances without detrending. No calibration or stationarity detection is performed.}
 
 \examples{
 seconds <- (0:5999) / 100

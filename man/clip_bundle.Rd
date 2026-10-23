@@ -16,11 +16,6 @@ clip_bundle(obj, start_time = NULL, duration_s = NULL, end_time =
 }
 \value{\if{latex}{\out{\sloppy}} The same object form as the input. Acquisition bounds are updated and a clipping event is appended to \code{meta$processing$history}. Inherited QC and a top-level bundle QC entry are removed by default.}
 \details{\if{latex}{\out{\sloppy}} Both endpoints are included. A 10-s interval sampled at 100 Hz can therefore contain 1001 samples. This differs deliberately from the exclusive end used by static and dynamic stage clipping. The input is unchanged. Invalid or empty intervals raise errors. Recompute \code{qc_accel_tbl()} for the selected interval.}
-\seealso{\code{\link{metronautica-package}}}
+\seealso{\code{\link{static_clip}}, \code{\link{clip_dynamic_stages}}, \code{\link{attach_qc}}}
 
-\section{Implementation}{\if{latex}{\out{\sloppy}} Implemented by \code{clip_bundle} in \code{R/m_accel_clipper.R}. See \code{\link{implementation-guide}} for the framework and function map.}
-
-\section{Stage bundles}{
-\if{latex}{\out{\sloppy}}
-A dynamic bundle with \code{full} is also accepted. The selected full recording is clipped, while existing \code{stages} and \code{schedule} are retained unchanged. Construct stages again from the intended clipped recording before stage-based metrology. This differs from \code{\link{dm_apply_vm_calibration_bundle}}, which explicitly transforms every stored signal.
-}
+\section{Stage bundles}{\if{latex}{\out{\sloppy}} Only \code{full} is clipped; stored \code{stages}/\code{schedule} remain unchanged. Reconstruct stages before metrology. Unlike clipping, \code{\link{dm_apply_vm_calibration_bundle}} transforms every stored signal.}

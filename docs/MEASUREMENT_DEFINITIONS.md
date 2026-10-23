@@ -1,9 +1,6 @@
 # Measurement definitions
 
-[Workflow](../README.md#processing-workflow) &middot; [Function reference](reference.html) &middot; [PDF](metronautica-reference.pdf)
-
-The R help sources are the maintained technical definitions. This index directs
-to the relevant definitions without maintaining a second set of equations.
+Canonical definitions are maintained in R help and shared by the HTML/PDF references.
 
 | Topic | Reference |
 |---|---|
@@ -17,6 +14,4 @@ to the relevant definitions without maintaining a second set of equations.
 | VM calibration, application and provenance | [Calibration fitting](reference.html#dm_fit_vm_calibration) and linked application functions |
 | Framework, source functions and interpretation | [Implementation guide](reference.html#implementation-guide) |
 
-The same help sources generate the HTML and PDF references and are installed
-with the package. Use `help("measurement-definitions", package = "metronautica")`
-for the outcome definitions in R.
+In R: `help("measurement-definitions", package = "metronautica")`.
