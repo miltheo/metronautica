@@ -25,8 +25,8 @@ The plot supports zoom, hover values and a time-range slider.
 ## Real recording examples
 
 These examples use the LEAP static recording and ten-stage dynamic trial from
-[WAM](https://github.com/miltheo/wam/blob/main/samples/README.md). Obtain its
-compressed attachments and `sample_index.csv`, then set their local directory:
+[WAM](https://github.com/miltheo/wam/blob/main/samples/README.md). Clone or download
+WAM, then select its included `samples/` directory:
 
 ```r
 options(metronautica.sample_dir = "path/to/wam/samples")

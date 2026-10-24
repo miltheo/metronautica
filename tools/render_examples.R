@@ -5,7 +5,7 @@ traces_only <- "--traces-only" %in% args
 args <- args[args != "--traces-only"]
 script <- sub("^--file=", "", grep("^--file=", commandArgs(), value = TRUE)[1L])
 root <- dirname(dirname(normalizePath(script, winslash = "/", mustWork = TRUE)))
-if (!length(args)) stop("Supply the directory containing the sample catalogue and compressed attachments.")
+if (!length(args)) stop("Supply WAM's samples directory containing the catalogue and compressed recordings.")
 sample_dir <- normalizePath(args[[1L]], winslash = "/", mustWork = TRUE)
 output <- if (length(args) > 1L) args[[2L]] else file.path(root, "docs/assets/examples")
 dir.create(output, recursive = TRUE, showWarnings = FALSE)

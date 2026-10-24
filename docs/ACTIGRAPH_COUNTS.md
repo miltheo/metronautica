@@ -67,7 +67,7 @@ Legacy precision reproduces the upstream conversion. The audited GT9X trial
 contains two one-second gaps, one within controlled excitation. Separate checks
 cover gap rejection, carry-forward, boundary padding and affected-epoch flags.
 
-`Rscript tools/validate.R` runs all eight package checks using synthetic signals
+`Rscript tools/validate.R` runs all nine package checks using synthetic signals
 and deterministic fixtures, without downloads or external benchmark software.
 
 ## Benchmark tables

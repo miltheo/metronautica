@@ -78,7 +78,7 @@ head(features$data_wide)
 ```
 
 [Static and dynamic examples](docs/GETTING_STARTED.md#real-recording-examples)
-include plots from separately distributed samples. Other package use requires no WAM downloads.
+include plots from WAM's native samples. Other package use requires no WAM downloads.
 
 ## Native recordings
 

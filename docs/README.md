@@ -75,7 +75,7 @@ Trace previews require `plotly`, `htmlwidgets` and Chrome/Chromium; set
 `CHROMOTE_CHROME` when the browser is outside its standard location.
 
 This processes the 24-hour static sample and ten-stage trial, saving previews
-under `assets/examples/`. Compressed attachments and their catalogue must be local.
+under `assets/examples/`. Use the recordings and catalogue in WAM's `samples/` folder.
 Then rebuild HTML.
 
 ## Repository roles

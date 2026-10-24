@@ -2667,7 +2667,7 @@ response[c("response_slope", "response_intercept", "composite_error")]
 
 <h3 id="m_load_sample_data--description">Description</h3>
 
-<p> Copy a local native example or explicitly download it from a configured fixed WAM release-asset directory, verifying compressed and restored checksums. Measurement values are preserved.</p>
+<p> Copy a local native example or explicitly download it from a configured WAM sample directory, verifying compressed and restored checksums. Measurement values are preserved.</p>
 
 
 <h3 id="m_load_sample_data--usage">Usage</h3>
@@ -2708,14 +2708,14 @@ response[c("response_slope", "response_intercept", "composite_error")]
 </td></tr>
 <tr><td><code id="m_load_sample_data_+3A_base_url">base_url</code></td>
 <td>
-<p> Fixed HTTPS WAM release-asset directory for samples unavailable locally. Defaults to <code>metronautica.sample_base_url</code>. No public URL is preconfigured. A <code>file:///</code> directory also supports offline retrieval.</p>
+<p> HTTPS WAM sample directory for samples unavailable locally. Defaults to <code>metronautica.sample_base_url</code>. No public URL is preconfigured. A <code>file:///</code> directory also supports offline retrieval.</p>
 </td></tr>
 </table>
 
 
 <h3 id="m_load_sample_data--details">Details</h3>
 
-<p> WAM's <a href="https://github.com/miltheo/wam/blob/main/samples/README.md">sample guide</a> defines recording intervals, native-format boundaries, provenance and distribution terms. Recordings are separate attachments; cloning WAM does not provide them. The installed catalogue fixes filenames and SHA-256 checksums. Downloads/decompression use temporary files; validation precedes replacement.
+<p> WAM's <a href="https://github.com/miltheo/wam/blob/main/samples/README.md">sample guide</a> defines recording intervals, native-format boundaries, provenance and distribution terms. Clone or download WAM and set <code>sample_dir</code> to its included <code>samples/</code> folder. The installed catalogue fixes filenames and SHA-256 checksums. Downloads/decompression use temporary files; validation precedes replacement.
 </p>
 <p>Apply each file's own timestamp shift and acquisition settings. Retrieval does not parse, filter or calibrate data. Installation, loading and calculations require neither WAM nor network access. See <a href="getting-started.html#real-recording-examples">Getting Started</a> for setup.</p>
 

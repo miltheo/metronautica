@@ -1,7 +1,7 @@
 # Actual-data example for Metronautica Tibble 0.1.0.
 # Only the four sample columns are required by the contract.
 # The metadata, diagnostics and assessments below are optional pipeline additions.
-# Requires the separately distributed WAM LEAP static/dynamic and reference samples.
+# Requires WAM LEAP/reference native samples.
 # Configure options(metronautica.sample_dir = "path/to/wam/samples") first.
 library(metronautica)
 

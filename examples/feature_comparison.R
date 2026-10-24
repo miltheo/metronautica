@@ -1,5 +1,5 @@
 # Canonical real-recording comparison and plot.
-# Requires configured WAM sample attachments.
+# Requires configured WAM sample recordings.
 library(metronautica)
 library(ggplot2)
 

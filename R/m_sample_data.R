@@ -22,7 +22,7 @@ m_load_sample_data <- function(device = "LEAP", type = "static", dest_dir = file
     if (!is.null(base_url)) {
         if (!is.character(base_url) || length(base_url) != 1L || is.na(base_url) || !grepl("^(https://|file:///)",
             base_url))
-            stop("base_url must be an HTTPS release-asset directory (or file:/// directory for offline use).",
+            stop("base_url must be an HTTPS sample directory (or file:/// directory for offline use).",
                 call. = FALSE)
         base_url <- sub("/+$", "", base_url)
     }
@@ -71,7 +71,7 @@ m_load_sample_data <- function(device = "LEAP", type = "static", dest_dir = file
             on.exit(if (!is.null(downloaded)) unlink(downloaded), add = TRUE)
             if (!nzchar(source) || !file.exists(source)) {
                 if (is.null(base_url))
-                  stop("Native study samples are distributed separately through WAM. Supply sample_dir (or options(metronautica.sample_dir = ...)) for local files, or configure base_url/options(metronautica.sample_base_url = ...) with the fixed WAM sample-release URL. See help('m_load_sample_data').",
+                  stop("Native samples are included in WAM. Set sample_dir (or options(metronautica.sample_dir = ...)) to its samples folder, or configure base_url/options(metronautica.sample_base_url = ...) with a WAM sample URL. See help('m_load_sample_data').",
                     call. = FALSE)
 
                 # Download compressed recording ----
@@ -86,7 +86,7 @@ m_load_sample_data <- function(device = "LEAP", type = "static", dest_dir = file
                   1L
                 })
                 if (status != 0L || !file.exists(downloaded))
-                  stop("Unable to retrieve sample ", row$file_name, ". Check the release URL/network or supply sample_dir for offline use.",
+                  stop("Unable to retrieve sample ", row$file_name, ". Check the sample URL/network or supply sample_dir for offline use.",
                     if (!is.null(failure))
                       paste0(" ", failure), call. = FALSE)
                 source <- downloaded
