@@ -7,7 +7,7 @@ band-pass cutoffs. Published coefficients: ActiGraph/agcounts, GPL-3.0, commit
 
 ## Use and interpretation
 
-The [function reference](reference.html#accel_metric_agcounts) defines inputs,
+The [function reference](https://miltheo.github.io/metronautica/reference.html#accel_metric_agcounts) defines inputs,
 precision, gap and boundary policies. Counts are standalone; `AG` is not a
 `compute_accel_summaries()` selector. Neither Python nor R agcounts is required.
 Custom filters produce modified counts without inherited behavioural-threshold validation.

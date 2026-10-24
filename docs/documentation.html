@@ -96,10 +96,12 @@ Then rebuild HTML.</p>
 <code>validation/</code> contains activity-count benchmark tables.</p>
 <p><a name="browser-guide"></a></p>
 <h2>Browser guide</h2>
-<p>Open <code>index.html</code> locally. Diagram boxes provide keyboard-accessible links and
+<p>Browse the <a href="index.html">documentation</a> or open
+<code>index.html</code> locally. Diagram boxes provide keyboard-accessible links and
 hover details; the reference has a filterable index. Equation rendering uses
 CDN-hosted KaTeX, with plain equation source available offline.</p>
-<p>GitHub's file viewer shows HTML source. GitHub Pages remains on hold; builds do
-not enable hosting. Workflow hotspots are maintained in <code>tools/build_html.R</code> and
-must match <code>assets/workflow-dark.svg</code> if the diagram changes.</p>
+<p>Configure GitHub Pages with <strong>Deploy from a branch</strong>, <strong>main</strong>, <strong>/docs</strong>.
+Keep <code>docs/.nojekyll</code> to publish the prebuilt HTML. Rebuild locally before pushing;
+Pages deploys the committed files. GitHub's file viewer shows HTML source.
+Workflow hotspots in <code>tools/build_html.R</code> must match <code>assets/workflow-dark.svg</code>.</p>
 </main></body></html>

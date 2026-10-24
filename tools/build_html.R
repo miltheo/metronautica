@@ -57,6 +57,7 @@ escape <- function(x) {
     gsub(">", "&gt;", x, fixed = TRUE)
 }
 repo <- "https://github.com/miltheo/metronautica/blob/main/"
+site <- "https://miltheo.github.io/metronautica/"
 pages <- c("GETTING_STARTED.md" = "getting-started.html",
     "MEASUREMENT_DEFINITIONS.md" = "measurement-definitions.html",
     "ACTIGRAPH_COUNTS.md" = "activity-counts.html",
@@ -110,6 +111,9 @@ markdown_html <- function(text, home = FALSE) {
         }
     }
     body <- commonmark::markdown_html(paste(lines, collapse = "\n"), extensions = TRUE)
+# Keep hosted links local.
+    body <- gsub(paste0('href="', site, '"'), 'href="index.html"', body, fixed = TRUE)
+    body <- gsub(paste0('href="', site), 'href="', body, fixed = TRUE)
     for (prefix in c("../", "")) {
         body <- gsub(paste0('href="', prefix, contract_source),
             'href="metronautica-tibble.html', body, fixed = TRUE)
@@ -128,6 +132,8 @@ markdown_html <- function(text, home = FALSE) {
     }
     body <- gsub('href="../data-contract/README.md#structure"',
         'href="metronautica-tibble.html#structure"', body, fixed = TRUE)
+    body <- gsub('href="../data-contract/README.md',
+        paste0('href="', repo, 'data-contract/README.md'), body, fixed = TRUE)
     body <- gsub('href="../README.md', 'href="index.html', body, fixed = TRUE)
     body <- gsub('href="docs/index.html', 'href="index.html', body, fixed = TRUE)
     body <- gsub('href="docs/reference.html', 'href="reference.html', body, fixed = TRUE)

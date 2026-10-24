@@ -87,10 +87,12 @@ Then rebuild HTML.
 
 ## Browser guide
 
-Open `index.html` locally. Diagram boxes provide keyboard-accessible links and
+Browse the [documentation](https://miltheo.github.io/metronautica/) or open
+`index.html` locally. Diagram boxes provide keyboard-accessible links and
 hover details; the reference has a filterable index. Equation rendering uses
 CDN-hosted KaTeX, with plain equation source available offline.
 
-GitHub's file viewer shows HTML source. GitHub Pages remains on hold; builds do
-not enable hosting. Workflow hotspots are maintained in `tools/build_html.R` and
-must match `assets/workflow-dark.svg` if the diagram changes.
+Configure GitHub Pages with **Deploy from a branch**, **main**, **/docs**.
+Keep `docs/.nojekyll` to publish the prebuilt HTML. Rebuild locally before pushing;
+Pages deploys the committed files. GitHub's file viewer shows HTML source.
+Workflow hotspots in `tools/build_html.R` must match `assets/workflow-dark.svg`.

@@ -34,7 +34,7 @@ options(metronautica.sample_dir = "path/to/wam/samples")
 
 The loader restores verified recordings under `metronautica-samples/`.
 Both LEAP samples have a 16-*g* full-scale span (±8 *g*).
-The [loader reference](reference.html#m_load_sample_data) covers LEAP, AX3, SENS
+The [loader reference](https://miltheo.github.io/metronautica/reference.html#m_load_sample_data) covers LEAP, AX3, SENS
 and GENEActiv samples, remote configuration, checksums and overwrite handling.
 No download URL is set by default. Dynamic retrieval includes the HBK reference
 unless `include_reference = FALSE`.
@@ -102,7 +102,7 @@ Selected diagnostics for this recording:
 <!-- OUTPUT:trace:end -->
 
 These example values describe the complete dynamic recording. Parsing attaches
-[`primary-five` diagnostics](reference.html#qc_accel_tbl--details) by default.
+[`primary-five` diagnostics](https://miltheo.github.io/metronautica/reference.html#qc_accel_tbl--details) by default.
 `as_accel_tbl()` does not; use `attach_qc()` to attach them to decoded tables.
 Near-limit diagnostics require a known measurement range. Diagnostics describe
 integrity and timing; they do not repair samples or establish measurement accuracy.
@@ -152,7 +152,7 @@ Full static recordings can take several minutes and substantial memory to parse.
 Specify the reference, excitation schedule, trims and configured measurement
 span. Filter or clip **before** constructing stages: these operations change
 `full`, leaving existing `stages` unchanged; calibration processes both.
-[Container contracts](reference.html#common-data-format--input-and-return-contracts).
+[Container contracts](https://miltheo.github.io/metronautica/reference.html#common-data-format--input-and-return-contracts).
 
 <!-- EXAMPLE:dynamic:start -->
 ```r
@@ -230,11 +230,11 @@ features$settings$metric_units
 These four pipelines are examples, not the full feature set.
 `data_wide` contains epoch summaries; `data_long` retains each feature's labels.
 Keep `settings` with the values to retain units and processing choices.
-[Available features and definitions](reference.html#compute_accel_summaries).
+[Available features and definitions](https://miltheo.github.io/metronautica/reference.html#compute_accel_summaries).
 
 Features can label epochs differently: exact timestamp joins may create extra
 rows and unpaired `NA` cells, which need not indicate missing acceleration.
-Do not zero-fill them. See [epoch conventions](reference.html#compute_accel_summaries--epoch-timestamps-and-joins)
+Do not zero-fill them. See [epoch conventions](https://miltheo.github.io/metronautica/reference.html#compute_accel_summaries--epoch-timestamps-and-joins)
 and the [worked timestamp example](../examples/offline_workflow.R).
 
 ![The same five-second interval can have different ENMO and Activity Index center labels, producing unpaired cells in an exact timestamp join.](assets/guides/epoch-labels.svg)
@@ -244,10 +244,10 @@ Synthetic 100-Hz example with center labels: ENMO uses 2.49 s; Activity Index us
 Compare epoch intervals before combining features.
 
 For other pipelines, consult the [feature-settings example](../examples/feature_settings.R)
-and the relevant reference: [Activity Index noise variance](reference.html#accel_metric_ai),
-[MIMS measurement span](reference.html#accel_metric_mims),
-[band-pass settings](reference.html#accel_metric_svmbp) or
-[standalone activity counts](reference.html#accel_metric_agcounts).
+and the relevant reference: [Activity Index noise variance](https://miltheo.github.io/metronautica/reference.html#accel_metric_ai),
+[MIMS measurement span](https://miltheo.github.io/metronautica/reference.html#accel_metric_mims),
+[band-pass settings](https://miltheo.github.io/metronautica/reference.html#accel_metric_svmbp) or
+[standalone activity counts](https://miltheo.github.io/metronautica/reference.html#accel_metric_agcounts).
 
 ### Visualise a processed feature
 
@@ -283,7 +283,7 @@ Inspect static `summary`, dynamic `stages`/`overall` and feature
 state, timing assumptions, units and resolved settings with the outcomes.
 Within-stage variability differs from trial-to-trial repeatability; error
 estimates are not a complete uncertainty budget.
-[Outcome definitions](reference.html#measurement-definitions).
+[Outcome definitions](https://miltheo.github.io/metronautica/reference.html#measurement-definitions).
 
 Static and dynamic reports attach assessments by default. Capture `result$data`;
 plots remain separate. Above, `stationary` retains the static recording and
@@ -308,7 +308,7 @@ calibrated <- attach_qc(calibrated)
 Calibration removes inherited diagnostics; `attach_qc()` recomputes them.
 Independently validate the benefit, then repeat the relevant characterisation
 and feature assessments. Fitting and reassessing the same trial is not
-independent validation. See the [calibration method](reference.html#dm_fit_vm_calibration)
+independent validation. See the [calibration method](https://miltheo.github.io/metronautica/reference.html#dm_fit_vm_calibration)
 and [runnable synthetic example](../examples/calibration.R).
 
 ## Optional packages
@@ -324,7 +324,7 @@ and [runnable synthetic example](../examples/calibration.R).
 | Dynamic entropy diagnostics | `TSEntropies` |
 
 Install only the required packages; functions do not install dependencies.
-[Parser reference](reference.html#parse_raw_auto) defines decoder settings and limits.
+[Parser reference](https://miltheo.github.io/metronautica/reference.html#parse_raw_auto) defines decoder settings and limits.
 
 ## Next steps
 

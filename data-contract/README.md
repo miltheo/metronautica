@@ -25,7 +25,7 @@ requirements.
 - [Minimal example without metadata](../examples/tibble_minimal.R)
 - [Study example retaining static and dynamic assessments](../examples/data_contract.R)
 - [Brief installed-help and reference summary](../man/common-data-format.Rd)
-- [Browser specification](../docs/metronautica-tibble.html)
+- [Browser specification](https://miltheo.github.io/metronautica/metronautica-tibble.html)
 
 `0.1.0/SPECIFICATION.md` is the maintained repository specification. The Word/PDF
 files are generated with `tools/build_tibble_spec.ps1`.

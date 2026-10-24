@@ -11,7 +11,7 @@ different published summary features.
 This repository is developed for a research article under submission. Analysis
 and recording samples are in [WAM](https://github.com/miltheo/wam).
 
-[Getting started](docs/GETTING_STARTED.md) | [Reference PDF](docs/metronautica-reference.pdf) | [Browser guide](docs/index.html)
+[Getting started](docs/GETTING_STARTED.md) | [Reference PDF](docs/metronautica-reference.pdf) | [Browser guide](https://miltheo.github.io/metronautica/)
 
 ## Processing workflow
 
@@ -29,17 +29,17 @@ to assessment with refreshed QC. The browser guide provides clickable diagram bo
 
 | Stage | Entry point | Source |
 |---|---|---|
-| Parsing | [`parse_raw_auto()`](docs/reference.html#parse_raw_auto) | [m_parsers.R](R/m_parsers.R) |
-| Signal diagnostics | [`qc_accel_tbl()`](docs/reference.html#qc_accel_tbl) | [m_qc.R](R/m_qc.R) |
-| Interval selection | [`clip_bundle()`](docs/reference.html#clip_bundle) | [m_accel_clipper.R](R/m_accel_clipper.R) |
-| Static characterisation | [`static_metrology_from_tbl()`](docs/reference.html#static_metrology_from_tbl) | [m_static.R](R/m_static.R) |
-| Dynamic characterisation | [`dynamic_metrology_report()`](docs/reference.html#dynamic_metrology_report) | [m_dynamic.R](R/m_dynamic.R) |
-| Optional calibration | [`dm_fit_vm_calibration()`](docs/reference.html#dm_fit_vm_calibration) | [m_dynamic.R](R/m_dynamic.R) |
-| Axis filtering | [`filter_accel_tbl()`](docs/reference.html#filter_accel_tbl) | [m_filter.R](R/m_filter.R) |
-| Feature extraction | [`compute_accel_summaries()`](docs/reference.html#compute_accel_summaries) | [m_accel_summary_suite.R](R/m_accel_summary_suite.R) |
-| Activity counts | [`accel_metric_agcounts()`](docs/reference.html#accel_metric_agcounts) | [m_agcounts.R](R/m_agcounts.R) |
-| Visualisation | [`plot_processed_metric()`](docs/reference.html#plot_processed_metric) | [m_plotter.R](R/m_plotter.R) |
-| Sample retrieval | [`m_load_sample_data()`](docs/reference.html#m_load_sample_data) | [m_sample_data.R](R/m_sample_data.R) |
+| Parsing | [`parse_raw_auto()`](https://miltheo.github.io/metronautica/reference.html#parse_raw_auto) | [m_parsers.R](R/m_parsers.R) |
+| Signal diagnostics | [`qc_accel_tbl()`](https://miltheo.github.io/metronautica/reference.html#qc_accel_tbl) | [m_qc.R](R/m_qc.R) |
+| Interval selection | [`clip_bundle()`](https://miltheo.github.io/metronautica/reference.html#clip_bundle) | [m_accel_clipper.R](R/m_accel_clipper.R) |
+| Static characterisation | [`static_metrology_from_tbl()`](https://miltheo.github.io/metronautica/reference.html#static_metrology_from_tbl) | [m_static.R](R/m_static.R) |
+| Dynamic characterisation | [`dynamic_metrology_report()`](https://miltheo.github.io/metronautica/reference.html#dynamic_metrology_report) | [m_dynamic.R](R/m_dynamic.R) |
+| Optional calibration | [`dm_fit_vm_calibration()`](https://miltheo.github.io/metronautica/reference.html#dm_fit_vm_calibration) | [m_dynamic.R](R/m_dynamic.R) |
+| Axis filtering | [`filter_accel_tbl()`](https://miltheo.github.io/metronautica/reference.html#filter_accel_tbl) | [m_filter.R](R/m_filter.R) |
+| Feature extraction | [`compute_accel_summaries()`](https://miltheo.github.io/metronautica/reference.html#compute_accel_summaries) | [m_accel_summary_suite.R](R/m_accel_summary_suite.R) |
+| Activity counts | [`accel_metric_agcounts()`](https://miltheo.github.io/metronautica/reference.html#accel_metric_agcounts) | [m_agcounts.R](R/m_agcounts.R) |
+| Visualisation | [`plot_processed_metric()`](https://miltheo.github.io/metronautica/reference.html#plot_processed_metric) | [m_plotter.R](R/m_plotter.R) |
+| Sample retrieval | [`m_load_sample_data()`](https://miltheo.github.io/metronautica/reference.html#m_load_sample_data) | [m_sample_data.R](R/m_sample_data.R) |
 
 ## Installation
 
@@ -83,7 +83,7 @@ include plots from WAM's native samples. Other package use requires no WAM downl
 ## Native recordings
 
 `parse_raw_auto()` detects the format and attaches
-[`primary-five` signal diagnostics](docs/reference.html#qc_accel_tbl--details)
+[`primary-five` signal diagnostics](https://miltheo.github.io/metronautica/reference.html#qc_accel_tbl--details)
 at `meta$processing$qc` by default. The reference gives the five rules and their
 reported outputs, following Supplementary Table S2 of the research article.
 
@@ -95,7 +95,7 @@ reported outputs, following Supplementary Table S2 of the research article.
 | GENEActiv / SENS motion | BIN |
 | HBK G-Link | Exported CSV |
 
-Check [decoder requirements and limits](docs/reference.html#parse_raw_auto) before parsing.
+Check [decoder requirements and limits](https://miltheo.github.io/metronautica/reference.html#parse_raw_auto) before parsing.
 
 <a name="acceleration-tibble"></a>
 
@@ -135,7 +135,7 @@ functions calculate individual features. Use `plot_accel_clip()` for acceleratio
 Retain units, reference, tested range and processing settings with the outcomes.
 Static reports return `summary`/`meta`; dynamic reports return `stages`/`overall`/`meta`;
 feature results return `data_long`/`data_wide`/`settings`.
-[Outcome definitions](docs/reference.html#measurement-definitions).
+[Outcome definitions](https://miltheo.github.io/metronautica/reference.html#measurement-definitions).
 
 Static and dynamic report functions default to `attach_report = TRUE`.
 Capture `result$data` to retain compact assessments in
