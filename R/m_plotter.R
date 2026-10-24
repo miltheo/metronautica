@@ -79,7 +79,7 @@ plot_accel_clip <- function(x, include_vm = FALSE, demean_vm = FALSE, title = NU
     for (ch in channels) {
         # Add each signal trace
         p <- plotly::add_lines(p, x = d$time, y = d[[ch]], name = ch, line = list(width = 0.6), hovertemplate = paste0("<b>",
-            ch, "</b><br>", "Time: %{x|%Y-%m-%d %H:%M:%OS3}<br>", "Value: %{y:.4f} <i>g</i>", "<extra></extra>"))
+            ch, "</b><br>", "Time: %{x|%Y-%m-%d %H:%M:%S.%L}<br>", "Value: %{y:.4f} <i>g</i>", "<extra></extra>"))
     }
 
     if (is.null(title))
@@ -87,7 +87,7 @@ plot_accel_clip <- function(x, include_vm = FALSE, demean_vm = FALSE, title = NU
 
     plotly::layout(p, title = list(text = title), xaxis = list(title = "Time (UTC)", type = "date", dtick = dtick0,
         rangeslider = list(visible = TRUE), tickformatstops = list(list(dtickrange = list(NULL, 1000),
-            value = "%H:%M:%OS3"), list(dtickrange = list(1000, 60000), value = "%H:%M:%S"), list(dtickrange = list(60000,
+            value = "%H:%M:%S.%L"), list(dtickrange = list(1000, 60000), value = "%H:%M:%S"), list(dtickrange = list(60000,
             3600000), value = "%H:%M"), list(dtickrange = list(3600000, 86400000), value = "%d %b %H:%M"),
             list(dtickrange = list(86400000, NULL), value = "%d %b\n%H:%M"))), yaxis = list(title = "Acceleration (<i>g</i>)"),
         hovermode = "x unified", legend = list(orientation = "h", x = 0, y = 1.08))

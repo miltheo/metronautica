@@ -1,9 +1,8 @@
 # Build reference topic navigation.
 reference_navigation <- function(html, escape) {
     groups <- list(
-        "Getting started" = c("metronautica-package", "getting-started", "implementation-guide",
-            "native-recording-examples", "feature-comparison"),
-        "Common data format and diagnostics" = c("common-data-format", "parse_raw_auto", "as_accel_tbl",
+        "Package" = "metronautica-package",
+        "Parsing and diagnostics" = c("parse_raw_auto", "as_accel_tbl",
             "accel_meta", "qc_accel_tbl", "attach_qc", "invalidate_qc", "m_load_sample_data", "clip_bundle"),
         "Static characterisation" = c("static_metrology_from_tbl", "static_noise_summary_from_tbl",
             "static_clip", "static_1hz_means", "static_offset_vm_5min", "static_drift",
@@ -16,7 +15,7 @@ reference_navigation <- function(html, escape) {
         "Filtering and calibration" = c("filter_accel_tbl", "dm_fit_vm_calibration",
             "dm_apply_vm_calibration_tbl", "dm_apply_vm_calibration_bundle"),
         "Visualisation" = c("plot_accel_clip", "plot_processed_metric", "plot_static_drift_vm", "plot_static_allan"),
-        "Measurement definitions" = "measurement-definitions")
+        "Technical notes" = c("common-data-format", "measurement-definitions"))
     lines <- strsplit(html, "\n", fixed = TRUE)[[1L]]
     topics <- list()
     current <- NULL

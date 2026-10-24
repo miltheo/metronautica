@@ -12,4 +12,4 @@ plot_processed_metric(result, metric, unit = NULL, title = metric)
 \item{title}{\if{latex}{\out{\sloppy}} Optional plot title.}
 }
 \value{\if{latex}{\out{\sloppy}} Plotly htmlwidget; values are unchanged.}
-\seealso{\code{\link{compute_accel_summaries}}, \code{\link{feature-comparison}}}
+\seealso{\code{\link{compute_accel_summaries}}, \href{https://github.com/miltheo/metronautica/blob/main/docs/GETTING_STARTED.md#compare-feature-pipelines}{Feature comparison}}

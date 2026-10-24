@@ -2,6 +2,7 @@
 ^\.github$
 ^CITATION\.cff$
 ^docs$
+^data-contract$
 ^tools$
 ^LICENSE\.md$
 ^examples$

@@ -24,12 +24,18 @@ write_text <- function(text, path) {
 }
 # Embed maintained example scripts.
 native <- strsplit(read_text(file.path(root, "examples", "quick_start.R")), "\n", fixed = TRUE)[[1L]]
-offline <- strsplit(read_text(file.path(root, "examples", "offline_workflow.R")), "\n", fixed = TRUE)[[1L]]
-offline <- offline[seq_len(grep("^# AI uses", offline)[[1L]] - 1L)]
+traces <- strsplit(read_text(file.path(root, "examples", "recording_traces.R")), "\n", fixed = TRUE)[[1L]]
+trace_start <- grep("^# (Static trace|Dynamic trace|Signal diagnostics|Feature extraction|Processed feature trace)$", traces)
+trace_block <- function(i) {
+    end <- if (i < length(trace_start)) trace_start[i + 1L] - 1L else length(traces)
+    trimws(paste(traces[(trace_start[i] + 1L):end], collapse = "\n"), which = "right")
+}
 static_start <- grep("^# Static characterisation", native)[[1L]]
 dynamic_start <- grep("^# Dynamic characterisation", native)[[1L]]
 feature_start <- grep("^# Feature extraction", native)[[1L]]
-blocks <- list(offline = offline,
+blocks <- list(static_trace = trace_block(1L), dynamic_trace = trace_block(2L),
+    diagnostics = trace_block(3L),
+    features = trace_block(4L), processed_trace = trace_block(5L),
     static = c("library(metronautica)", native[(static_start + 1L):(dynamic_start - 1L)]),
     dynamic = c("library(metronautica)", native[(dynamic_start + 1L):(feature_start - 1L)]))
 guide <- file.path(docs, "GETTING_STARTED.md")
@@ -44,24 +50,6 @@ for (name in names(blocks)) {
         paste(blocks[[name]], collapse = "\n"), "\n```\n", substring(text, b))
 }
 write_text(text, guide)
-# Embed extended recipes from examples/.
-comparison_guide <- file.path(docs, "REAL_DATA_EXAMPLES.md")
-text <- read_text(comparison_guide)
-for (spec in list(c("settings", "feature_settings.R"),
-                  c("comparison", "feature_comparison.R"),
-                  c("epochs", "offline_workflow.R"),
-                  c("calibration", "calibration.R"))) {
-    begin <- paste0("<!-- EXAMPLE:", spec[[1L]], ":start -->")
-    end <- paste0("<!-- EXAMPLE:", spec[[1L]], ":end -->")
-    a <- regexpr(begin, text, fixed = TRUE)[[1L]]
-    b <- regexpr(end, text, fixed = TRUE)[[1L]]
-    if (a < 0L || b < a) stop("Missing extended example markers: ", spec[[1L]])
-    code <- read_text(file.path(root, "examples", spec[[2L]]))
-    text <- paste0(substr(text, 1L, a + nchar(begin) - 1L), "\n```r\n",
-        code, "\n```\n", substring(text, b))
-}
-write_text(text, comparison_guide)
-
 escape <- function(x) {
     x <- gsub("&", "&amp;", x, fixed = TRUE)
     x <- gsub('"', "&quot;", x, fixed = TRUE)
@@ -70,14 +58,15 @@ escape <- function(x) {
 }
 repo <- "https://github.com/miltheo/metronautica/blob/main/"
 pages <- c("GETTING_STARTED.md" = "getting-started.html",
-    "REAL_DATA_EXAMPLES.md" = "recording-examples.html",
     "MEASUREMENT_DEFINITIONS.md" = "measurement-definitions.html",
     "ACTIGRAPH_COUNTS.md" = "activity-counts.html",
     "DEPENDENCY_LICENSING.md" = "dependency-licensing.html",
     "README.md" = "documentation.html")
+contract_source <- "data-contract/0.1.0/SPECIFICATION.md"
 nav <- paste0('<nav class="site-nav" aria-label="Documentation">',
     '<a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a>',
-    '<a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a>',
+    '<a href="metronautica-tibble.html">Metronautica Tibble</a>',
+    '<a href="reference.html">Function reference</a>',
     '<a href="metronautica-reference.pdf">PDF</a>',
     '<a href="https://github.com/miltheo/metronautica">GitHub</a></nav>')
 wrap <- function(body, title) paste0('<!doctype html><html lang="en-GB"><head>',
@@ -91,7 +80,7 @@ wrap <- function(body, title) paste0('<!doctype html><html lang="en-GB"><head>',
 regions <- list(
     list("native-recordings", 25, 90, 310, 126, "Native recordings: GENEActiv/SENS BIN, Axivity CWA/AX3 CSV, ActiGraph GT3X/LEAP CSV/LEAP AGSD, HBK G-Link CSV. See decoder limits below."),
     list(paste0(repo, "R/m_parsers.R"), 347, 89, 328, 72, "Open m_parsers.R: parse_raw_auto(qc = TRUE) decodes the native recording and attaches primary-five diagnostics."),
-    list("acceleration-tibble", 660, 90, 360, 135, "Acceleration tibble: time (POSIXct, UTC), ax_g, ay_g, az_g (numeric, g). Attached meta holds acquisition settings, provenance and QC."),
+    list("metronautica-tibble", 660, 90, 360, 135, "Metronautica Tibble 0.1.0: only time (POSIXct), ax_g, ay_g, az_g (numeric g) are required. Metadata, diagnostics and reports are optional pipeline additions."),
     list("static-characterisation", 660, 307, 360, 205, "Static characterisation: select a stationary interval; sampling frequency, noise floor, signed offset bias, drift and Allan deviation."),
     list("dynamic-characterisation", 1060, 307, 260, 205, "Dynamic characterisation: specify a reference, range and stage schedule; response slope, bias, non-linearity and composite error."),
     list("feature-extraction-and-visual-comparison", 1360, 307, 315, 205, "Feature extraction and visual comparison: compute epoch summaries or counts and inspect processed-signal plots."),
@@ -121,10 +110,24 @@ markdown_html <- function(text, home = FALSE) {
         }
     }
     body <- commonmark::markdown_html(paste(lines, collapse = "\n"), extensions = TRUE)
+    for (prefix in c("../", "")) {
+        body <- gsub(paste0('href="', prefix, contract_source),
+            'href="metronautica-tibble.html', body, fixed = TRUE)
+        body <- gsub(paste0('href="', prefix, 'data-contract/README.md'),
+            'href="../data-contract/README.md', body, fixed = TRUE)
+    }
+    # Resolve links from the versioned specification and the main guides.
+    body <- gsub('href="../../docs/reference.html', 'href="reference.html', body, fixed = TRUE)
+    body <- gsub('href="../../examples/', paste0('href="', repo, 'examples/'), body, fixed = TRUE)
+    body <- gsub('href="../examples/', paste0('href="', repo, 'examples/'), body, fixed = TRUE)
+    body <- gsub('href="../README.md">Specification index',
+        'href="../data-contract/README.md">Specification index', body, fixed = TRUE)
     for (source in names(pages)) {
         for (prefix in c("docs/", ""))
             body <- gsub(paste0('href="', prefix, source), paste0('href="', pages[[source]]), body, fixed = TRUE)
     }
+    body <- gsub('href="../data-contract/README.md#structure"',
+        'href="metronautica-tibble.html#structure"', body, fixed = TRUE)
     body <- gsub('href="../README.md', 'href="index.html', body, fixed = TRUE)
     body <- gsub('href="docs/index.html', 'href="index.html', body, fixed = TRUE)
     body <- gsub('href="docs/reference.html', 'href="reference.html', body, fixed = TRUE)
@@ -133,6 +136,16 @@ markdown_html <- function(text, home = FALSE) {
     body <- gsub('href="(R/|man/|tools/|examples/|inst/|tests/)', paste0('href="', repo, '\\1'), body)
     body <- gsub('href="(DESCRIPTION|CITATION.cff|LICENSE.md)', paste0('href="', repo, '\\1'), body)
     body <- gsub('href="(validation/)', paste0('href="', repo, 'docs/\\1'), body)
+# Inline shared SVG guides.
+    for (asset in c("tibble-structure", "epoch-labels", "calibration-validation")) {
+        filename <- paste0(asset, ".svg")
+        svg <- read_text(file.path(docs, "assets", "guides", filename))
+        svg <- sub('role="img"', 'class="guide-diagram" role="group"', svg, fixed = TRUE)
+        figure <- paste0('<div class="visual-guide">', svg,
+            '<a class="diagram-open" href="assets/guides/', filename, '">Open diagram</a></div>')
+        body <- gsub(paste0('<p><img[^>]*src="[^"]*assets/guides/',
+            asset, '[.]svg"[^>]*></p>'), figure, body)
+    }
     if (home) {
         body <- sub('<p><img[^>]*src="docs/assets/workflow-dark.svg"[^>]*></p>', diagram, body)
 # Omit duplicated browser navigation.
@@ -150,6 +163,17 @@ for (source in names(pages)) {
     title <- sub("^# +", "", strsplit(text, "\n", fixed = TRUE)[[1L]][[1L]])
     write_text(wrap(markdown_html(text), title), file.path(docs, pages[[source]]))
 }
+# Reuse the contract index visual.
+contract <- read_text(file.path(root, contract_source))
+contract_index <- read_text(file.path(root, "data-contract", "README.md"))
+contract_visual <- sub("(?s).*<!-- GUIDE:tibble:start -->(.*?)<!-- GUIDE:tibble:end -->.*",
+    "\\1", contract_index, perl = TRUE)
+if (identical(contract_visual, contract_index)) stop("Missing contract visual markers")
+contract_visual <- gsub("../docs/assets/", "assets/", contract_visual, fixed = TRUE)
+contract <- sub("# Metronautica Tibble", paste0("# Metronautica Tibble\n<a name=\"structure\"></a>\n", contract_visual),
+    contract, fixed = TRUE)
+write_text(wrap(markdown_html(contract), "Metronautica Tibble 0.1.0"),
+    file.path(docs, "metronautica-tibble.html"))
 
 reference <- file.path(docs, "reference.html")
 tools::pkg2HTML("metronautica", dir = root, out = reference,
@@ -160,6 +184,16 @@ html <- read_text(reference)
 for (source in names(pages)) {
     html <- gsub(paste0(repo, "docs/", source), pages[[source]], html, fixed = TRUE)
 }
+html <- gsub(paste0(repo, contract_source), "metronautica-tibble.html", html, fixed = TRUE)
+html <- gsub(paste0(repo, "README.md"), "index.html", html, fixed = TRUE)
+# Resolve guide help anchors.
+package_rd <- tools::parse_Rd(file.path(root, "man", "metronautica-package.Rd"))
+guide_aliases <- vapply(Filter(function(x) identical(attr(x, "Rd_tag"), "\\alias"),
+    package_rd), paste, "", collapse = "")
+guide_aliases <- setdiff(guide_aliases, "metronautica-package")
+alias_anchors <- paste0('<a id="', guide_aliases, '"></a>', collapse = "")
+html <- sub("<h2 id='metronautica-package'>",
+    paste0(alias_anchors, "<h2 id='metronautica-package'>"), html, fixed = TRUE)
 
 # Remove build-machine logo references.
 html <- gsub('<img class="toplogo"[^>]*>', "", html)
@@ -170,4 +204,4 @@ html <- sub('<body>', paste0('<body>', nav), html, fixed = TRUE)
 source(file.path(root, "tools", "reference_navigation.R"))
 html <- reference_navigation(html, escape)
 write_text(html, reference)
-cat("Built HTML guide, six linked guides and reference from current sources.\n")
+cat("Built workflow, five linked guides, tibble specification and reference from current sources.\n")

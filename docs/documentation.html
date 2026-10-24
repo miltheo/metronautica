@@ -1,4 +1,4 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Documentation | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="documentation"></a></p>
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Documentation | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="metronautica-tibble.html">Metronautica Tibble</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="documentation"></a></p>
 <h1>Documentation</h1>
 <p>Edit Markdown guides, <code>man/*.Rd</code> and maintained <code>examples/*.R</code>; rebuild generated
 HTML/PDF rather than editing them directly.</p>
@@ -25,10 +25,6 @@ HTML/PDF rather than editing them directly.</p>
 <td><code>getting-started.html</code></td>
 </tr>
 <tr>
-<td><code>REAL_DATA_EXAMPLES.md</code></td>
-<td><code>recording-examples.html</code></td>
-</tr>
-<tr>
 <td><code>MEASUREMENT_DEFINITIONS.md</code></td>
 <td><code>measurement-definitions.html</code></td>
 </tr>
@@ -40,11 +36,39 @@ HTML/PDF rather than editing them directly.</p>
 <td><code>DEPENDENCY_LICENSING.md</code></td>
 <td><code>dependency-licensing.html</code></td>
 </tr>
+<tr>
+<td><code>../data-contract/0.1.0/SPECIFICATION.md</code> and the index visual</td>
+<td><code>metronautica-tibble.html</code></td>
+</tr>
 </tbody>
 </table>
-<p>The HTML builder embeds maintained example scripts into marked guide blocks.
-<code>quick_start.R</code> supplies static/dynamic examples; the other recipes cover offline
-features, settings, comparison and calibration. Edit the scripts, not embedded copies.</p>
+<p><code>data-contract/</code> is the versioned home of <strong>Metronautica Tibble</strong>. Only its four
+sample columns are required; metadata and reports describe the optional pipeline
+implementation. Maintain the full Markdown specification and its Word/PDF review
+copies together. <code>man/common-data-format.Rd</code> provides a brief reference summary
+under the <code>common-data-format</code> and <code>metronautica-tibble</code> help topics. Contract folders
+are excluded from the R source package; installed help links to the repository.</p>
+<p>To rebuild the specification's Word/PDF review copies on Windows, use Python
+with <code>python-docx</code> and an installed Microsoft Word:</p>
+<pre><code class="language-powershell">./tools/build_tibble_spec.ps1 -PythonExecutable &quot;path/to/python.exe&quot;
+</code></pre>
+<p>The builder reads the maintained Markdown and applies consistent headings,
+monospace code, field tables, page numbering and PDF bookmarks. Rebuild the HTML
+after changing the specification text. This specification build is separate from
+the R function-reference manual build below.</p>
+<p>Getting Started is the user workflow. Its marked code blocks are embedded from
+<code>quick_start.R</code> (static/dynamic) and <code>recording_traces.R</code> (traces, diagnostics,
+features). Edit those scripts, not embedded copies. Linked <code>examples/*.R</code> retain
+full recipes for feature settings, comparison, epoch labels and calibration.
+<code>man/*.Rd</code> remains canonical for definitions and parameters.</p>
+<p>GitHub and HTML share these Markdown sources and <code>assets/guides/*.svg</code>.
+The contract visual is maintained between <code>GUIDE:tibble</code> markers in
+<code>data-contract/README.md</code>; the HTML builder inserts it above the unchanged full
+specification. HTML adds navigation, SVG hover/focus details and full-size links.
+Rebuild after source edits; do not maintain a separate HTML narrative.</p>
+<p>The reference contains function topics, a package overview/offline example and
+technical notes. Workflow examples live in Getting Started; the function/source
+map lives in the root README. Guide help names resolve to the package overview.</p>
 <p><a name="build-and-check"></a></p>
 <h2>Build and check</h2>
 <p>From the repository root:</p>
@@ -58,6 +82,9 @@ These are build tools, not package runtime dependencies.</p>
 <p>After installing the package, regenerate recording plots only when needed:</p>
 <pre><code class="language-sh">Rscript tools/render_examples.R &quot;path/to/wam/samples&quot;
 </code></pre>
+<p>Use <code>--traces-only</code> to rebuild just the initial trace previews and example values.
+Trace previews require <code>plotly</code>, <code>htmlwidgets</code> and Chrome/Chromium; set
+<code>CHROMOTE_CHROME</code> when the browser is outside its standard location.</p>
 <p>This processes the 24-hour static sample and ten-stage trial, saving previews
 under <code>assets/examples/</code>. Compressed attachments and their catalogue must be local.
 Then rebuild HTML.</p>

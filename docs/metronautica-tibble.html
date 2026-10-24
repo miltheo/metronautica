@@ -1,0 +1,414 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Metronautica Tibble 0.1.0 | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="metronautica-tibble.html">Metronautica Tibble</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="metronautica-tibble"></a></p>
+<h1>Metronautica Tibble</h1>
+<p><a name="structure"></a></p>
+<div class="visual-guide"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 450" class="guide-diagram" role="group" aria-labelledby="tibble-title tibble-desc">
+<title id="tibble-title">Metronautica Tibble structure</title><desc id="tibble-desc">Four required sample columns and optional file, acquisition and processing metadata. The symbolic rows illustrate structure, not measured values.</desc>
+<defs><marker id="tibble-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#79c0ff"/></marker></defs>
+<style>text{font-family:Arial,sans-serif;fill:#e6edf3}.heading{font-size:23px;font-weight:600}.body{font-size:18px}.small{font-size:16px;fill:#b5c0ce}.code{font-family:Consolas,monospace;font-size:16px}.frame{fill:#161b22;stroke:#586574;stroke-width:1.5}.optional{stroke-dasharray:7 5}.arrow{fill:none;stroke:#79c0ff;stroke-width:2;marker-end:url(#tibble-arrow)}.guide-node:focus{outline:none}.guide-node:hover text,.guide-node:focus text{fill:#79c0ff}.guide-node:hover .frame,.guide-node:focus .frame{stroke:#79c0ff;stroke-width:2.5}</style>
+<rect width="1200" height="450" rx="10" fill="#0d1117"/>
+<text x="45" y="48" class="heading" text-anchor="start">Required samples</text><text x="825" y="48" class="heading" text-anchor="start">Optional metadata</text><rect x="40" y="75" width="700" height="270" rx="6" class="frame"/><path d="M295 75 V345" stroke="#586574"/><path d="M443 75 V345" stroke="#586574"/><path d="M591 75 V345" stroke="#586574"/><path d="M40 145 H740" stroke="#586574"/><path d="M40 205 H740" stroke="#586574"/><path d="M40 265 H740" stroke="#586574"/><text x="168" y="118" class="code" text-anchor="middle">time</text><text x="369" y="118" class="code" text-anchor="middle">ax_g</text><text x="517" y="118" class="code" text-anchor="middle">ay_g</text><text x="665" y="118" class="code" text-anchor="middle">az_g</text><g class="guide-node" tabindex="0" role="group" aria-label="Sample timestamp; UTC storage convention. Supplied instants and timezone are preserved by the constructor."><title>Sample timestamp; UTC storage convention. Supplied instants and timezone are preserved by the constructor.</title><text x="168" y="183" class="body" text-anchor="middle">POSIXct</text></g><g class="guide-node" tabindex="0" role="group" aria-label="Numeric acceleration on the device X axis, in g."><title>Numeric acceleration on the device X axis, in g.</title><text x="369" y="183" class="body" text-anchor="middle">numeric <tspan font-style="italic">g</tspan></text></g><g class="guide-node" tabindex="0" role="group" aria-label="Numeric acceleration on the device Y axis, in g."><title>Numeric acceleration on the device Y axis, in g.</title><text x="517" y="183" class="body" text-anchor="middle">numeric <tspan font-style="italic">g</tspan></text></g><g class="guide-node" tabindex="0" role="group" aria-label="Numeric acceleration on the device Z axis, in g."><title>Numeric acceleration on the device Z axis, in g.</title><text x="665" y="183" class="body" text-anchor="middle">numeric <tspan font-style="italic">g</tspan></text></g><text x="168" y="242" class="body" text-anchor="middle">t<tspan baseline-shift="sub" font-size="13">1</tspan></text><text x="369" y="242" class="body" text-anchor="middle">a<tspan baseline-shift="sub" font-size="13">x,1</tspan></text><text x="517" y="242" class="body" text-anchor="middle">a<tspan baseline-shift="sub" font-size="13">y,1</tspan></text><text x="665" y="242" class="body" text-anchor="middle">a<tspan baseline-shift="sub" font-size="13">z,1</tspan></text><text x="168" y="302" class="body" text-anchor="middle">t<tspan baseline-shift="sub" font-size="13">2</tspan></text><text x="369" y="302" class="body" text-anchor="middle">a<tspan baseline-shift="sub" font-size="13">x,2</tspan></text><text x="517" y="302" class="body" text-anchor="middle">a<tspan baseline-shift="sub" font-size="13">y,2</tspan></text><text x="665" y="302" class="body" text-anchor="middle">a<tspan baseline-shift="sub" font-size="13">z,2</tspan></text><text x="390" y="380" class="small" text-anchor="middle">One decoded observation per row</text><path d="M740 210 H790" class="arrow" stroke-dasharray="6 5"/><g class="guide-node" tabindex="0" role="group" aria-label="Optional metadata are stored in attr(x, &quot;meta&quot;). No metadata field is required for core conformance."><title>Optional metadata are stored in attr(x, &quot;meta&quot;). No metadata field is required for core conformance.</title><rect x="800" y="75" width="360" height="270" rx="6" class="frame optional"/><text x="980" y="113" class="code" text-anchor="middle">attr(x, "meta")</text></g><g class="guide-node" tabindex="0" role="group" aria-label="Source identity, format and decoding provenance."><title>Source identity, format and decoding provenance.</title><text x="825" y="164" class="code" text-anchor="start">file</text><text x="825" y="190" class="small" text-anchor="start">Source identity</text></g><g class="guide-node" tabindex="0" role="group" aria-label="Device identifiers, sampling-rate information and configured peak-to-peak axis span."><title>Device identifiers, sampling-rate information and configured peak-to-peak axis span.</title><text x="825" y="231" class="code" text-anchor="start">acquisition</text><text x="825" y="257" class="small" text-anchor="start">Device, rate, measurement span</text></g><g class="guide-node" tabindex="0" role="group" aria-label="Processing metadata may hold primary-five diagnostics, history and attached static/dynamic reports."><title>Processing metadata may hold primary-five diagnostics, history and attached static/dynamic reports.</title><text x="825" y="298" class="code" text-anchor="start">processing</text><text x="825" y="324" class="small" text-anchor="start">Decoding, diagnostics, reports</text></g><text x="600" y="422" class="body" text-anchor="middle">Four required columns; metadata, diagnostics and reports are optional.</text>
+</svg><a class="diagram-open" href="assets/guides/tibble-structure.svg">Open diagram</a></div>
+<p>Symbolic rows show the structure; metadata, diagnostics and reports are optional.</p>
+<p>A sample-level acceleration data contract for retaining signals and supporting later analyses</p>
+<p>Specification version 0.1.0 · Metronautica 0.1.0 · 23 October 2026</p>
+<p><a name="1-required-data-contract"></a></p>
+<h2>1 Required data contract</h2>
+<p>The Metronautica Tibble retains sample timestamps and triaxial acceleration for later analysis. Its four data columns are the only required fields. Metadata, diagnostics, reports and bundle wrappers described below are optional implementations of the Metronautica pipeline.</p>
+<p><a name="11-structure-and-representation"></a></p>
+<h3>1.1 Structure and representation</h3>
+<p>as_accel_tbl() constructs an accel_tbl inheriting from tbl_df, with an empty meta list by default. Compatible four-column tibbles and data frames also conform; no class tag, meta attribute or version field is required.</p>
+<p>Required column names and order: time, ax_g, ay_g, az_g. Columns have equal length, with one row per decoded observation.</p>
+<p>Axes are numeric acceleration in g; 1 g = 9.80665 m/s². time is POSIXct. UTC is the storage convention; the constructor preserves supplied instants, timezone and sample order. Invalid observations remain available for diagnostics. Structural conformance does not establish signal quality, calibration or suitability for an analysis.</p>
+<p>Minimal construction without metadata</p>
+<pre><code class="language-r">x &lt;- as_accel_tbl(time, ax_g, ay_g, az_g)
+</code></pre>
+<p><a name="12-required-data-columns"></a></p>
+<h3>1.2 Required data columns</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>time</td>
+<td>POSIXct</td>
+<td>Sample timestamp. Parsers store UTC. Duplicates, backward steps and invalid timestamps are retained for diagnostics; downstream functions require suitable timing.</td>
+</tr>
+<tr>
+<td>ax_g</td>
+<td>numeric</td>
+<td>Acceleration on device X axis in g.</td>
+</tr>
+<tr>
+<td>ay_g</td>
+<td>numeric</td>
+<td>Acceleration on device Y axis in g.</td>
+</tr>
+<tr>
+<td>az_g</td>
+<td>numeric</td>
+<td>Acceleration on device Z axis in g.</td>
+</tr>
+</tbody>
+</table>
+<p><a name="2-optional-pipeline-metadata"></a></p>
+<h2>2 Optional pipeline metadata</h2>
+<p>Optional metadata is stored as attr(x, 'meta'), a list with file, acquisition and processing sections read by accel_meta(x). Every field below is a pipeline implementation field and may be absent when unknown or not produced. Parser bundles use list(data = x, meta = accel_meta(x)), with synchronised metadata. Some analyses require settings or explicit arguments beyond the core contract.</p>
+<p><a name="21-file-metadata"></a></p>
+<h3>2.1 File metadata</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>source_path</td>
+<td>character</td>
+<td>Input file path used for parsing.</td>
+</tr>
+<tr>
+<td>source_name</td>
+<td>character</td>
+<td>Basename of the input file.</td>
+</tr>
+<tr>
+<td>format</td>
+<td>character</td>
+<td>Detected or declared native format, e.g. actigraph_leap_agsd.</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td>numeric</td>
+<td>File size in bytes.</td>
+</tr>
+<tr>
+<td>hash_sha256</td>
+<td>character</td>
+<td>SHA-256 digest of the input file for integrity and reproducibility.</td>
+</tr>
+<tr>
+<td>parser</td>
+<td>character</td>
+<td>Primary parsing engine (package or spec label).</td>
+</tr>
+<tr>
+<td>parser_version</td>
+<td>character</td>
+<td>Package version or spec version string for traceability.</td>
+</tr>
+<tr>
+<td>parsed_utc</td>
+<td>character</td>
+<td>UTC timestamp when the file was parsed.</td>
+</tr>
+<tr>
+<td>warnings</td>
+<td>character vector</td>
+<td>Non-fatal parsing warnings (empty if none).</td>
+</tr>
+<tr>
+<td>auto_parser</td>
+<td>character</td>
+<td>Automatic parser dispatcher name.</td>
+</tr>
+<tr>
+<td>auto_parser_version</td>
+<td>character</td>
+<td>Dispatcher version; device-specific decoding details may also be recorded under processing.</td>
+</tr>
+</tbody>
+</table>
+<p><a name="22-acquisition-metadata"></a></p>
+<h3>2.2 Acquisition metadata</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start_utc</td>
+<td>POSIXct (UTC)</td>
+<td>Minimum timestamp in decoded data.</td>
+</tr>
+<tr>
+<td>end_utc</td>
+<td>POSIXct (UTC)</td>
+<td>Maximum timestamp in decoded data.</td>
+</tr>
+<tr>
+<td>fs_nominal_hz</td>
+<td>numeric</td>
+<td>Nominal sampling rate from device header if available.</td>
+</tr>
+<tr>
+<td>fs_derived_hz</td>
+<td>numeric</td>
+<td>Usually inverse median positive inter-sample interval. LEAP AGSD uses its nominal packet-reconstruction rate. Neither independently validates the device clock.</td>
+</tr>
+<tr>
+<td>full_scale_range_g</td>
+<td>numeric</td>
+<td>Full-scale range in g (e.g., +/-8 g becomes 16 g). User-supplied or read from header when supported.</td>
+</tr>
+<tr>
+<td>units</td>
+<td>character</td>
+<td>Acceleration unit label, fixed to 'g'.</td>
+</tr>
+<tr>
+<td>device_vendor</td>
+<td>character</td>
+<td>Device vendor name (e.g., ActivInsights, SENS, Axivity, ActiGraph).</td>
+</tr>
+<tr>
+<td>device_model</td>
+<td>character</td>
+<td>Device model family (e.g., GENEActiv, SENS motion, AX3/AX6, GT3X/GT3X+).</td>
+</tr>
+<tr>
+<td>device_id</td>
+<td>character</td>
+<td>Device serial or unique identifier when available.</td>
+</tr>
+<tr>
+<td>sensor_vendor</td>
+<td>character</td>
+<td>Optional sensor vendor field (user-supplied).</td>
+</tr>
+<tr>
+<td>sensor_model</td>
+<td>character</td>
+<td>Optional sensor model field (user-supplied).</td>
+</tr>
+<tr>
+<td>time_tz_declared</td>
+<td>character</td>
+<td>Time-zone declaration retained from the source, if available.</td>
+</tr>
+<tr>
+<td>time_tz_parsed</td>
+<td>character</td>
+<td>Time-zone interpretation used during parsing; canonical output is UTC.</td>
+</tr>
+<tr>
+<td>time_tz_source</td>
+<td>character</td>
+<td>Evidence for timestamp interpretation, e.g. container_epoch or unknown.</td>
+</tr>
+<tr>
+<td>time_shift_s</td>
+<td>numeric</td>
+<td>Explicit shift applied to decoded timestamps, in seconds.</td>
+</tr>
+</tbody>
+</table>
+<p><a name="23-processing-metadata"></a></p>
+<h3>2.3 Processing metadata</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>parser_library</td>
+<td>list</td>
+<td>Parser/dispatcher name and version.</td>
+</tr>
+<tr>
+<td>calibration</td>
+<td>list</td>
+<td>Decoding status, scale/calibration application, coefficient sources, applied_by, details, notes and caveats. Application does not establish physical traceability.</td>
+</tr>
+<tr>
+<td>decode_notes</td>
+<td>character</td>
+<td>Critical decoding decisions and current QC scope.</td>
+</tr>
+<tr>
+<td>qc</td>
+<td>list</td>
+<td>Post-decode primary-five signal diagnostics (Section 3).</td>
+</tr>
+<tr>
+<td>history</td>
+<td>list</td>
+<td>Processing events, where recorded; e.g. clipping, filtering or researcher calibration.</td>
+</tr>
+<tr>
+<td>reports</td>
+<td>list</td>
+<td>Attached static/dynamic assessment lists when enabled (Section 4).</td>
+</tr>
+</tbody>
+</table>
+<p><a name="3-optional-signal-diagnostics"></a></p>
+<h2>3 Optional signal diagnostics</h2>
+<p>Diagnostics are the recommended minimum workflow assessment, not required contract fields. The primary-five ruleset describes integrity, sample timing, axis-zero proportions, unusual cross-axis sequences and near-limit observations. parse_raw_auto attaches it at meta$processing$qc by default (qc = TRUE); as_accel_tbl does not. Use attach_qc for an existing table. Diagnostics do not remove, repair or certify samples; unknown range makes near-limit results unavailable.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ruleset</td>
+<td>character</td>
+<td>Diagnostic definition identifier: primary-five.</td>
+</tr>
+<tr>
+<td>n_samples</td>
+<td>integer</td>
+<td>Number of observations in the assessed table.</td>
+</tr>
+<tr>
+<td>missing_time</td>
+<td>numeric</td>
+<td>Number of non-finite sample timestamps.</td>
+</tr>
+<tr>
+<td>duplicate_time</td>
+<td>numeric</td>
+<td>Duplicated finite timestamps; each repeat after its first occurrence is counted.</td>
+</tr>
+<tr>
+<td>backward_time</td>
+<td>numeric</td>
+<td>Consecutive finite time steps with dt &lt; 0; duplicates are reported separately.</td>
+</tr>
+<tr>
+<td>invalid_axis</td>
+<td>numeric</td>
+<td>Total non-finite X/Y/Z values.</td>
+</tr>
+<tr>
+<td>median_dt_ms, iqr_dt_ms, longest_dt_ms</td>
+<td>numeric</td>
+<td>Median, IQR and maximum finite positive inter-sample interval, in milliseconds.</td>
+</tr>
+<tr>
+<td>zero_x_n, zero_y_n, zero_z_n</td>
+<td>numeric</td>
+<td>Counts of finite exact zeros on each axis.</td>
+</tr>
+<tr>
+<td>finite_x_n, finite_y_n, finite_z_n</td>
+<td>numeric</td>
+<td>Per-axis finite-value denominators.</td>
+</tr>
+<tr>
+<td>zero_x_pct, zero_y_pct, zero_z_pct</td>
+<td>numeric</td>
+<td>100 times exact-zero count divided by that axis's finite-value count.</td>
+</tr>
+<tr>
+<td>all_zero_samples, all_zero_sequence</td>
+<td>numeric, logical</td>
+<td>Count of simultaneous finite X=Y=Z=0 samples and whether a qualifying adjacent pair exists (Section 3.1).</td>
+</tr>
+<tr>
+<td>equal_nonzero_samples, equal_nonzero_sequence</td>
+<td>numeric, logical</td>
+<td>Count of finite X=Y=Z≠0 samples and whether a qualifying adjacent pair exists.</td>
+</tr>
+<tr>
+<td>limit_g, near_limit_fraction</td>
+<td>numeric</td>
+<td>Per-axis limit = full_scale_range_g/2; near-limit fraction = 0.98. Invalid/unknown range gives NA limit.</td>
+</tr>
+<tr>
+<td>near_limit_n, finite_axis_n</td>
+<td>numeric</td>
+<td>Pooled count of finite axis values with |axis| ≥ 0.98 × limit_g, and total finite X/Y/Z values.</td>
+</tr>
+<tr>
+<td>near_limit_pct</td>
+<td>numeric</td>
+<td>100 × near_limit_n/finite_axis_n; NA when range is unknown or no finite axes exist.</td>
+</tr>
+</tbody>
+</table>
+<p><a name="31-sequence-checks-and-scope"></a></p>
+<h3>3.1 Sequence checks and scope</h3>
+<p>A sequence requires at least two adjacent qualifying samples with finite timestamps, finite axes and a positive intervening time step. No minimum-duration run, gap-threshold count or saturation-duration summary is returned. Near-limit observations do not establish clipping or its cause. External subsetting can leave stale diagnostics; package static/dynamic clipping recomputes QC, while filtering/calibration invalidates it.</p>
+<p><a name="4-optional-assessment-records"></a></p>
+<h2>4 Optional assessment records</h2>
+<p>Static and dynamic records are optional pipeline attachments. static_metrology_from_tbl, static_noise_summary_from_tbl and dynamic_metrology_report default to attach_report = TRUE; FALSE adds no record. Assessments append to meta$processing$reports$static or $dynamic, each a list of records. Capture the returned data: inputs are not changed in place. Assessment schema_version = &quot;1&quot; versions the report structure independently of this 0.1.0 data contract.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>schema_version, type, function_name</td>
+<td>character</td>
+<td>Record schema version 1; static or dynamic; generating function.</td>
+</tr>
+<tr>
+<td>created_utc, software</td>
+<td>POSIXct, list</td>
+<td>Assessment creation time in UTC; package and R versions.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>character</td>
+<td>current for the assessed source state and selection; historical after package signal/selection changes.</td>
+</tr>
+<tr>
+<td>source, selection</td>
+<td>list</td>
+<td>File/acquisition/processing provenance and assessed window/stage bounds and sample counts.</td>
+</tr>
+<tr>
+<td>settings, results, diagnostics</td>
+<td>list</td>
+<td>Calculation settings, numeric result tables and assessed-selection QC. Full static reports retain summary, Allan and one_hz tables; noise-only reports retain summary; dynamic reports retain stages and overall.</td>
+</tr>
+<tr>
+<td>reference</td>
+<td>list or NULL</td>
+<td>Dynamic reference provenance and assessed selections; NULL for static reports.</td>
+</tr>
+<tr>
+<td>invalidated_by</td>
+<td>character vector</td>
+<td>Present after invalidation: selection_changed or signal_or_selection_changed. Records remain as provenance.</td>
+</tr>
+</tbody>
+</table>
+<p>Static results return the complete input table as data and the assessed window as clipped_data; both carry the record. Dynamic results return data (the full test clip, otherwise its data table or concatenated matched stages) and the enriched test_clips bundle. Bundle metadata remain synchronised. Numerical calculations are unchanged by attachment.</p>
+<p>Records exclude plots, raw signal copies and recursive parent metadata. Plots remain separate function outputs. Package clipping marks inherited records historical; filtering/calibration does likewise. External edits may leave stale records. A record's scope is its explicit assessed selection, not every sample in the retained signal.</p>
+<p><a name="5-parser-implementation-notes"></a></p>
+<h2>5 Parser implementation notes</h2>
+<p>GENEActiv (.bin): parsed with GENEAread. full_scale_range_g may be inferred from Measurement_Range if present, or overridden by user.</p>
+<p>SENS (.bin): fixed-record binary with scale_g_per_lsb (default 0.0078125 g per LSB). No header; full_scale_range_g is user-supplied when required.</p>
+<p>Axivity (.cwa): built-in fast decoder for supported layouts, with GGIRread fallback. AX3 CSV exports are also supported.</p>
+<p>ActiGraph (.gt3x): parsed with read.gt3x; native precision is the default, with an explicit legacy three-decimal mode. Supply measurement range when absent and needed for diagnostics.</p>
+<p>ActiGraph LEAP: direct AGSD decoding applies stored coefficients and retains nominal packet-relative timestamps and gaps; validated layouts are documented in the package. CSV exports are also supported. HBK G-Link CSV is supported for reference recordings.</p>
+<p><a name="6-related-documentation"></a></p>
+<h2>6 Related documentation</h2>
+<p>The help topics help(&quot;metronautica-tibble&quot;) and help(&quot;common-data-format&quot;) describe this contract.</p>
+<p><a href="../data-contract/README.md">Specification index</a> · <a href="reference.html#common-data-format">Reference summary</a> · <a href="https://github.com/miltheo/metronautica/blob/main/examples/tibble_minimal.R">Minimal runnable example</a> · <a href="https://github.com/miltheo/metronautica/blob/main/examples/data_contract.R">Native-recording retention example</a></p>
+</main></body></html>

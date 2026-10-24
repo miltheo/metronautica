@@ -1,14 +1,18 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Processing workflow | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="metronautica"></a></p>
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Processing workflow | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="metronautica-tibble.html">Metronautica Tibble</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="metronautica"></a></p>
 <h1>Metronautica</h1>
-<p>Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports.</p>
-<p>Parse recordings, assess signal quality, characterise measurement response and
-extract acceleration features. Developed for a research article under submission;
-analyses and recording samples are in <a href="https://github.com/miltheo/wam">WAM</a>.</p>
+<p><em>Navigate wearable triaxial accelerometer signals into transparent metrology and reports.</em></p>
+<p>Use wearable accelerometer native recordings, parse into a common data format
+with metadata and signal diagnostics attached, and choose your measurement
+pathway. This R package will allow you to retain wearable accelerometer data
+longitudinally by preserving structure and metadata, while allowing you to use
+different published summary features.</p>
+<p>This repository is developed for a research article under submission. Analysis
+and recording samples are in <a href="https://github.com/miltheo/wam">WAM</a>.</p>
 <p><a name="processing-workflow"></a></p>
 <h2>Processing workflow</h2>
 <svg class="workflow" viewBox="0 0 2048 768" role="group" aria-label="Interactive processing workflow"><image href="assets/workflow-dark.svg" width="2048" height="768"/><a href="#native-recordings" aria-label="Native recordings: GENEActiv/SENS BIN, Axivity CWA/AX3 CSV, ActiGraph GT3X/LEAP CSV/LEAP AGSD, HBK G-Link CSV. See decoder limits below."><title>Native recordings: GENEActiv/SENS BIN, Axivity CWA/AX3 CSV, ActiGraph GT3X/LEAP CSV/LEAP AGSD, HBK G-Link CSV. See decoder limits below.</title><rect class="hotspot" x="25" y="90" width="310" height="126"/></a>
 <a href="https://github.com/miltheo/metronautica/blob/main/R/m_parsers.R" aria-label="Open m_parsers.R: parse_raw_auto(qc = TRUE) decodes the native recording and attaches primary-five diagnostics."><title>Open m_parsers.R: parse_raw_auto(qc = TRUE) decodes the native recording and attaches primary-five diagnostics.</title><rect class="hotspot" x="347" y="89" width="328" height="72"/></a>
-<a href="#acceleration-tibble" aria-label="Acceleration tibble: time (POSIXct, UTC), ax_g, ay_g, az_g (numeric, g). Attached meta holds acquisition settings, provenance and QC."><title>Acceleration tibble: time (POSIXct, UTC), ax_g, ay_g, az_g (numeric, g). Attached meta holds acquisition settings, provenance and QC.</title><rect class="hotspot" x="660" y="90" width="360" height="135"/></a>
+<a href="#metronautica-tibble" aria-label="Metronautica Tibble 0.1.0: only time (POSIXct), ax_g, ay_g, az_g (numeric g) are required. Metadata, diagnostics and reports are optional pipeline additions."><title>Metronautica Tibble 0.1.0: only time (POSIXct), ax_g, ay_g, az_g (numeric g) are required. Metadata, diagnostics and reports are optional pipeline additions.</title><rect class="hotspot" x="660" y="90" width="360" height="135"/></a>
 <a href="#static-characterisation" aria-label="Static characterisation: select a stationary interval; sampling frequency, noise floor, signed offset bias, drift and Allan deviation."><title>Static characterisation: select a stationary interval; sampling frequency, noise floor, signed offset bias, drift and Allan deviation.</title><rect class="hotspot" x="660" y="307" width="360" height="205"/></a>
 <a href="#dynamic-characterisation" aria-label="Dynamic characterisation: specify a reference, range and stage schedule; response slope, bias, non-linearity and composite error."><title>Dynamic characterisation: specify a reference, range and stage schedule; response slope, bias, non-linearity and composite error.</title><rect class="hotspot" x="1060" y="307" width="260" height="205"/></a>
 <a href="#feature-extraction-and-visual-comparison" aria-label="Feature extraction and visual comparison: compute epoch summaries or counts and inspect processed-signal plots."><title>Feature extraction and visual comparison: compute epoch summaries or counts and inspect processed-signal plots.</title><rect class="hotspot" x="1360" y="307" width="315" height="205"/></a>
@@ -17,6 +21,74 @@ analyses and recording samples are in <a href="https://github.com/miltheo/wam">W
 <a href="reference.html#attach_qc" aria-label="attach_qc(): open documentation for recomputing and attaching diagnostics to the calibrated signal before reassessment."><title>attach_qc(): open documentation for recomputing and attaching diagnostics to the calibrated signal before reassessment.</title><rect class="hotspot" x="337" y="558" width="361" height="107"/></a></svg>
 <p>Stages can run independently; <a href="#optional-calibration">optional calibration</a> returns
 to assessment with refreshed QC. Click a diagram box for details.</p>
+<p><a name="function-map"></a></p>
+<h2>Function map</h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Entry point</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Parsing</td>
+<td><a href="reference.html#parse_raw_auto"><code>parse_raw_auto()</code></a></td>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/R/m_parsers.R">m_parsers.R</a></td>
+</tr>
+<tr>
+<td>Signal diagnostics</td>
+<td><a href="reference.html#qc_accel_tbl"><code>qc_accel_tbl()</code></a></td>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/R/m_qc.R">m_qc.R</a></td>
+</tr>
+<tr>
+<td>Interval selection</td>
+<td><a href="reference.html#clip_bundle"><code>clip_bundle()</code></a></td>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/R/m_accel_clipper.R">m_accel_clipper.R</a></td>
+</tr>
+<tr>
+<td>Static characterisation</td>
+<td><a href="reference.html#static_metrology_from_tbl"><code>static_metrology_from_tbl()</code></a></td>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/R/m_static.R">m_static.R</a></td>
+</tr>
+<tr>
+<td>Dynamic characterisation</td>
+<td><a href="reference.html#dynamic_metrology_report"><code>dynamic_metrology_report()</code></a></td>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/R/m_dynamic.R">m_dynamic.R</a></td>
+</tr>
+<tr>
+<td>Optional calibration</td>
+<td><a href="reference.html#dm_fit_vm_calibration"><code>dm_fit_vm_calibration()</code></a></td>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/R/m_dynamic.R">m_dynamic.R</a></td>
+</tr>
+<tr>
+<td>Axis filtering</td>
+<td><a href="reference.html#filter_accel_tbl"><code>filter_accel_tbl()</code></a></td>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/R/m_filter.R">m_filter.R</a></td>
+</tr>
+<tr>
+<td>Feature extraction</td>
+<td><a href="reference.html#compute_accel_summaries"><code>compute_accel_summaries()</code></a></td>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/R/m_accel_summary_suite.R">m_accel_summary_suite.R</a></td>
+</tr>
+<tr>
+<td>Activity counts</td>
+<td><a href="reference.html#accel_metric_agcounts"><code>accel_metric_agcounts()</code></a></td>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/R/m_agcounts.R">m_agcounts.R</a></td>
+</tr>
+<tr>
+<td>Visualisation</td>
+<td><a href="reference.html#plot_processed_metric"><code>plot_processed_metric()</code></a></td>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/R/m_plotter.R">m_plotter.R</a></td>
+</tr>
+<tr>
+<td>Sample retrieval</td>
+<td><a href="reference.html#m_load_sample_data"><code>m_load_sample_data()</code></a></td>
+<td><a href="https://github.com/miltheo/metronautica/blob/main/R/m_sample_data.R">m_sample_data.R</a></td>
+</tr>
+</tbody>
+</table>
 <p><a name="installation"></a></p>
 <h2>Installation</h2>
 <p>Install dependencies in R:</p>
@@ -45,8 +117,10 @@ head(features$data_wide)
 include plots from separately distributed samples. Other package use requires no WAM downloads.</p>
 <p><a name="native-recordings"></a></p>
 <h2>Native recordings</h2>
-<p><code>parse_raw_auto()</code> detects the format and attaches <code>primary-five</code> diagnostics
-at <code>meta$processing$qc</code> by default.</p>
+<p><code>parse_raw_auto()</code> detects the format and attaches
+<a href="reference.html#qc_accel_tbl--details"><code>primary-five</code> signal diagnostics</a>
+at <code>meta$processing$qc</code> by default. The reference gives the five rules and their
+reported outputs, following Supplementary Table S2 of the research article.</p>
 <table>
 <thead>
 <tr>
@@ -79,11 +153,15 @@ at <code>meta$processing$qc</code> by default.</p>
 </table>
 <p>Check <a href="reference.html#parse_raw_auto">decoder requirements and limits</a> before parsing.</p>
 <p><a name="acceleration-tibble"></a></p>
-<h2>Acceleration tibble</h2>
-<p>Four columns: <code>time</code> (<code>POSIXct</code>, UTC), <code>ax_g</code>, <code>ay_g</code>, <code>az_g</code> (numeric, <em>g</em>).
-Attached <code>meta</code> stores acquisition settings, provenance and QC; <code>accel_meta()</code> reads it.
-For decoded data, use <code>as_accel_tbl()</code> and <code>attach_qc()</code>.
-<a href="reference.html#common-data-format">Data contract</a>.</p>
+<p><a name="metronautica-tibble"></a></p>
+<h2>Metronautica Tibble</h2>
+<p><a href="metronautica-tibble.html">Metronautica Tibble 0.1.0</a> defines the
+sample-level data contract: one decoded observation per row, with <code>time</code>
+(<code>POSIXct</code>) and <code>ax_g</code>, <code>ay_g</code>, <code>az_g</code> (numeric acceleration in <em>g</em>), in that order.
+UTC is the storage convention. Metadata, signal diagnostics and assessment
+reports are optional pipeline attachments.</p>
+<p><code>as_accel_tbl()</code> constructs the tibble; <code>accel_meta()</code> reads its metadata.
+<a href="https://github.com/miltheo/metronautica/blob/main/examples/tibble_minimal.R">Minimal example</a> · <a href="../data-contract/README.md">Specification index</a>.</p>
 <p><a name="static-characterisation"></a></p>
 <h2>Static characterisation</h2>
 <p>Select a stationary interval. <code>static_metrology_from_tbl()</code> returns signed 1-<em>g</em>
@@ -100,18 +178,25 @@ VM response slope, signed VM bias, VM integral non-linearity, composite error an
 <p><code>compute_accel_summaries()</code> returns epoch features and settings; <code>accel_metric_*()</code>
 functions calculate individual features. Use <code>plot_accel_clip()</code> for acceleration,
 <code>plot_processed_metric()</code> for features and <code>accel_metric_agcounts()</code> for activity counts.
-<a href="recording-examples.html#feature-comparison">Feature comparison and settings</a>.</p>
+<a href="getting-started.html#feature-extraction">Feature extraction and comparison</a>.</p>
 <p><a name="metrology-and-feature-reports"></a></p>
 <h2>Metrology and feature reports</h2>
 <p>Retain units, reference, tested range and processing settings with the outcomes.
 Static reports return <code>summary</code>/<code>meta</code>; dynamic reports return <code>stages</code>/<code>overall</code>/<code>meta</code>;
 feature results return <code>data_long</code>/<code>data_wide</code>/<code>settings</code>.
 <a href="reference.html#measurement-definitions">Outcome definitions</a>.</p>
+<p>Static and dynamic report functions default to <code>attach_report = TRUE</code>.
+Capture <code>result$data</code> to retain compact assessments in
+<code>accel_meta(result$data)$processing$reports</code>; <code>attach_report = FALSE</code> opts out.
+Records retain results, assessed selections, settings, diagnostics and provenance;
+plots remain separate. Keep the unfiltered samples to support later metric
+calculations when their input requirements are met.
+<a href="https://github.com/miltheo/metronautica/blob/main/examples/data_contract.R">Native-recording retention example</a>.</p>
 <p><a name="optional-calibration"></a></p>
 <h2>Optional calibration</h2>
 <p>Fit and apply a VM mapping only when warranted. Independently validate its benefit,
 refresh diagnostics with <code>attach_qc()</code> and repeat the selected assessments.
-<a href="recording-examples.html#calibration">Calibration example</a>.</p>
+<a href="getting-started.html#optional-calibration">Calibration workflow and example</a>.</p>
 <p><a name="help-and-citation"></a></p>
 <h2>Help and citation</h2>
 <p>Use <code>help(&quot;function_name&quot;, package = &quot;metronautica&quot;)</code> for parameters and methods.

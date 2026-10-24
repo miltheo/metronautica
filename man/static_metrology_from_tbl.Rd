@@ -7,7 +7,8 @@ static_metrology_from_tbl(x, instrument = NA_character_, device_id =
     NA_character_, device_vendor = NA_character_, device_model =
     NA_character_, fs_nominal_hz = NA_real_, fs_derived_hz =
     NA_real_, out_dir = NULL, start_utc, duration_h,
-    title_prefix = NULL, verbose = FALSE, progress = TRUE)
+    title_prefix = NULL, verbose = FALSE, progress = TRUE,
+    attach_report = TRUE)
 }
 \arguments{
 \item{x}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
@@ -23,10 +24,11 @@ static_metrology_from_tbl(x, instrument = NA_character_, device_id =
 \item{title_prefix}{\if{latex}{\out{\sloppy}} Plot-title prefix.}
 \item{verbose}{\if{latex}{\out{\sloppy}} Print processing messages.}
 \item{progress}{\if{latex}{\out{\sloppy}} Show a text progress bar.}
+\item{attach_report}{\if{latex}{\out{\sloppy}} TRUE (default) appends a compact assessment to processing$reports$static on returned data and clipped_data. FALSE adds no record. Capture the returned data; the caller's object is not modified in place.}
 }
-\value{\if{latex}{\out{\sloppy}} An invisible list: \code{summary} (one-row table), \code{allan} (cluster durations and deviations), \code{drift_plot}, \code{allan_plot}, \code{clipped_data}, \code{one_hz} (axis/VM means and elapsed hours), \code{meta} and \code{files} (written paths, if requested).}
+\value{\if{latex}{\out{\sloppy}} An invisible list: \code{summary} (one-row table), \code{allan} (cluster durations and deviations), \code{drift_plot}, \code{allan_plot}, \code{clipped_data}, \code{one_hz} (axis/VM means and elapsed hours), \code{meta}, \code{files} (written paths, if requested), and \code{data} (the complete input table with optional attached assessment). \code{meta} describes \code{clipped_data}; \code{accel_meta(data)} describes the complete input. Attached results include summary, Allan and one-Hz tables; shared record fields and retention follow \code{\link{common-data-format}}.}
 \details{\if{latex}{\out{\sloppy}} Stationarity must be established separately. The initial five-minute SD is raw; the full-window noise floor is detrended. \code{\link{measurement-definitions}} defines the outcomes and normalisation.}
-\seealso{\code{\link{native-recording-examples}}}
+\seealso{\href{https://github.com/miltheo/metronautica/blob/main/docs/GETTING_STARTED.md#real-recording-examples}{Recording examples}}
 
 \section{Summary fields}{
 \if{latex}{\out{\sloppy}}

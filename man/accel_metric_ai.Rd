@@ -11,7 +11,7 @@ accel_metric_ai(tbl, epoch_s, fs_hz, anchor = "center", ai_noise_var
 }
 \arguments{
 \item{tbl}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
-\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); boundaries follow the common data format.}
+\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); see the pipeline epoch conventions in \code{\link{compute_accel_summaries}}.}
 \item{fs_hz}{\if{latex}{\out{\sloppy}} Finite positive sampling frequency (Hz), used for sample windows or time integrals.}
 \item{anchor}{\if{latex}{\out{\sloppy}} Output timestamp selected from the one-second bin starts: first for start, last for end, or the middle bin start (ceiling of half the bin count) for center. This differs from sample-level anchors of ENMO/MAD and does not change the calculated values.}
 \item{ai_noise_var}{\if{latex}{\out{\sloppy}} Mean-axis stationary noise variance (\eqn{g} squared), required by default for AI; estimate with \code{\link{compute_ai_noise_var_from_static}}. Zero disables noise subtraction.}

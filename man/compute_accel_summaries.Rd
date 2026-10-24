@@ -40,7 +40,7 @@ compute_accel_summaries(accel_input, measures = c("ENMO", "MAD"),
 \arguments{
 \item{accel_input}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle with data/full; see \code{\link{common-data-format}}.}
 \item{measures}{\if{latex}{\out{\sloppy}} Case-insensitive feature identifiers. Defaults: ENMO and MAD. Other choices are listed under Feature identifiers.}
-\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); boundaries follow the common data format.}
+\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); see the pipeline epoch conventions in \code{\link{compute_accel_summaries}}.}
 \item{epoch_anchor}{\if{latex}{\out{\sloppy}} Label each epoch by its first (start), last (end) or middle (center) observed sample. Upstream implementations may retain different anchors; inspect timestamps before joining.}
 \item{fs_hz}{\if{latex}{\out{\sloppy}} Explicit input rate (Hz); otherwise acquisition metadata, then median positive timestamp interval. target_fs controls separate interpolation. Neither setting establishes regularity.}
 \item{target_fs}{\if{latex}{\out{\sloppy}} Optional positive target rate in Hz. Linear interpolation is applied when it differs from the input rate; this alone is not an anti-aliasing filter.}
@@ -92,8 +92,8 @@ compute_accel_summaries(accel_input, measures = c("ENMO", "MAD"),
 Settings include metric_units; bandpass (requested/applied cutoffs, order, rate, Nyquist handling); dynamic_range_g, dynamic_range_limits_g and dynamic_range_source (argument/metadata/unavailable). Requested mims settings record configuration/dependency version; ai records noise variance/source, applicable estimation options, scale and aggregation. Unrequested feature settings are NULL.
 
 No behavioural classification is returned. Save the call alongside settings: not every argument is recorded.}
-\details{\if{latex}{\out{\sloppy}} Input is timestamp-sorted; shared epoch rules are in \code{\link{common-data-format}}. Feature-specific methods, limits and return settings are defined by the direct functions below. MIMS requires optional MIMSunit and a configured measurement span; AI requires noise variance unless estimation is selected. Inspect QC before processing; gaps are not repaired.}
-\seealso{The \href{https://github.com/miltheo/metronautica/blob/main/docs/REAL_DATA_EXAMPLES.md#feature-settings}{feature guide} covers settings, comparisons and complete recipes.}
+\details{\if{latex}{\out{\sloppy}} Input follows \code{\link{metronautica-tibble}} and is timestamp-sorted; epoch conventions below describe the feature pipeline. Feature-specific methods, limits and return settings are defined by the direct functions below. MIMS requires optional MIMSunit and a configured measurement span; AI requires noise variance unless estimation is selected. Inspect QC before processing; gaps are not repaired.}
+\seealso{The \href{https://github.com/miltheo/metronautica/blob/main/examples/feature_settings.R}{feature-settings example} demonstrates explicit configuration. See \href{https://github.com/miltheo/metronautica/blob/main/docs/GETTING_STARTED.md#compare-feature-pipelines}{Feature comparison} for the dynamic comparison.}
 \examples{
 # Load the installed recording.
 path <- system.file("extdata", "example_motion.csv",
@@ -136,4 +136,9 @@ MIMS \tab \code{\link{accel_metric_mims}} \tab MIMS-units per epoch \cr
 The SVM gravity-subtracted identifiers fix their aggregation; \code{svmg_rectify = FALSE} instead retains signed differences. SVMBP uses \code{svmbp_cutoffs}; the named variants fix their cutoffs, while \code{svmbp_output} still selects their aggregation. The direct helpers define processing alternatives. AG is not an available selector.
 }
 
-\section{Epoch timestamps and joins}{\if{latex}{\out{\sloppy}} Features can use different epoch labels. data_long preserves each feature's timestamps; data_wide joins exact timestamps, potentially creating extra rows and unpaired NA cells. These need not indicate missing acceleration; do not zero-fill them. See the \href{https://github.com/miltheo/metronautica/blob/main/docs/REAL_DATA_EXAMPLES.md#epoch-labels}{worked epoch-label example}.}
+\section{Pipeline rate and epoch conventions}{\if{latex}{\out{\sloppy}}
+These are optional pipeline conventions, not required fields of the Metronautica Tibble contract. Feature rate precedence is explicit \code{fs_hz}, metadata, then timestamps. Neither nominal nor timestamp-derived rate independently validates a clock. Filters and index pairing also require suitable regularity or synchronisation.
+
+Unless documented otherwise, positive \code{epoch_s} defines elapsed-time bins from the first sample, retaining the final partial epoch. Different durations define different pipelines. \code{anchor} selects an observed sample: start = first, end = last, center = ceiling of half the epoch sample count. Labels do not affect values. Activity Index uses one-second bin starts; MIMS retains upstream conventions; activity counts have separate boundaries. The dispatcher sorts timestamps; \code{as_accel_tbl()} does not.
+}
+\section{Epoch timestamps and joins}{\if{latex}{\out{\sloppy}} Features can use different epoch labels. data_long preserves each feature's timestamps; data_wide joins exact timestamps, potentially creating extra rows and unpaired NA cells. These need not indicate missing acceleration; do not zero-fill them. See the \href{https://github.com/miltheo/metronautica/blob/main/examples/offline_workflow.R}{worked epoch-label example}.}

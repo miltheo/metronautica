@@ -12,42 +12,20 @@ function processMathHTML() {
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
     onload="processMathHTML();"></script>
 <link rel="stylesheet" type="text/css" href="assets/reference.css">
-</head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><div class="container"><h1>Package {metronautica}</h1><hr><nav class="package" aria-label="Reference navigation"><h2>Reference index</h2><label for="topic-filter">Find topics or sections</label><input id="topic-filter" type="search" placeholder="e.g. noise floor, epochs, QC" autocomplete="off"><p id="topic-results" class="topic-results" role="status" aria-live="polite"></p><section class="topic-group"><h3>Getting started</h3><ul class="menu"><li class="topic-item" data-topic="metronautica-package"><details><summary><a class="topic-link" href="#metronautica-package"><code>metronautica-package</code><span class="topic-title">Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports.</span></a></summary><ul class="topic-sections"><li><a href="#metronautica-package--description">Description</a></li>
+</head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="metronautica-tibble.html">Metronautica Tibble</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><div class="container"><h1>Package {metronautica}</h1><hr><nav class="package" aria-label="Reference navigation"><h2>Reference index</h2><label for="topic-filter">Find topics or sections</label><input id="topic-filter" type="search" placeholder="e.g. noise floor, epochs, QC" autocomplete="off"><p id="topic-results" class="topic-results" role="status" aria-live="polite"></p><section class="topic-group"><h3>Package</h3><ul class="menu"><li class="topic-item" data-topic="metronautica-package"><details><summary><a class="topic-link" href="#metronautica-package"><code>metronautica-package</code><span class="topic-title">Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports.</span></a></summary><ul class="topic-sections"><li><a href="#metronautica-package--description">Description</a></li>
 <li><a href="#metronautica-package--details">Details</a></li>
 <li><a href="#metronautica-package--repositories">Repositories</a></li>
-<li><a href="#metronautica-package--see-also">See Also</a></li></ul></details></li>
-<li class="topic-item" data-topic="getting-started"><details><summary><a class="topic-link" href="#getting-started"><code>getting-started</code><span class="topic-title">Start with an offline acceleration workflow</span></a></summary><ul class="topic-sections"><li><a href="#getting-started--description">Description</a></li>
-<li><a href="#getting-started--details">Details</a></li>
-<li><a href="#getting-started--see-also">See Also</a></li>
-<li><a href="#getting-started--examples">Examples</a></li></ul></details></li>
-<li class="topic-item" data-topic="implementation-guide"><details><summary><a class="topic-link" href="#implementation-guide"><code>implementation-guide</code><span class="topic-title">Workflow and public function map</span></a></summary><ul class="topic-sections"><li><a href="#implementation-guide--description">Description</a></li>
-<li><a href="#implementation-guide--workflow-and-source-map">Workflow and source map</a></li>
-<li><a href="#implementation-guide--definitions-and-examples">Definitions and examples</a></li>
-<li><a href="#implementation-guide--assessment-scope">Assessment scope</a></li>
-<li><a href="#implementation-guide--input-and-return-contracts">Input and return contracts</a></li>
-<li><a href="#implementation-guide--references">References</a></li></ul></details></li>
-<li class="topic-item" data-topic="native-recording-examples"><details><summary><a class="topic-link" href="#native-recording-examples"><code>native-recording-examples</code><span class="topic-title">Static and dynamic recording examples</span></a></summary><ul class="topic-sections"><li><a href="#native-recording-examples--description">Description</a></li>
-<li><a href="#native-recording-examples--details">Details</a></li>
-<li><a href="#native-recording-examples--see-also">See Also</a></li></ul></details></li>
-<li class="topic-item" data-topic="feature-comparison"><details><summary><a class="topic-link" href="#feature-comparison"><code>feature-comparison</code><span class="topic-title">Compare feature pipelines over one dynamic recording</span></a></summary><ul class="topic-sections"><li><a href="#feature-comparison--description">Description</a></li>
-<li><a href="#feature-comparison--details">Details</a></li>
-<li><a href="#feature-comparison--value">Value</a></li>
-<li><a href="#feature-comparison--inputs">Inputs</a></li>
-<li><a href="#feature-comparison--example-execution">Example execution</a></li>
-<li><a href="#feature-comparison--see-also">See Also</a></li>
-<li><a href="#feature-comparison--examples">Examples</a></li></ul></details></li></ul></section>
-<section class="topic-group"><h3>Common data format and diagnostics</h3><ul class="menu"><li class="topic-item" data-topic="common-data-format"><details><summary><a class="topic-link" href="#common-data-format"><code>common-data-format</code><span class="topic-title">Acceleration data and metadata contract</span></a></summary><ul class="topic-sections"><li><a href="#common-data-format--description">Description</a></li>
-<li><a href="#common-data-format--details">Details</a></li>
-<li><a href="#common-data-format--sample-level-feature-inputs-and-epochs">Sample-level feature inputs and epochs</a></li>
-<li><a href="#common-data-format--see-also">See Also</a></li></ul></details></li>
-<li class="topic-item" data-topic="parse_raw_auto"><details><summary><a class="topic-link" href="#parse_raw_auto"><code>parse_raw_auto</code><span class="topic-title">Decode a supported accelerometer file</span></a></summary><ul class="topic-sections"><li><a href="#parse_raw_auto--description">Description</a></li>
+<li><a href="#metronautica-package--guides">Guides</a></li>
+<li><a href="#metronautica-package--see-also">See Also</a></li>
+<li><a href="#metronautica-package--examples">Examples</a></li></ul></details></li></ul></section>
+<section class="topic-group"><h3>Parsing and diagnostics</h3><ul class="menu"><li class="topic-item" data-topic="parse_raw_auto"><details><summary><a class="topic-link" href="#parse_raw_auto"><code>parse_raw_auto</code><span class="topic-title">Decode a supported accelerometer file</span></a></summary><ul class="topic-sections"><li><a href="#parse_raw_auto--description">Description</a></li>
 <li><a href="#parse_raw_auto--usage">Usage</a></li>
 <li><a href="#parse_raw_auto--arguments">Arguments</a></li>
 <li><a href="#parse_raw_auto--details">Details</a></li>
 <li><a href="#parse_raw_auto--value">Value</a></li>
 <li><a href="#parse_raw_auto--device-specific-arguments-through">Device-specific arguments through ...</a></li>
 <li><a href="#parse_raw_auto--see-also">See Also</a></li></ul></details></li>
-<li class="topic-item" data-topic="as_accel_tbl"><details><summary><a class="topic-link" href="#as_accel_tbl"><code>as_accel_tbl</code><span class="topic-title">Construct a common-format acceleration table</span></a></summary><ul class="topic-sections"><li><a href="#as_accel_tbl--description">Description</a></li>
+<li class="topic-item" data-topic="as_accel_tbl"><details><summary><a class="topic-link" href="#as_accel_tbl"><code>as_accel_tbl</code><span class="topic-title">Construct a Metronautica Tibble</span></a></summary><ul class="topic-sections"><li><a href="#as_accel_tbl--description">Description</a></li>
 <li><a href="#as_accel_tbl--usage">Usage</a></li>
 <li><a href="#as_accel_tbl--arguments">Arguments</a></li>
 <li><a href="#as_accel_tbl--details">Details</a></li>
@@ -181,6 +159,7 @@ function processMathHTML() {
 <li><a href="#compute_accel_summaries--details">Details</a></li>
 <li><a href="#compute_accel_summaries--value">Value</a></li>
 <li><a href="#compute_accel_summaries--feature-identifiers">Feature identifiers</a></li>
+<li><a href="#compute_accel_summaries--pipeline-rate-and-epoch-conventions">Pipeline rate and epoch conventions</a></li>
 <li><a href="#compute_accel_summaries--epoch-timestamps-and-joins">Epoch timestamps and joins</a></li>
 <li><a href="#compute_accel_summaries--see-also">See Also</a></li>
 <li><a href="#compute_accel_summaries--examples">Examples</a></li></ul></details></li>
@@ -319,8 +298,15 @@ function processMathHTML() {
 <li><a href="#plot_static_allan--details">Details</a></li>
 <li><a href="#plot_static_allan--value">Value</a></li>
 <li><a href="#plot_static_allan--see-also">See Also</a></li></ul></details></li></ul></section>
-<section class="topic-group"><h3>Measurement definitions</h3><ul class="menu"><li class="topic-item" data-topic="measurement-definitions"><details><summary><a class="topic-link" href="#measurement-definitions"><code>measurement-definitions</code><span class="topic-title">Calculation definitions and interpretation</span></a></summary><ul class="topic-sections"><li><a href="#measurement-definitions--description">Description</a></li>
+<section class="topic-group"><h3>Technical notes</h3><ul class="menu"><li class="topic-item" data-topic="common-data-format"><details><summary><a class="topic-link" href="#common-data-format"><code>common-data-format</code><span class="topic-title">Metronautica Tibble 0.1.0</span></a></summary><ul class="topic-sections"><li><a href="#common-data-format--description">Description</a></li>
+<li><a href="#common-data-format--details">Details</a></li>
+<li><a href="#common-data-format--optional-pipeline-implementations">Optional pipeline implementations</a></li>
+<li><a href="#common-data-format--input-and-return-contracts">Input and return contracts</a></li>
+<li><a href="#common-data-format--see-also">See Also</a></li></ul></details></li>
+<li class="topic-item" data-topic="measurement-definitions"><details><summary><a class="topic-link" href="#measurement-definitions"><code>measurement-definitions</code><span class="topic-title">Calculation definitions and interpretation</span></a></summary><ul class="topic-sections"><li><a href="#measurement-definitions--description">Description</a></li>
 <li><a href="#measurement-definitions--details">Details</a></li>
+<li><a href="#measurement-definitions--assessment-scope">Assessment scope</a></li>
+<li><a href="#measurement-definitions--references">References</a></li>
 <li><a href="#measurement-definitions--see-also">See Also</a></li></ul></details></li></ul></section></nav>
 <main>
 <table role='presentation'>
@@ -414,7 +400,7 @@ scales, stats, utils, grid, tools</td>
 </tr>
 </table>
 <hr><span id='rdfile+metronautica-package'></span>
-<h2 id='metronautica-package'>Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports.</h2><span id='topic+metronautica-package'></span><span id='topic+metronautica'></span>
+<a id="metronautica"></a><a id="getting-started"></a><a id="implementation-guide"></a><a id="native-recording-examples"></a><a id="native-study-examples"></a><a id="feature-comparison"></a><h2 id='metronautica-package'>Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports.</h2><span id='topic+metronautica-package'></span><span id='topic+metronautica'></span><span id='topic+getting-started'></span><span id='topic+implementation-guide'></span><span id='topic+native-recording-examples'></span><span id='topic+native-study-examples'></span><span id='topic+feature-comparison'></span>
 
 <h3 id="metronautica-package--description">Description</h3>
 
@@ -423,7 +409,7 @@ scales, stats, utils, grid, tools</td>
 
 <h3 id="metronautica-package--details">Details</h3>
 
-<p> Start with <code><a href="#topic+getting-started">getting-started</a></code>; <code><a href="#topic+implementation-guide">implementation-guide</a></code> maps the workflow to functions. Filtering and calibration are explicit choices. The package returns recording-level outcomes; WAM supplies cohort inference and inter-device equivalence analyses.</p>
+<p> Use the linked guides for workflows and this reference for function behaviour. Filtering and calibration are explicit choices. The package returns recording-level outcomes; WAM supplies cohort inference and inter-device equivalence analyses.</p>
 
 
 <h3 id="metronautica-package--repositories">Repositories</h3>
@@ -431,9 +417,36 @@ scales, stats, utils, grid, tools</td>
 <p> Developed for the wearable-accelerometer metrology research article under submission. Package source: <a href="https://github.com/miltheo/metronautica">https://github.com/miltheo/metronautica</a>. Associated analyses, observations and native-recording catalogue: <a href="https://github.com/miltheo/wam">https://github.com/miltheo/wam</a>.</p>
 
 
+<h3 id="metronautica-package--guides">Guides</h3>
+
+
+<p><a href="getting-started.html">Getting Started</a> provides recording, characterisation, feature and calibration workflows;
+<a href="index.html#function-map">Function map</a> connects stages to source files;
+<a href="getting-started.html#compare-feature-pipelines">Feature comparison</a> shows the shared-trial example.
+The offline example below needs no external recordings or optional packages; parsing attaches primary-five diagnostics.
+</p>
+
+
 <h3 id="metronautica-package--see-also">See Also</h3>
 
-<p><code><a href="#topic+common-data-format">common-data-format</a></code>, <code><a href="#topic+measurement-definitions">measurement-definitions</a></code></p>
+<p><code><a href="#topic+metronautica-tibble">metronautica-tibble</a></code> (the sample-level data contract), <code><a href="#topic+measurement-definitions">measurement-definitions</a></code></p>
+
+
+<h3 id="metronautica-package--examples">Examples</h3>
+
+<pre><code class='language-R'>library(metronautica)
+# Load the installed recording.
+path &lt;- system.file("extdata", "example_motion.csv",
+    package = "metronautica", mustWork = TRUE)
+x &lt;- parse_raw_auto(path)
+# Defaults: ENMO and MAD.
+# Select features explicitly.
+features &lt;- compute_accel_summaries(x, measures = c("ENMO", "MAD"),
+    epoch_s = 5, quiet = TRUE)
+# Inspect values and units.
+head(features$data_wide)
+features$settings$metric_units
+</code></pre>
 
 <hr><span id='rdfile+accel_meta'></span>
 <h2 id='accel_meta'>Read acceleration metadata</h2><span id='topic+accel_meta'></span>
@@ -615,7 +628,7 @@ head(counts)
 </td></tr>
 <tr><td><code id="accel_metric_ai_+3A_epoch_s">epoch_s</code></td>
 <td>
-<p> Positive epoch duration (s); boundaries follow the common data format.</p>
+<p> Positive epoch duration (s); see the pipeline epoch conventions in <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>.</p>
 </td></tr>
 <tr><td><code id="accel_metric_ai_+3A_fs_hz">fs_hz</code></td>
 <td>
@@ -695,7 +708,7 @@ head(counts)
 </td></tr>
 <tr><td><code id="accel_metric_enmo_+3A_epoch_s">epoch_s</code></td>
 <td>
-<p> Positive epoch duration (s); boundaries follow the common data format.</p>
+<p> Positive epoch duration (s); see the pipeline epoch conventions in <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>.</p>
 </td></tr>
 <tr><td><code id="accel_metric_enmo_+3A_anchor">anchor</code></td>
 <td>
@@ -756,7 +769,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_mad_+3A_epoch_s">epoch_s</code></td>
 <td>
-<p> Positive epoch duration (s); boundaries follow the common data format.</p>
+<p> Positive epoch duration (s); see the pipeline epoch conventions in <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>.</p>
 </td></tr>
 <tr><td><code id="accel_metric_mad_+3A_anchor">anchor</code></td>
 <td>
@@ -899,7 +912,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_odba_+3A_epoch_s">epoch_s</code></td>
 <td>
-<p> Positive epoch duration (s); boundaries follow the common data format.</p>
+<p> Positive epoch duration (s); see the pipeline epoch conventions in <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>.</p>
 </td></tr>
 <tr><td><code id="accel_metric_odba_+3A_fs_hz">fs_hz</code></td>
 <td>
@@ -1009,7 +1022,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_rocam_+3A_epoch_s">epoch_s</code></td>
 <td>
-<p> Positive epoch duration (s); boundaries follow the common data format.</p>
+<p> Positive epoch duration (s); see the pipeline epoch conventions in <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>.</p>
 </td></tr>
 <tr><td><code id="accel_metric_rocam_+3A_fs_hz">fs_hz</code></td>
 <td>
@@ -1066,7 +1079,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_svmbp_+3A_epoch_s">epoch_s</code></td>
 <td>
-<p> Positive epoch duration (s); boundaries follow the common data format.</p>
+<p> Positive epoch duration (s); see the pipeline epoch conventions in <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>.</p>
 </td></tr>
 <tr><td><code id="accel_metric_svmbp_+3A_fs_hz">fs_hz</code></td>
 <td>
@@ -1149,7 +1162,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_svmg_+3A_epoch_s">epoch_s</code></td>
 <td>
-<p> Positive epoch duration (s); boundaries follow the common data format.</p>
+<p> Positive epoch duration (s); see the pipeline epoch conventions in <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>.</p>
 </td></tr>
 <tr><td><code id="accel_metric_svmg_+3A_fs_hz">fs_hz</code></td>
 <td>
@@ -1208,7 +1221,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_vm_+3A_epoch_s">epoch_s</code></td>
 <td>
-<p> Positive epoch duration (s); boundaries follow the common data format.</p>
+<p> Positive epoch duration (s); see the pipeline epoch conventions in <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>.</p>
 </td></tr>
 <tr><td><code id="accel_metric_vm_+3A_anchor">anchor</code></td>
 <td>
@@ -1263,7 +1276,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_z_angle_+3A_epoch_s">epoch_s</code></td>
 <td>
-<p> Positive epoch duration (s); boundaries follow the common data format.</p>
+<p> Positive epoch duration (s); see the pipeline epoch conventions in <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>.</p>
 </td></tr>
 <tr><td><code id="accel_metric_z_angle_+3A_anchor">anchor</code></td>
 <td>
@@ -1315,7 +1328,7 @@ head(out)
 </td></tr>
 <tr><td><code id="accel_metric_z_angle_change_+3A_epoch_s">epoch_s</code></td>
 <td>
-<p> Positive epoch duration (s); boundaries follow the common data format.</p>
+<p> Positive epoch duration (s); see the pipeline epoch conventions in <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>.</p>
 </td></tr>
 <tr><td><code id="accel_metric_z_angle_change_+3A_fs_hz">fs_hz</code></td>
 <td>
@@ -1401,11 +1414,11 @@ head(out)
 <p><code><a href="#topic+static_allan">static_allan</a></code>, <code><a href="#topic+measurement-definitions">measurement-definitions</a></code></p>
 
 <hr><span id='rdfile+as_accel_tbl'></span>
-<h2 id='as_accel_tbl'>Construct a common-format acceleration table</h2><span id='topic+as_accel_tbl'></span>
+<h2 id='as_accel_tbl'>Construct a Metronautica Tibble</h2><span id='topic+as_accel_tbl'></span>
 
 <h3 id="as_accel_tbl--description">Description</h3>
 
-<p> Construct an acceleration table and retain its metadata. Parsing attaches diagnostics by default; they can also be attached explicitly.</p>
+<p> Construct the four-column sample-level table defined by Metronautica Tibble 0.1.0, retaining optional metadata.</p>
 
 
 <h3 id="as_accel_tbl--usage">Usage</h3>
@@ -1419,7 +1432,7 @@ head(out)
 <table role = "presentation">
 <tr><td><code id="as_accel_tbl_+3A_time">time</code></td>
 <td>
-<p> POSIXct sample timestamps. UTC is the common-format convention; existing instants and timezone attributes are retained.</p>
+<p> POSIXct sample timestamps. UTC is the Metronautica Tibble storage convention; existing instants and timezone attributes are retained.</p>
 </td></tr>
 <tr><td><code id="as_accel_tbl_+3A_ax_g">ax_g</code></td>
 <td>
@@ -1435,7 +1448,7 @@ head(out)
 </td></tr>
 <tr><td><code id="as_accel_tbl_+3A_meta">meta</code></td>
 <td>
-<p> Metadata list; see <code><a href="#topic+common-data-format">common-data-format</a></code>.</p>
+<p> Optional pipeline metadata list, empty by default. Its fields are not required by the core data contract; see <code><a href="#topic+metronautica-tibble">metronautica-tibble</a></code>.</p>
 </td></tr>
 </table>
 
@@ -1660,40 +1673,67 @@ qc_accel_tbl(x)$n_samples
 <p><code><a href="#topic+dynamic_metrology_report">dynamic_metrology_report</a></code>, <code><a href="#topic+filter_accel_tbl">filter_accel_tbl</a></code>, <code><a href="#topic+clip_bundle">clip_bundle</a></code></p>
 
 <hr><span id='rdfile+common-data-format'></span>
-<h2 id='common-data-format'>Acceleration data and metadata contract</h2><span id='topic+common-data-format'></span>
+<h2 id='common-data-format'>Metronautica Tibble 0.1.0</h2><span id='topic+common-data-format'></span><span id='topic+metronautica-tibble'></span>
 
 <h3 id="common-data-format--description">Description</h3>
 
-<p> The common data format shared by parsing, metrology and feature functions.</p>
+<p> The sample-level acceleration data contract used by Metronautica.</p>
 
 
 <h3 id="common-data-format--details">Details</h3>
 
 
-<p>An <code>accel_tbl</code> has exactly four columns: <code>time</code> (POSIXct), <code>ax_g</code>, <code>ay_g</code>, <code>az_g</code> (numeric <code class="reqn">g</code>; 1 <code class="reqn">g</code> = 9.80665 m/s squared). UTC is the storage convention; the constructor preserves supplied instants/timezones without inferring units. Retain timestamps, gaps and invalid observations until diagnostics are inspected.
+<p>Only four data columns are required, in this order:
 </p>
-<p>The <code>meta</code> list contains <code>acquisition</code> (identifiers, fs_nominal_hz, fs_derived_hz, full_scale_range_g, bounds, time provenance), <code>file</code> (source), and <code>processing</code> (parser/calibration, QC, history). Additional provenance is permitted. Range means full axis span, not positive limit. A parser bundle is <code>list(data = x, meta = accel_meta(x))</code>; keep both metadata representations synchronised.
+
+<dl>
+<dt>time</dt><dd><p>Sample timestamps of class POSIXct. UTC is the storage convention; the constructor preserves supplied instants and timezone.</p>
+</dd>
+<dt>ax_g, ay_g, az_g</dt><dd><p>Numeric acceleration on the device X, Y and Z axes in <code class="reqn">g</code>; 1 <code class="reqn">g</code> = 9.80665 m/s squared.</p>
+</dd>
+</dl>
+
+<p>Columns have equal length, with one row per decoded observation. Missing/non-finite observations and timestamp defects are retained for diagnostics. Structural conformance does not establish signal quality or suitability for an analysis.
 </p>
-<p><code>as_accel_tbl()</code> preserves metadata without estimating rate, attaching QC, sorting or repairing samples. <code>accel_meta()</code> reads it. Parsing enables QC by default; otherwise use <code>attach_qc()</code>. External subsetting can leave stale QC. Filtering invalidates QC; static/dynamic clipping recomputes it per window.
-</p>
-<p>Feature rate precedence: explicit <code>fs_hz</code>, metadata, then timestamps. Axis filtering requires metadata <code>fs_derived_hz</code>. Neither nominal nor timestamp-derived rate independently validates a clock. Filters and index pairing additionally require suitable regularity/synchronisation.
+<p><code>as_accel_tbl()</code> returns an <code>accel_tbl</code> inheriting from <code>tbl_df</code>. No metadata field, class tag, version field, diagnostic or attachment is required for core conformance. The full versioned specification and optional field catalogue are in <a href="metronautica-tibble.html">data-contract/0.1.0/SPECIFICATION.md</a> in the repository.
 </p>
 
 
-<h3 id="common-data-format--sample-level-feature-inputs-and-epochs">Sample-level feature inputs and epochs</h3>
+<h3 id="common-data-format--optional-pipeline-implementations">Optional pipeline implementations</h3>
 
 
-<p>Feature helpers accept common-format tables or bundles with <code>data</code>/<code>full</code>. Table metadata takes precedence over bundle meta. Unwrapping preserves values/metadata without repairing samples; feature selection adds no calibration.
+<p>Optional <code>meta</code> contains <code>file</code>, <code>acquisition</code> and <code>processing</code> sections, read by <code>accel_meta()</code>. Parser bundles use <code>list(data = x, meta = accel_meta(x))</code>; table metadata takes precedence over bundle metadata. Individual analyses may require settings or explicit arguments beyond core conformance.
 </p>
-<p>Unless documented otherwise, positive <code>epoch_s</code> defines elapsed-time bins from the first sample, retaining the final partial epoch. Different durations define different pipelines. The summary dispatcher sorts by timestamp; the constructor does not.
+<p>Parsing attaches primary-five diagnostics by default; <code>as_accel_tbl()</code> does not. Use <code>attach_qc()</code> for decoded samples. Diagnostics are the recommended minimum workflow assessment; unknown range makes near-limit results unavailable.
 </p>
-<p><code>anchor</code> selects an observed sample: start = first, end = last, center = ceiling of half the epoch sample count. Labels do not affect values. Activity Index uses one-second bin starts; MIMS retains upstream conventions; counts have separate boundaries. See <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code> for exact-timestamp joins and feature settings.
+<p>Static/noise and dynamic report functions default to <code>attach_report = TRUE</code>. Capture <code>result$data</code> to retain assessments at <code>meta$processing$reports$static</code> or <code>dynamic</code>; FALSE adds no record. Records retain results, assessed source/selection, settings, diagnostics and provenance; plots and raw signal copies remain separate. Records become historical after package clipping/filtering/calibration. External edits can leave stale records. Assessment schema <code>"1"</code> is versioned separately from this contract.
+</p>
+<p>RDS retains typed samples and attachments. Keep native files, unfiltered samples, provenance and feature settings for later metric calculations when their input requirements are met. Epoch summaries cannot reconstruct original samples.
+</p>
+
+
+<h3 id="common-data-format--input-and-return-contracts">Input and return contracts</h3>
+
+
+<p>Raw-signal helpers accept four-column acceleration tables or data/full bundles. Unwrapping does not select, sort or repair samples. Table metadata takes precedence over top-level meta.
+</p>
+
+<dl>
+<dt>Container operations</dt><dd><p>static_clip returns a table; clip_dynamic_stages creates a stage bundle. Generic clipping, QC, filtering and calibration preserve their documented input form.</p>
+</dd>
+<dt>Stage bundles</dt><dd><p>filter_accel_tbl and clip_bundle change only full; existing stages remain unchanged. Perform these operations before constructing stages. Calibration application processes full and stages.</p>
+</dd>
+<dt>Derived inputs</dt><dd><p>static_drift and static_offset_vm_5min require one-second means; Allan-minimum/plot helpers require an Allan table; allan_nonoverlap requires a numeric axis series. Dynamic reporting/fitting requires corresponding named stage bundles; m_dynamic_response also accepts numeric VM vectors. Parsers/loaders take paths or sample selectors.</p>
+</dd>
+</dl>
+
+<p>Calculation helpers return derived results rather than the original container.
 </p>
 
 
 <h3 id="common-data-format--see-also">See Also</h3>
 
-<p><code><a href="#topic+getting-started">getting-started</a></code>, <code><a href="#topic+metronautica-package">metronautica-package</a></code>, <code><a href="#topic+as_accel_tbl">as_accel_tbl</a></code>, <code><a href="#topic+qc_accel_tbl">qc_accel_tbl</a></code>, <code><a href="#topic+clip_bundle">clip_bundle</a></code></p>
+<p><code><a href="#topic+as_accel_tbl">as_accel_tbl</a></code>, <code><a href="#topic+qc_accel_tbl">qc_accel_tbl</a></code>, <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>, <code><a href="#topic+getting-started">getting-started</a></code></p>
 
 <hr><span id='rdfile+compute_accel_summaries'></span>
 <h2 id='compute_accel_summaries'>Compute epoch-level acceleration features</h2><span id='topic+compute_accel_summaries'></span>
@@ -1754,7 +1794,7 @@ qc_accel_tbl(x)$n_samples
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_epoch_s">epoch_s</code></td>
 <td>
-<p> Positive epoch duration (s); boundaries follow the common data format.</p>
+<p> Positive epoch duration (s); see the pipeline epoch conventions in <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>.</p>
 </td></tr>
 <tr><td><code id="compute_accel_summaries_+3A_epoch_anchor">epoch_anchor</code></td>
 <td>
@@ -1941,7 +1981,7 @@ qc_accel_tbl(x)$n_samples
 
 <h3 id="compute_accel_summaries--details">Details</h3>
 
-<p> Input is timestamp-sorted; shared epoch rules are in <code><a href="#topic+common-data-format">common-data-format</a></code>. Feature-specific methods, limits and return settings are defined by the direct functions below. MIMS requires optional MIMSunit and a configured measurement span; AI requires noise variance unless estimation is selected. Inspect QC before processing; gaps are not repaired.</p>
+<p> Input follows <code><a href="#topic+metronautica-tibble">metronautica-tibble</a></code> and is timestamp-sorted; epoch conventions below describe the feature pipeline. Feature-specific methods, limits and return settings are defined by the direct functions below. MIMS requires optional MIMSunit and a configured measurement span; AI requires noise variance unless estimation is selected. Inspect QC before processing; gaps are not repaired.</p>
 
 
 <h3 id="compute_accel_summaries--value">Value</h3>
@@ -2038,14 +2078,23 @@ MIMS </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_mims
 </p>
 
 
+<h3 id="compute_accel_summaries--pipeline-rate-and-epoch-conventions">Pipeline rate and epoch conventions</h3>
+
+
+<p>These are optional pipeline conventions, not required fields of the Metronautica Tibble contract. Feature rate precedence is explicit <code>fs_hz</code>, metadata, then timestamps. Neither nominal nor timestamp-derived rate independently validates a clock. Filters and index pairing also require suitable regularity or synchronisation.
+</p>
+<p>Unless documented otherwise, positive <code>epoch_s</code> defines elapsed-time bins from the first sample, retaining the final partial epoch. Different durations define different pipelines. <code>anchor</code> selects an observed sample: start = first, end = last, center = ceiling of half the epoch sample count. Labels do not affect values. Activity Index uses one-second bin starts; MIMS retains upstream conventions; activity counts have separate boundaries. The dispatcher sorts timestamps; <code>as_accel_tbl()</code> does not.
+</p>
+
+
 <h3 id="compute_accel_summaries--epoch-timestamps-and-joins">Epoch timestamps and joins</h3>
 
-<p> Features can use different epoch labels. data_long preserves each feature's timestamps; data_wide joins exact timestamps, potentially creating extra rows and unpaired NA cells. These need not indicate missing acceleration; do not zero-fill them. See the <a href="recording-examples.html#epoch-labels">worked epoch-label example</a>.</p>
+<p> Features can use different epoch labels. data_long preserves each feature's timestamps; data_wide joins exact timestamps, potentially creating extra rows and unpaired NA cells. These need not indicate missing acceleration; do not zero-fill them. See the <a href="https://github.com/miltheo/metronautica/blob/main/examples/offline_workflow.R">worked epoch-label example</a>.</p>
 
 
 <h3 id="compute_accel_summaries--see-also">See Also</h3>
 
-<p>The <a href="recording-examples.html#feature-settings">feature guide</a> covers settings, comparisons and complete recipes.</p>
+<p>The <a href="https://github.com/miltheo/metronautica/blob/main/examples/feature_settings.R">feature-settings example</a> demonstrates explicit configuration. See <a href="getting-started.html#compare-feature-pipelines">Feature comparison</a> for the dynamic comparison.</p>
 
 
 <h3 id="compute_accel_summaries--examples">Examples</h3>
@@ -2268,7 +2317,7 @@ noise[c("ai_noise_var", "ai_noise_sd", "n_windows")]
 
 <h3 id="dm_fit_vm_calibration--see-also">See Also</h3>
 
- <p><a href="recording-examples.html#calibration">Calibration example</a>, <code><a href="#topic+dm_apply_vm_calibration_tbl">dm_apply_vm_calibration_tbl</a></code>, <code><a href="#topic+dm_apply_vm_calibration_bundle">dm_apply_vm_calibration_bundle</a></code></p>
+ <p><a href="https://github.com/miltheo/metronautica/blob/main/examples/calibration.R">Calibration example</a>, <code><a href="#topic+dm_apply_vm_calibration_tbl">dm_apply_vm_calibration_tbl</a></code>, <code><a href="#topic+dm_apply_vm_calibration_bundle">dm_apply_vm_calibration_bundle</a></code></p>
 
 
 <h3 id="dm_fit_vm_calibration--examples">Examples</h3>
@@ -2302,7 +2351,8 @@ fit$summary
     TRUE, add_plot = TRUE, inspect_alignment = TRUE, align_hz = 10,
     align_max_lag_s = 7200, align_by = c("vm", "ax", "ay", "az"),
     align_plot_stages_n = 3, compute_stage_xcorr = FALSE,
-    comp_plot_max_n = 20000L, comp_plot_ylim = NULL)
+    comp_plot_max_n = 20000L, comp_plot_ylim = NULL,
+    attach_report = TRUE)
 </code></pre>
 
 
@@ -2393,6 +2443,10 @@ fit$summary
 <td>
 <p> Composite-trace display limits: lower/upper <code class="reqn">g</code> pair, or NULL for observed range. Fitting is unaffected.</p>
 </td></tr>
+<tr><td><code id="dynamic_metrology_report_+3A_attach_report">attach_report</code></td>
+<td>
+<p> TRUE (default) appends a compact assessment to processing$reports$dynamic on returned data and the test_clips tables. FALSE adds no record. Input objects and reference tables are not modified in place.</p>
+</td></tr>
 </table>
 
 
@@ -2412,6 +2466,8 @@ fit$summary
 
 <h3 id="dynamic_metrology_report--returned-stage-fields">Returned stage fields</h3>
 
+<p>The returned <code>data</code> is the full test clip when available, otherwise its data table or the concatenated matched test stages. <code>test_clips</code> retains the input bundle structure with optional assessments attached to its tables and synchronised metadata. Attached results include stage/overall tables and test/reference diagnostics with reference provenance; shared record fields and retention follow <code><a href="#topic+common-data-format">common-data-format</a></code>.
+</p>
 
 <p>Here F is the test-axis peak-to-peak span; v and r are paired test/reference VM in <code class="reqn">g</code>.
 </p>
@@ -2462,57 +2518,6 @@ fit$summary
 <h3 id="dynamic_metrology_report--see-also">See Also</h3>
 
 <p><code><a href="#topic+clip_dynamic_stages">clip_dynamic_stages</a></code>, <code><a href="#topic+m_dynamic_response">m_dynamic_response</a></code>, <code><a href="#topic+measurement-definitions">measurement-definitions</a></code></p>
-
-<hr><span id='rdfile+feature-comparison'></span>
-<h2 id='feature-comparison'>Compare feature pipelines over one dynamic recording</h2><span id='topic+feature-comparison'></span>
-
-<h3 id="feature-comparison--description">Description</h3>
-
-<p> Compare epoch summaries from the same decoded recording with common time bounds and explicit processing settings.</p>
-
-
-<h3 id="feature-comparison--details">Details</h3>
-
-<p> ENMO, mean gravity-subtracted SVM and band-pass SVM share a m<code class="reqn">g</code> scale; MAD has a separate panel. Values are not amplitude-normalised. Only band-pass SVM applies the 0.69&ndash;10 Hz axis filter; no prefiltering, resampling or additional VM calibration is requested. Five-second epochs use start labels. Shading marks ten six-minute stages, retaining intervening adjustments. This within-recording comparison does not establish device equivalence or behavioural validity.</p>
-
-
-<h3 id="feature-comparison--value">Value</h3>
-
-<p> The example creates <code>comparison</code>, containing long/wide feature tables and resolved settings, and, in the complete guide, <code>comparison_plot</code>, a ggplot object. Plot grouping changes only the display; retain the original result and settings for subsequent analysis.</p>
-
-
-<h3 id="feature-comparison--inputs">Inputs</h3>
-
-<p> Obtain the LEAP dynamic attachment and catalogue from the canonical WAM sample guide, <a href="https://github.com/miltheo/wam/blob/main/samples/README.md">https://github.com/miltheo/wam/blob/main/samples/README.md</a>, then configure the <code>metronautica.sample_dir</code> option with the local sample directory. This comparison does not require the reference recording.</p>
-
-
-<h3 id="feature-comparison--example-execution">Example execution</h3>
-
-<p> The <code>Not run</code> block requires external recordings; it was executed locally for the guide figure.</p>
-
-
-<h3 id="feature-comparison--see-also">See Also</h3>
-
-<p><a href="recording-examples.html#feature-comparison">Complete comparison and plot</a>, <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code></p>
-
-
-<h3 id="feature-comparison--examples">Examples</h3>
-
-<pre><code class='language-R'>## Not run:
-# Requires the LEAP dynamic sample.
-path &lt;- m_load_sample_data("LEAP", "dynamic", include_reference = FALSE)
-info &lt;- attr(path, "sample_info")
-recording &lt;- parse_raw_auto(path, return = "bundle",
-    time_shift_s = info$time_shift_s,
-    full_scale_range_g = info$full_scale_range_g)
-comparison &lt;- compute_accel_summaries(recording,
-    measures = c("ENMO", "SVMGMEAN", "SVMBP_069_10", "MAD"),
-    epoch_s = 5, epoch_anchor = "start", quiet = TRUE)
-head(comparison$data_long)
-comparison$settings$metric_units
-
-## End(Not run)
-</code></pre>
 
 <hr><span id='rdfile+filter_accel_tbl'></span>
 <h2 id='filter_accel_tbl'>Filter axes with a compensated Butterworth filter</h2><span id='topic+filter_accel_tbl'></span>
@@ -2569,152 +2574,6 @@ comparison$settings$metric_units
 
 <p><code><a href="#topic+clip_dynamic_stages">clip_dynamic_stages</a></code>, <code><a href="#topic+accel_metric_svmbp">accel_metric_svmbp</a></code>, <code><a href="#topic+common-data-format">common-data-format</a></code></p>
 
-<hr><span id='rdfile+getting-started'></span>
-<h2 id='getting-started'>Start with an offline acceleration workflow</h2><span id='topic+getting-started'></span>
-
-<h3 id="getting-started--description">Description</h3>
-
-<p> Parse an installed example, inspect QC and compute epoch features offline.</p>
-
-
-<h3 id="getting-started--details">Details</h3>
-
-<p> The installed fixture requires no external recordings or optional packages. Parsing attaches primary-five QC by default. <a href="getting-started.html">Getting started</a> provides the complete workflow, native-recording examples and plot previews. <a href="recording-examples.html#epoch-labels">Epoch labels</a> explains mixed-feature timestamp joins.</p>
-
-
-<h3 id="getting-started--see-also">See Also</h3>
-
-<p><code><a href="#topic+common-data-format">common-data-format</a></code>, <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>, <code><a href="#topic+native-recording-examples">native-recording-examples</a></code></p>
-
-
-<h3 id="getting-started--examples">Examples</h3>
-
-<pre><code class='language-R'>library(metronautica)
-# Load the installed recording.
-path &lt;- system.file("extdata", "example_motion.csv",
-    package = "metronautica", mustWork = TRUE)
-x &lt;- parse_raw_auto(path)
-# Defaults: ENMO and MAD.
-# Select features explicitly.
-features &lt;- compute_accel_summaries(x, measures = c("ENMO", "MAD"),
-    epoch_s = 5, quiet = TRUE)
-# Inspect values and units.
-head(features$data_wide)
-features$settings$metric_units
-</code></pre>
-
-<hr><span id='rdfile+implementation-guide'></span>
-<h2 id='implementation-guide'>Workflow and public function map</h2><span id='topic+implementation-guide'></span>
-
-<h3 id="implementation-guide--description">Description</h3>
-
-<p> Select an assessment, then use the linked function reference for its parameters, methods and return fields.</p>
-
-
-<h3 id="implementation-guide--workflow-and-source-map">Workflow and source map</h3>
-
-
-
-<table>
-<tr>
- <td style="text-align: left;">
-Operation / source file </td><td style="text-align: left;"> Entry point </td>
-</tr>
-<tr>
- <td style="text-align: left;">
-Parsing: R/m_parsers.R </td><td style="text-align: left;"> <code><a href="#topic+parse_raw_auto">parse_raw_auto</a></code> </td>
-</tr>
-<tr>
- <td style="text-align: left;">
-Signal diagnostics: R/m_qc.R </td><td style="text-align: left;"> <code><a href="#topic+qc_accel_tbl">qc_accel_tbl</a></code> </td>
-</tr>
-<tr>
- <td style="text-align: left;">
-Interval selection: R/m_accel_clipper.R </td><td style="text-align: left;"> <code><a href="#topic+clip_bundle">clip_bundle</a></code> </td>
-</tr>
-<tr>
- <td style="text-align: left;">
-Static characterisation: R/m_static.R </td><td style="text-align: left;"> <code><a href="#topic+static_metrology_from_tbl">static_metrology_from_tbl</a></code> </td>
-</tr>
-<tr>
- <td style="text-align: left;">
-Dynamic characterisation: R/m_dynamic.R </td><td style="text-align: left;"> <code><a href="#topic+dynamic_metrology_report">dynamic_metrology_report</a></code> </td>
-</tr>
-<tr>
- <td style="text-align: left;">
-Optional calibration: R/m_dynamic.R </td><td style="text-align: left;"> <code><a href="#topic+dm_fit_vm_calibration">dm_fit_vm_calibration</a></code> </td>
-</tr>
-<tr>
- <td style="text-align: left;">
-Axis filtering: R/m_filter.R </td><td style="text-align: left;"> <code><a href="#topic+filter_accel_tbl">filter_accel_tbl</a></code> </td>
-</tr>
-<tr>
- <td style="text-align: left;">
-Feature extraction: R/m_accel_summary_suite.R </td><td style="text-align: left;"> <code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code> </td>
-</tr>
-<tr>
- <td style="text-align: left;">
-Activity counts: R/m_agcounts.R </td><td style="text-align: left;"> <code><a href="#topic+accel_metric_agcounts">accel_metric_agcounts</a></code> </td>
-</tr>
-<tr>
- <td style="text-align: left;">
-Visualisation: R/m_plotter.R </td><td style="text-align: left;"> <code><a href="#topic+plot_processed_metric">plot_processed_metric</a></code> </td>
-</tr>
-<tr>
- <td style="text-align: left;">
-Sample retrieval: R/m_sample_data.R </td><td style="text-align: left;"> <code><a href="#topic+m_load_sample_data">m_load_sample_data</a></code>
-</td>
-</tr>
-
-</table>
-
-
-<h3 id="implementation-guide--definitions-and-examples">Definitions and examples</h3>
-
-
-<p>The <code><a href="#topic+common-data-format">common-data-format</a></code> defines shared inputs and epochs;
-<code><a href="#topic+measurement-definitions">measurement-definitions</a></code> defines metrology outcomes.
-Feature formulas belong to their direct functions.
-Start with <code><a href="#topic+getting-started">getting-started</a></code>; the
-<a href="getting-started.html#real-recording-examples">recording guide</a>
-provides static/dynamic code and plots.
-</p>
-
-
-<h3 id="implementation-guide--assessment-scope">Assessment scope</h3>
-
-<p> Establish stationary or synchronous excitation conditions separately. Report reference, tested range, signal state, rate, epochs, filters, timing diagnostics and units. Error estimates are not a complete uncertainty budget. WAM (<a href="https://github.com/miltheo/wam">https://github.com/miltheo/wam</a>) supplies cohort aggregation, trial-to-trial repeatability, activation/deadband estimation and inter-device equivalence tests.</p>
-
-
-<h3 id="implementation-guide--input-and-return-contracts">Input and return contracts</h3>
-
-
-<p>Raw-signal helpers accept four-column acceleration tables or data/full bundles. Unwrapping does not select, sort or repair samples. Table metadata takes precedence over top-level meta.
-</p>
-
-<dl>
-<dt>Container operations</dt><dd><p>static_clip returns a table; clip_dynamic_stages creates a stage bundle. Generic clipping, QC, filtering and calibration preserve their documented input form.</p>
-</dd>
-<dt>Stage bundles</dt><dd><p>filter_accel_tbl and clip_bundle change only full; existing stages remain unchanged. Perform these operations before constructing stages. Calibration application processes full and stages.</p>
-</dd>
-<dt>Derived inputs</dt><dd><p>static_drift and static_offset_vm_5min require one-second means; Allan-minimum/plot helpers require an Allan table; allan_nonoverlap requires a numeric axis series. Dynamic reporting/fitting requires corresponding named stage bundles; m_dynamic_response also accepts numeric VM vectors. Parsers/loaders take paths or sample selectors.</p>
-</dd>
-</dl>
-
-<p>Calculation helpers return derived results rather than the original container.
-</p>
-
-
-<h3 id="implementation-guide--references">References</h3>
-
-
-<p>Joint Committee for Guides in Metrology (2012). International vocabulary of metrology: Basic and general concepts and associated terms, JCGM 200:2012. <a href="https://doi.org/10.59161/JCGM200-2012">doi:10.59161/JCGM200-2012</a>.
-</p>
-<p>IEEE (2018). IEEE Std 2700-2017, Standard for Sensor Performance Parameter Definitions. <a href="https://doi.org/10.1109/IEEESTD.2018.8277147">doi:10.1109/IEEESTD.2018.8277147</a>.
-</p>
-<p>IEEE (2019). IEEE Std 1293-2018, Standard Specification Format Guide and Test Procedure for Linear Single-Axis, Nongyroscopic Accelerometers. <a href="https://doi.org/10.1109/IEEESTD.2019.8653544">doi:10.1109/IEEESTD.2019.8653544</a>.
-</p>
-
 <hr><span id='rdfile+invalidate_qc'></span>
 <h2 id='invalidate_qc'>Remove diagnostics inherited from an earlier signal state</h2><span id='topic+invalidate_qc'></span>
 
@@ -2741,7 +2600,7 @@ provides static/dynamic code and plots.
 
 <h3 id="invalidate_qc--value">Value</h3>
 
-<p> The same input container with inherited QC removed; acceleration samples are unchanged.</p>
+<p> The same input container with inherited QC removed and attached assessment records marked historical (signal_or_selection_changed); acceleration samples are unchanged.</p>
 
 
 <h3 id="invalidate_qc--see-also">See Also</h3>
@@ -2856,11 +2715,9 @@ response[c("response_slope", "response_intercept", "composite_error")]
 
 <h3 id="m_load_sample_data--details">Details</h3>
 
-<p> WAM's <a href="https://github.com/miltheo/wam/blob/main/samples/README.md">sample guide and catalogue</a> define recording intervals, native-format boundaries, provenance and distribution terms. Recordings are separate attachments; cloning WAM alone does not provide them. The installed catalogue fixes filenames and SHA-256 checksums.
+<p> WAM's <a href="https://github.com/miltheo/wam/blob/main/samples/README.md">sample guide</a> defines recording intervals, native-format boundaries, provenance and distribution terms. Recordings are separate attachments; cloning WAM does not provide them. The installed catalogue fixes filenames and SHA-256 checksums. Downloads/decompression use temporary files; validation precedes replacement.
 </p>
-<p>Use local sample_dir or configure a fixed release-asset base_url. Retrieval errors explain missing configuration. Downloads/decompression use temporary files and validation precedes replacement. Ordinary installation, loading and calculations require neither WAM nor network access.
-</p>
-<p>Apply each returned file's own timestamp shift and acquisition settings. Retrieval does not parse, filter or calibrate data.</p>
+<p>Apply each file's own timestamp shift and acquisition settings. Retrieval does not parse, filter or calibrate data. Installation, loading and calculations require neither WAM nor network access. See <a href="getting-started.html#real-recording-examples">Getting Started</a> for setup.</p>
 
 
 <h3 id="m_load_sample_data--value">Value</h3>
@@ -2875,7 +2732,7 @@ response[c("response_slope", "response_intercept", "composite_error")]
 
 <h3 id="m_load_sample_data--see-also">See Also</h3>
 
-<p><code><a href="#topic+native-recording-examples">native-recording-examples</a></code>, <code><a href="#topic+parse_raw_auto">parse_raw_auto</a></code></p>
+<p><a href="getting-started.html#real-recording-examples">Recording examples</a>, <code><a href="#topic+parse_raw_auto">parse_raw_auto</a></code></p>
 
 
 <h3 id="m_load_sample_data--examples">Examples</h3>
@@ -2931,6 +2788,22 @@ attr(path, "sample_info")
 </p>
 
 
+<h3 id="measurement-definitions--assessment-scope">Assessment scope</h3>
+
+<p> Establish stationary or synchronous excitation conditions separately. Error estimates are not a complete uncertainty budget. WAM (<a href="https://github.com/miltheo/wam">https://github.com/miltheo/wam</a>) supplies cohort aggregation, trial-to-trial repeatability, activation/deadband estimation and inter-device equivalence tests.</p>
+
+
+<h3 id="measurement-definitions--references">References</h3>
+
+
+<p>Joint Committee for Guides in Metrology (2012). International vocabulary of metrology: Basic and general concepts and associated terms, JCGM 200:2012. <a href="https://doi.org/10.59161/JCGM200-2012">doi:10.59161/JCGM200-2012</a>.
+</p>
+<p>IEEE (2018). IEEE Std 2700-2017, Standard for Sensor Performance Parameter Definitions. <a href="https://doi.org/10.1109/IEEESTD.2018.8277147">doi:10.1109/IEEESTD.2018.8277147</a>.
+</p>
+<p>IEEE (2019). IEEE Std 1293-2018, Standard Specification Format Guide and Test Procedure for Linear Single-Axis, Nongyroscopic Accelerometers. <a href="https://doi.org/10.1109/IEEESTD.2019.8653544">doi:10.1109/IEEESTD.2019.8653544</a>.
+</p>
+
+
 <h3 id="measurement-definitions--see-also">See Also</h3>
 
 
@@ -2948,27 +2821,6 @@ attr(path, "sample_info")
 </p>
 </li></ul>
 
-
-<hr><span id='rdfile+native-study-examples'></span>
-<h2 id='native-recording-examples'>Static and dynamic recording examples</h2><span id='topic+native-recording-examples'></span><span id='topic+native-study-examples'></span>
-
-<h3 id="native-recording-examples--description">Description</h3>
-
-<p> Worked examples using separately distributed native recordings.</p>
-
-
-<h3 id="native-recording-examples--details">Details</h3>
-
-<p> Configure <code>metronautica.sample_dir</code> with the catalogue and attachments from the <a href="https://github.com/miltheo/wam/blob/main/samples/README.md">WAM sample guide</a>.
-</p>
-<p>The <a href="getting-started.html#real-recording-examples">worked guide</a> demonstrates static characterisation and ten-stage dynamic assessment against the HBK reference, including code and plots. Apply each file's supplied timestamp shift and measurement span. Full static parsing can require several minutes and substantial memory.
-</p>
-<p>The complete runnable script is <a href="https://github.com/miltheo/metronautica/blob/main/examples/quick_start.R">quick_start.R</a>. These one-unit examples demonstrate calculations, without establishing between-device equivalence or behavioural validity.</p>
-
-
-<h3 id="native-recording-examples--see-also">See Also</h3>
-
-<p><code><a href="#topic+m_load_sample_data">m_load_sample_data</a></code>, <code><a href="#topic+static_metrology_from_tbl">static_metrology_from_tbl</a></code>, <code><a href="#topic+dynamic_metrology_report">dynamic_metrology_report</a></code></p>
 
 <hr><span id='rdfile+parse_raw_auto'></span>
 <h2 id='parse_raw_auto'>Decode a supported accelerometer file</h2><span id='topic+parse_raw_auto'></span>
@@ -3067,7 +2919,7 @@ attr(path, "sample_info")
 
 <h3 id="parse_raw_auto--see-also">See Also</h3>
 
-<p><code><a href="#topic+common-data-format">common-data-format</a></code>, <code><a href="#topic+qc_accel_tbl">qc_accel_tbl</a></code>, <code><a href="#topic+native-recording-examples">native-recording-examples</a></code></p>
+<p><code><a href="#topic+common-data-format">common-data-format</a></code>, <code><a href="#topic+qc_accel_tbl">qc_accel_tbl</a></code>, <a href="getting-started.html#real-recording-examples">Recording examples</a></p>
 
 <hr><span id='rdfile+plot_accel_clip'></span>
 <h2 id='plot_accel_clip'>Plot triaxial acceleration and optional vector magnitude</h2><span id='topic+plot_accel_clip'></span>
@@ -3158,7 +3010,7 @@ attr(path, "sample_info")
 
 <h3 id="plot_processed_metric--see-also">See Also</h3>
 
-<p><code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>, <code><a href="#topic+feature-comparison">feature-comparison</a></code></p>
+<p><code><a href="#topic+compute_accel_summaries">compute_accel_summaries</a></code>, <a href="getting-started.html#compare-feature-pipelines">Feature comparison</a></p>
 
 <hr><span id='rdfile+plot_static_allan'></span>
 <h2 id='plot_static_allan'>Plot axis-specific Allan deviation</h2><span id='topic+plot_static_allan'></span>
@@ -3600,7 +3452,8 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
     NA_character_, device_vendor = NA_character_, device_model =
     NA_character_, fs_nominal_hz = NA_real_, fs_derived_hz =
     NA_real_, out_dir = NULL, start_utc, duration_h,
-    title_prefix = NULL, verbose = FALSE, progress = TRUE)
+    title_prefix = NULL, verbose = FALSE, progress = TRUE,
+    attach_report = TRUE)
 </code></pre>
 
 
@@ -3659,6 +3512,10 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 <td>
 <p> Show a text progress bar.</p>
 </td></tr>
+<tr><td><code id="static_metrology_from_tbl_+3A_attach_report">attach_report</code></td>
+<td>
+<p> TRUE (default) appends a compact assessment to processing$reports$static on returned data and clipped_data. FALSE adds no record. Capture the returned data; the caller's object is not modified in place.</p>
+</td></tr>
 </table>
 
 
@@ -3669,7 +3526,7 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 
 <h3 id="static_metrology_from_tbl--value">Value</h3>
 
-<p> An invisible list: <code>summary</code> (one-row table), <code>allan</code> (cluster durations and deviations), <code>drift_plot</code>, <code>allan_plot</code>, <code>clipped_data</code>, <code>one_hz</code> (axis/VM means and elapsed hours), <code>meta</code> and <code>files</code> (written paths, if requested).</p>
+<p> An invisible list: <code>summary</code> (one-row table), <code>allan</code> (cluster durations and deviations), <code>drift_plot</code>, <code>allan_plot</code>, <code>clipped_data</code>, <code>one_hz</code> (axis/VM means and elapsed hours), <code>meta</code>, <code>files</code> (written paths, if requested), and <code>data</code> (the complete input table with optional attached assessment). <code>meta</code> describes <code>clipped_data</code>; <code>accel_meta(data)</code> describes the complete input. Attached results include summary, Allan and one-Hz tables; shared record fields and retention follow <code><a href="#topic+common-data-format">common-data-format</a></code>.</p>
 
 
 <h3 id="static_metrology_from_tbl--summary-fields">Summary fields</h3>
@@ -3681,7 +3538,7 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 
 <h3 id="static_metrology_from_tbl--see-also">See Also</h3>
 
-<p><code><a href="#topic+native-recording-examples">native-recording-examples</a></code></p>
+<p><a href="getting-started.html#real-recording-examples">Recording examples</a></p>
 
 <hr><span id='rdfile+static_noise_summary_from_tbl'></span>
 <h2 id='static_noise_summary_from_tbl'>Summarise stationary axis noise</h2><span id='topic+static_noise_summary_from_tbl'></span>
@@ -3697,7 +3554,7 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
     device_id = NA_character_, device_vendor = NA_character_,
     device_model = NA_character_, fs_nominal_hz = NA_real_,
     fs_derived_hz = NA_real_, out_dir = NULL, start_utc, duration_h,
-    verbose = FALSE, progress = TRUE)
+    verbose = FALSE, progress = TRUE, attach_report = TRUE)
 </code></pre>
 
 
@@ -3752,12 +3609,16 @@ q[c("n_samples", "median_dt_ms", "near_limit_pct")]
 <td>
 <p> Show a text progress bar.</p>
 </td></tr>
+<tr><td><code id="static_noise_summary_from_tbl_+3A_attach_report">attach_report</code></td>
+<td>
+<p> TRUE (default) appends the noise assessment to processing$reports$static on returned data and clipped_data. FALSE adds no record. The caller's object is not modified in place.</p>
+</td></tr>
 </table>
 
 
 <h3 id="static_noise_summary_from_tbl--value">Value</h3>
 
-<p> Invisible list: summary (one-row noise/identifier table), clipped_data, meta (including window coverage), files (written paths or NULL).</p>
+<p> Invisible list: summary (one-row noise/identifier table), clipped_data, meta (including window coverage), files (written paths or NULL), and data (the complete input table with optional attached assessment). Attached results contain the noise summary; shared record fields and retention follow <code><a href="#topic+common-data-format">common-data-format</a></code>.</p>
 
 
 <h3 id="static_noise_summary_from_tbl--summary-fields">Summary fields</h3>

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="2048" height="768" viewBox="0 0 2048 768" role="img" aria-labelledby="title description">
   <title id="title">Metronautica processing workflow</title>
-  <desc id="description">Native recordings are parsed with QC into an acceleration tibble, followed by static characterisation, dynamic characterisation, feature extraction and reports. Dashed routes permit direct assessments and calibration followed by refreshed QC. The tibble, downward arrow and static rectangle share the horizontal centre x=840.</desc>
+  <desc id="description">Native recordings are parsed with QC into a Metronautica Tibble, followed by static characterisation, dynamic characterisation, feature extraction and reports. Dashed routes permit direct assessments and calibration followed by refreshed QC. The tibble, downward arrow and static rectangle share the horizontal centre x=840.</desc>
   <defs>
     <marker id="solid-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0 0 L10 5 L0 10 Z" fill="#79c0ff"/></marker>
     <marker id="optional-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0 0 L10 5 L0 10 Z" fill="#3fb9a8"/></marker>
@@ -19,7 +19,7 @@
   <polygon class="box" points="65,93 335,93 295,213 25,213"/>
   <text class="heading" x="180" y="161">Native recordings</text>
   <polygon class="box" points="700,93 1020,93 980,223 660,223"/>
-  <text class="heading" x="840" y="134">Acceleration tibble</text>
+  <text class="heading" x="840" y="134">Metronautica Tibble</text>
   <text class="body" x="840" y="171">time, ax_g, ay_g, az_g</text>
   <text class="body" x="840" y="203">Metadata and QC report</text>
   <path class="solid" d="M315 168 H675"/>

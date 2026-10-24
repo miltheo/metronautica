@@ -1,47 +1,313 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Getting started | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="recording-examples.html">Recordings</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="getting-started"></a></p>
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Getting started | Metronautica</title><link rel="stylesheet" href="assets/reference.css"></head><body><nav class="site-nav" aria-label="Documentation"><a href="index.html">Workflow</a><a href="getting-started.html">Getting started</a><a href="metronautica-tibble.html">Metronautica Tibble</a><a href="reference.html">Function reference</a><a href="metronautica-reference.pdf">PDF</a><a href="https://github.com/miltheo/metronautica">GitHub</a></nav><main class="guide"><p><a name="getting-started"></a></p>
 <h1>Getting started</h1>
-<p>Load the installed package with <code>library(metronautica)</code>; sourcing scripts is unnecessary.</p>
-<p><a name="offline-example"></a></p>
-<h2>Offline example</h2>
-<p>This synthetic 20-second recording requires no downloads or optional packages.</p>
-<!-- EXAMPLE:offline:start -->
-<pre><code class="language-r"># Offline features and epoch labels.
-library(metronautica)
-
-# Construct offline acceleration example ----
-fs &lt;- 100
-seconds &lt;- (0:1999)/fs
-meta &lt;- list(acquisition = list(fs_nominal_hz = fs, fs_derived_hz = fs, full_scale_range_g = 16))
-x &lt;- as_accel_tbl(as.POSIXct(&quot;2026-01-01&quot;, tz = &quot;UTC&quot;) + seconds, 0.2 * sin(2 * pi * 2 * seconds), 0.2 *
-    cos(2 * pi * 2 * seconds), rep(1, length(seconds)), meta)
-
-# Attach signal diagnostics ----
-x &lt;- attach_qc(x, scope = &quot;synthetic 20-second recording&quot;)
-accel_meta(x)$processing$qc[c(&quot;n_samples&quot;, &quot;median_dt_ms&quot;)]
-
-# Compute default example features ----
-# Defaults: ENMO and MAD.
-# Alternatives: see feature identifiers.
-features &lt;- compute_accel_summaries(x, measures = c(&quot;ENMO&quot;, &quot;MAD&quot;), epoch_s = 5, fs_hz = fs, quiet = TRUE)
-head(features$data_wide)
-features$settings$metric_units
-stopifnot(nrow(features$data_wide) == 4)
-
-</code></pre>
-<!-- EXAMPLE:offline:end -->
-<p>The result contains four five-second ENMO/MAD epochs in m<em>g</em>. Keep <code>settings</code>
-with the values; <code>data_long</code> preserves feature timestamps and <code>data_wide</code> joins
-exact labels.</p>
+<p>Follow the <a href="index.html#installation">installation instructions</a>. Signal plots
+require <code>plotly</code>: install it with <code>install.packages(&quot;plotly&quot;)</code>.</p>
+<p><a href="#your-own-recording">Recording and trace</a> →
+<a href="#inspect-data-and-diagnostics">Diagnostics</a> →
+<a href="#static-characterisation">Static</a> → <a href="#dynamic-characterisation">Dynamic</a> →
+<a href="#feature-extraction">Features</a> → <a href="#metrology-and-feature-reports">Reports</a>.
+Stages can run independently; <a href="#optional-calibration">optional calibration</a>
+returns to diagnostics and reassessment.</p>
 <p><a name="your-own-recording"></a></p>
 <h2>Your own recording</h2>
-<pre><code class="language-r">accel &lt;- parse_raw_auto(&quot;path/to/recording.agsd&quot;, return = &quot;bundle&quot;, qc = TRUE)
-accel_meta(accel)$processing$qc
-features &lt;- compute_accel_summaries(accel, measures = c(&quot;ENMO&quot;, &quot;MAD&quot;), epoch_s = 5)
+<pre><code class="language-r">library(metronautica)
+accel &lt;- parse_raw_auto(&quot;path/to/recording.agsd&quot;, qc = TRUE)
+plot_accel_clip(accel, include_vm = TRUE, title = &quot;Recorded acceleration&quot;)
 </code></pre>
-<p>ENMO and MAD are defaults; <code>measures</code> selects
-<a href="reference.html#compute_accel_summaries">other features</a>.
-Inspect QC and acquisition metadata before selecting intervals. Diagnostics flag
-recording properties; they do not repair or remove observations.</p>
+<p>Use any <a href="index.html#native-recordings">supported native format</a>. Inspect the
+axes and vector magnitude (VM) before selecting an assessment interval.
+The plot supports zoom, hover values and a time-range slider.</p>
+<p><a name="real-recording-examples"></a></p>
+<h2>Real recording examples</h2>
+<p>These examples use the LEAP static recording and ten-stage dynamic trial from
+<a href="https://github.com/miltheo/wam/blob/main/samples/README.md">WAM</a>. Obtain its
+compressed attachments and <code>sample_index.csv</code>, then set their local directory:</p>
+<pre><code class="language-r">options(metronautica.sample_dir = &quot;path/to/wam/samples&quot;)
+</code></pre>
+<p>The loader restores verified recordings under <code>metronautica-samples/</code>.
+Both LEAP samples have a 16-<em>g</em> full-scale span (±8 <em>g</em>).
+The <a href="reference.html#m_load_sample_data">loader reference</a> covers LEAP, AX3, SENS
+and GENEActiv samples, remote configuration, checksums and overwrite handling.
+No download URL is set by default. Dynamic retrieval includes the HBK reference
+unless <code>include_reference = FALSE</code>.</p>
+<p><a name="static-trace"></a></p>
+<h3>Static trace</h3>
+<!-- EXAMPLE:static_trace:start -->
+<pre><code class="language-r">path &lt;- m_load_sample_data(&quot;LEAP&quot;, &quot;static&quot;)
+stationary &lt;- parse_raw_auto(path, full_scale_range_g = 16)
+segment &lt;- clip_bundle(stationary, start_time = attr(path, &quot;sample_info&quot;)$analysis_start_utc, duration_s = 10)
+plot_accel_clip(segment, include_vm = TRUE, title = &quot;LEAP: 10-second static segment&quot;)
+</code></pre>
+<!-- EXAMPLE:static_trace:end -->
+<p><img src="assets/examples/static-trace.png" alt="LEAP triaxial acceleration and VM over a 10-second static segment." /></p>
+<p><a name="dynamic-trace"></a></p>
+<h3>Dynamic trace</h3>
+<!-- EXAMPLE:dynamic_trace:start -->
+<pre><code class="language-r">path &lt;- m_load_sample_data(&quot;LEAP&quot;, &quot;dynamic&quot;, include_reference = FALSE)
+motion &lt;- parse_raw_auto(path, full_scale_range_g = 16)
+plot_accel_clip(motion, include_vm = TRUE, title = &quot;LEAP: ten-stage dynamic trial&quot;)
+</code></pre>
+<!-- EXAMPLE:dynamic_trace:end -->
+<p><img src="assets/examples/dynamic-trace.png" alt="LEAP triaxial acceleration and VM across the ten-stage dynamic trial." /></p>
+<p>These previews show the output of <code>plot_accel_clip()</code>; plots are interactive in
+R. Long traces are thinned for display only. The retained signal is unchanged.</p>
+<p><a name="metronautica-tibble"></a></p>
+<p><a name="inspect-data-and-diagnostics"></a></p>
+<h2>Inspect data and diagnostics</h2>
+<p>Parsing returns a <a href="metronautica-tibble.html">Metronautica Tibble 0.1.0</a>:
+<code>time</code> (<code>POSIXct</code>, UTC) and <code>ax_g</code>, <code>ay_g</code>, <code>az_g</code> (acceleration in <em>g</em>), in that
+order. <a href="metronautica-tibble.html#structure">Structure diagram</a>. VM is calculated for plotting; it is not an additional required column.</p>
+<!-- EXAMPLE:diagnostics:start -->
+<pre><code class="language-r">head(motion, 3)
+qc &lt;- accel_meta(motion)$processing$qc
+qc[c(&quot;n_samples&quot;, &quot;median_dt_ms&quot;, &quot;near_limit_pct&quot;)]
+</code></pre>
+<!-- EXAMPLE:diagnostics:end -->
+<!-- OUTPUT:trace:start -->
+<p>First three parsed observations (display rounded to six decimals):</p>
+<table>
+<thead>
+<tr>
+<th><code>time</code> (UTC)</th>
+<th align="right"><code>ax_g</code></th>
+<th align="right"><code>ay_g</code></th>
+<th align="right"><code>az_g</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025-08-19 13:17:58.000</td>
+<td align="right">-0.000520</td>
+<td align="right">0.698169</td>
+<td align="right">-0.703868</td>
+</tr>
+<tr>
+<td>2025-08-19 13:17:58.007</td>
+<td align="right">-0.000618</td>
+<td align="right">0.694247</td>
+<td align="right">-0.703865</td>
+</tr>
+<tr>
+<td>2025-08-19 13:17:58.015</td>
+<td align="right">-0.000318</td>
+<td align="right">0.706009</td>
+<td align="right">-0.699785</td>
+</tr>
+</tbody>
+</table>
+<p>Selected diagnostics for this recording:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th align="right">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_samples</code></td>
+<td align="right">599,552</td>
+</tr>
+<tr>
+<td><code>median_dt_ms</code></td>
+<td align="right">7.8125</td>
+</tr>
+<tr>
+<td><code>near_limit_pct</code></td>
+<td align="right">0.0000</td>
+</tr>
+</tbody>
+</table>
+<!-- OUTPUT:trace:end -->
+<p>These example values describe the complete dynamic recording. Parsing attaches
+<a href="reference.html#qc_accel_tbl--details"><code>primary-five</code> diagnostics</a> by default.
+<code>as_accel_tbl()</code> does not; use <code>attach_qc()</code> to attach them to decoded tables.
+Near-limit diagnostics require a known measurement range. Diagnostics describe
+integrity and timing; they do not repair samples or establish measurement accuracy.
+<code>clip_bundle()</code> removes inherited diagnostics; use <code>qc_accel_tbl(segment)</code> to
+assess the selected static segment.</p>
+<p>Choose either characterisation pathway below, or proceed directly to
+<a href="#feature-extraction">feature extraction</a>. The example
+settings describe these recordings; select intervals and schedules for your own
+experiment. The static assessment uses 24 hours; the dynamic assessment uses
+all ten stages and a separately parsed HBK reference.</p>
+<p><a name="static-characterisation"></a></p>
+<h2>Static characterisation</h2>
+<!-- EXAMPLE:static:start -->
+<pre><code class="language-r">library(metronautica)
+
+# Retrieve native recording ----
+path &lt;- m_load_sample_data(device = &quot;LEAP&quot;, type = &quot;static&quot;)
+info &lt;- attr(path, &quot;sample_info&quot;)
+stationary &lt;- parse_raw_auto(
+    path, return = &quot;bundle&quot;, time_shift_s = info$time_shift_s,
+    full_scale_range_g = info$full_scale_range_g)
+static_result &lt;- static_metrology_from_tbl(
+    stationary, start_utc = info$analysis_start_utc,
+    duration_h = 24, progress = FALSE)
+static_result$summary
+static_result$drift_plot
+static_result$allan_plot
+# Retain the assessed recording ----
+stationary &lt;- static_result$data
+accel_meta(stationary)$processing$reports$static[[1]]$results$summary
+
+</code></pre>
+<!-- EXAMPLE:static:end -->
+<p><img src="assets/examples/static-characterisation.png" alt="LEAP static example: signed VM drift over the selected 24 hours and axis-specific Allan deviation." /></p>
+<p>Left: one-second VM means and fitted drift. Right: axis-specific Allan deviation.
+No additional filtering or dynamic VM calibration is applied. Stationarity must
+be established separately, including continuity within the selected interval.
+Full static recordings can take several minutes and substantial memory to parse.</p>
+<p><a name="dynamic-characterisation"></a></p>
+<h2>Dynamic characterisation</h2>
+<p>Specify the reference, excitation schedule, trims and configured measurement
+span. Filter or clip <strong>before</strong> constructing stages: these operations change
+<code>full</code>, leaving existing <code>stages</code> unchanged; calibration processes both.
+<a href="reference.html#common-data-format--input-and-return-contracts">Container contracts</a>.</p>
+<!-- EXAMPLE:dynamic:start -->
+<pre><code class="language-r">library(metronautica)
+
+# Retrieve native recording ----
+path &lt;- m_load_sample_data(device = &quot;LEAP&quot;, type = &quot;dynamic&quot;)
+info &lt;- attr(path, &quot;sample_info&quot;)
+ref_info &lt;- attr(path, &quot;reference_info&quot;)
+
+# Parse test and reference signals ----
+test &lt;- parse_raw_auto(
+    path, return = &quot;bundle&quot;, time_shift_s = info$time_shift_s,
+    full_scale_range_g = info$full_scale_range_g)
+reference &lt;- parse_raw_auto(
+    attr(path, &quot;reference_file&quot;), return = &quot;bundle&quot;,
+    time_shift_s = ref_info$time_shift_s,
+    full_scale_range_g = ref_info$full_scale_range_g)
+
+# Specify identical excitation schedules ----
+test_stages &lt;- clip_dynamic_stages(
+    test, start_utc = info$trial_start_utc,
+    n_stages = 10L, stage_min = 6, buffer_min = 2,
+    rpm_start = 50, rpm_step = 50, trim_start_min = 1, trim_end_min = 1)
+ref_stages &lt;- clip_dynamic_stages(
+    reference, start_utc = ref_info$trial_start_utc,
+    n_stages = 10L, stage_min = 6, buffer_min = 2,
+    rpm_start = 50, rpm_step = 50, trim_start_min = 1, trim_end_min = 1)
+
+# Compare retained dynamic stages ----
+dynamic_result &lt;- dynamic_metrology_report(
+    test_stages, ref_stages, test_axis_fsr_g = info$full_scale_range_g,
+    ref_axis_fsr_g = ref_info$full_scale_range_g,
+    compute_entropy = FALSE, inspect_alignment = FALSE,
+    add_plot = TRUE, progress = FALSE)
+dynamic_result$stages
+dynamic_result$overall
+dynamic_result$plots$vm_mean_vs_rpm
+dynamic_result$plots$linearity_vs_rpm
+# Retain the assessed trial ----
+test_stages &lt;- dynamic_result$test_clips
+retained &lt;- dynamic_result$data
+
+# Save samples and assessments ----
+saveRDS(retained, &quot;dynamic_trial.rds&quot;)
+retained &lt;- readRDS(&quot;dynamic_trial.rds&quot;)
+
+</code></pre>
+<!-- EXAMPLE:dynamic:end -->
+<p><img src="assets/examples/dynamic-characterisation.png" alt="LEAP dynamic example: stage-mean VM and reference-based VM integral non-linearity across ten stages." /></p>
+<p>Each six-minute stage loses one minute at each end. Plots show stage-mean VM
+and reference-based VM integral non-linearity without additional filtering or
+calibration. Catalogue shifts are applied separately to test and reference;
+index-based pairing does not correct timestamps or infer clock-rate correction.
+The supplied HBK reference requires +3600 s; use each file's own catalogue shift
+and span. Observed extrema do not establish measurement limits.</p>
+<p><a name="feature-extraction"></a></p>
+<h2>Feature extraction</h2>
+<p>Continue with <code>motion</code> from the dynamic trace above; characterisation is not a
+prerequisite. Summarise the same native signal into five-second epochs:</p>
+<!-- EXAMPLE:features:start -->
+<pre><code class="language-r">features &lt;- compute_accel_summaries(
+    motion, measures = c(&quot;ENMO&quot;, &quot;SVMGMEAN&quot;, &quot;SVMBP_069_10&quot;, &quot;MAD&quot;),
+    epoch_s = 5, epoch_anchor = &quot;start&quot;, quiet = TRUE)
+head(features$data_wide)
+features$settings$metric_units
+</code></pre>
+<!-- EXAMPLE:features:end -->
+<p>These four pipelines are examples, not the full feature set.
+<code>data_wide</code> contains epoch summaries; <code>data_long</code> retains each feature's labels.
+Keep <code>settings</code> with the values to retain units and processing choices.
+<a href="reference.html#compute_accel_summaries">Available features and definitions</a>.</p>
+<p>Features can label epochs differently: exact timestamp joins may create extra
+rows and unpaired <code>NA</code> cells, which need not indicate missing acceleration.
+Do not zero-fill them. See <a href="reference.html#compute_accel_summaries--epoch-timestamps-and-joins">epoch conventions</a>
+and the <a href="https://github.com/miltheo/metronautica/blob/main/examples/offline_workflow.R">worked timestamp example</a>.</p>
+<div class="visual-guide"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1250 440" class="guide-diagram" role="group" aria-labelledby="epochs-title epochs-desc">
+<title id="epochs-title">Epoch labels and exact joins</title><desc id="epochs-desc">Synthetic five-second, 100 Hz example. Center-labelled ENMO and Activity Index have different timestamps; an exact join retains unpaired NA cells.</desc>
+<defs><marker id="epochs-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#79c0ff"/></marker></defs>
+<style>text{font-family:Arial,sans-serif;fill:#e6edf3}.heading{font-size:23px;font-weight:600}.body{font-size:18px}.small{font-size:16px;fill:#b5c0ce}.code{font-family:Consolas,monospace;font-size:16px}.frame{fill:#161b22;stroke:#586574;stroke-width:1.5}.optional{stroke-dasharray:7 5}.arrow{fill:none;stroke:#79c0ff;stroke-width:2;marker-end:url(#epochs-arrow)}.guide-node:focus{outline:none}.guide-node:hover text,.guide-node:focus text{fill:#79c0ff}.guide-node:hover .frame,.guide-node:focus .frame{stroke:#79c0ff;stroke-width:2.5}</style>
+<rect width="1250" height="440" rx="10" fill="#0d1117"/>
+<rect x="25" y="25" width="770" height="390" rx="6" class="frame"/><rect x="825" y="25" width="400" height="390" rx="6" class="frame"/><text x="50" y="65" class="heading" text-anchor="start">Center labels: 5 s, 100 Hz</text><text x="850" y="65" class="heading" text-anchor="start">Exact timestamp join</text><path d="M200 115 H750" stroke="#9da7b3" stroke-width="2"/><path d="M200 105 V125" stroke="#9da7b3"/><text x="200" y="150" class="small" text-anchor="middle">0.00 s</text><path d="M474 105 V125" stroke="#9da7b3"/><text x="474" y="150" class="small" text-anchor="middle">2.49 s</text><path d="M750 105 V125" stroke="#9da7b3"/><text x="750" y="150" class="small" text-anchor="middle">4.99 s</text><text x="55" y="213" class="body" text-anchor="start">ENMO</text><text x="55" y="293" class="body" text-anchor="start">Activity Index</text><path d="M200 205 H750" stroke="#586574" stroke-dasharray="4 4"/><path d="M200 285 H750" stroke="#586574" stroke-dasharray="4 4"/><g class="guide-node" tabindex="0" role="group" aria-label="At 100 Hz, the 500 observed samples run from 0.00 to 4.99 s. The center label selects observed sample 250, at 2.49 s."><title>At 100 Hz, the 500 observed samples run from 0.00 to 4.99 s. The center label selects observed sample 250, at 2.49 s.</title><circle cx="474" cy="205" r="8" fill="#79c0ff"/><text x="474" y="240" class="small" text-anchor="middle">2.49 s</text></g><g class="guide-node" tabindex="0" role="group" aria-label="Activity Index aggregates one-second values whose bin starts are 0, 1, 2, 3 and 4 s. Its center epoch label is 2.00 s."><title>Activity Index aggregates one-second values whose bin starts are 0, 1, 2, 3 and 4 s. Its center epoch label is 2.00 s.</title><circle cx="420" cy="285" r="8" fill="#39c5bb"/><text x="420" y="320" class="small" text-anchor="middle">2.00 s</text></g><text x="410" y="383" class="body" text-anchor="middle">Same epoch interval, different labels</text><text x="890" y="120" class="small" text-anchor="middle">time (s)</text><text x="1025" y="120" class="small" text-anchor="middle">ENMO</text><text x="1150" y="120" class="small" text-anchor="middle">Activity Index</text><path d="M845 140 H1205 M845 215 H1205 M845 290 H1205" stroke="#586574"/><text x="890" y="185" class="code" text-anchor="middle">2.00</text><text x="1025" y="185" class="code" text-anchor="middle">NA</text><text x="1150" y="185" class="code" text-anchor="middle">value</text><text x="890" y="260" class="code" text-anchor="middle">2.49</text><text x="1025" y="260" class="code" text-anchor="middle">value</text><text x="1150" y="260" class="code" text-anchor="middle">NA</text><text x="1025" y="340" class="body" text-anchor="middle">NA: no matching label</text><text x="1025" y="370" class="small" text-anchor="middle">Not necessarily missing samples</text>
+</svg><a class="diagram-open" href="assets/guides/epoch-labels.svg">Open diagram</a></div>
+<p>Synthetic 100-Hz example with center labels: ENMO uses 2.49 s; Activity Index uses
+2.00 s from its one-second bin labels. Labels do not change calculated values.
+Compare epoch intervals before combining features.</p>
+<p>For other pipelines, consult the <a href="https://github.com/miltheo/metronautica/blob/main/examples/feature_settings.R">feature-settings example</a>
+and the relevant reference: <a href="reference.html#accel_metric_ai">Activity Index noise variance</a>,
+<a href="reference.html#accel_metric_mims">MIMS measurement span</a>,
+<a href="reference.html#accel_metric_svmbp">band-pass settings</a> or
+<a href="reference.html#accel_metric_agcounts">standalone activity counts</a>.</p>
+<p><a name="visualise-a-processed-feature"></a></p>
+<h3>Visualise a processed feature</h3>
+<!-- EXAMPLE:processed_trace:start -->
+<pre><code class="language-r">plot_processed_metric(features, &quot;ENMO&quot;, title = &quot;LEAP: ENMO, five-second epochs&quot;)
+</code></pre>
+<!-- EXAMPLE:processed_trace:end -->
+<p><img src="assets/examples/processed-trace.png" alt="Five-second ENMO epochs over the same LEAP dynamic recording." /></p>
+<p><code>plot_processed_metric()</code> uses the result's recorded units and provides zoom,
+hover values and a time-range slider. This preview shows ENMO in m<em>g</em>.</p>
+<p><a name="compare-feature-pipelines"></a></p>
+<h3>Compare feature pipelines</h3>
+<p>The same trial is shown below for ENMO, mean gravity-subtracted SVM, band-pass
+SVM (0.69–10 Hz) and MAD. Comparable ranges share a panel; MAD has its own scale.</p>
+<p><img src="assets/examples/feature-comparison.png" alt="Four feature pipelines over the same LEAP dynamic trial, grouped by their observed ranges." /></p>
+<p>All values remain in m<em>g</em>. Shading marks excitation stages, with adjustment
+periods retained. Only band-pass SVM applies its specified axis filter; no
+additional VM calibration is applied. No prefiltering, resampling or amplitude
+normalisation is requested. Feature differences within one recording
+do not establish device equivalence or behavioural validity.
+<a href="https://github.com/miltheo/metronautica/blob/main/examples/feature_comparison.R">Full comparison and plotting recipe</a>.</p>
+<p><a name="metrology-and-feature-reports"></a></p>
+<h2>Metrology and feature reports</h2>
+<p>Inspect static <code>summary</code>, dynamic <code>stages</code>/<code>overall</code> and feature
+<code>data_long</code>/<code>data_wide</code>/<code>settings</code>. Retain the reference, assessed range, signal
+state, timing assumptions, units and resolved settings with the outcomes.
+Within-stage variability differs from trial-to-trial repeatability; error
+estimates are not a complete uncertainty budget.
+<a href="reference.html#measurement-definitions">Outcome definitions</a>.</p>
+<p>Static and dynamic reports attach assessments by default. Capture <code>result$data</code>;
+plots remain separate. Above, <code>stationary</code> retains the static recording and
+<code>retained</code> the complete dynamic trial; metrology uses its trimmed stages.
+<code>saveRDS()</code> preserves samples, timestamps, metadata and assessments.
+<a href="https://github.com/miltheo/metronautica/blob/main/examples/data_contract.R">Full retention example</a>.</p>
+<p><a name="optional-calibration"></a></p>
+<h2>Optional calibration</h2>
+<div class="visual-guide"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1250 560" class="guide-diagram" role="group" aria-labelledby="calibration-title calibration-desc">
+<title id="calibration-title">Calibration, diagnostics and independent validation</title><desc id="calibration-desc">Fit, apply, refresh diagnostics and reassess. A separate independent-data pathway applies the same fixed coefficients and checks benefit without refitting.</desc>
+<defs><marker id="calibration-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#79c0ff"/></marker></defs>
+<style>text{font-family:Arial,sans-serif;fill:#e6edf3}.heading{font-size:23px;font-weight:600}.body{font-size:18px}.small{font-size:16px;fill:#b5c0ce}.code{font-family:Consolas,monospace;font-size:16px}.frame{fill:#161b22;stroke:#586574;stroke-width:1.5}.optional{stroke-dasharray:7 5}.arrow{fill:none;stroke:#79c0ff;stroke-width:2;marker-end:url(#calibration-arrow)}.guide-node:focus{outline:none}.guide-node:hover text,.guide-node:focus text{fill:#79c0ff}.guide-node:hover .frame,.guide-node:focus .frame{stroke:#79c0ff;stroke-width:2.5}</style>
+<rect width="1250" height="560" rx="10" fill="#0d1117"/>
+<g class="guide-node" tabindex="0" role="group" aria-label="Fit reference-on-test VM coefficients from suitable paired stages."><title>Fit reference-on-test VM coefficients from suitable paired stages.</title><rect x="40" y="60" width="270" height="135" rx="6" class="frame"/><text x="175" y="98" class="heading" text-anchor="middle">Fit VM mapping</text><text x="175" y="136" class="small" text-anchor="middle">Paired test/reference stages</text><text x="175" y="170" class="code" text-anchor="middle">dm_fit_vm_calibration()</text></g><g class="guide-node" tabindex="0" role="group" aria-label="Apply the fitted scalar VM mapping, preserving vector direction. Inherited diagnostics are invalidated."><title>Apply the fitted scalar VM mapping, preserving vector direction. Inherited diagnostics are invalidated.</title><rect x="340" y="60" width="270" height="135" rx="6" class="frame"/><text x="475" y="98" class="heading" text-anchor="middle">Apply mapping</text><text x="475" y="136" class="small" text-anchor="middle">Fitting recording</text><text x="475" y="170" class="code" text-anchor="middle">dm_apply_vm_calibration_tbl()</text></g><g class="guide-node" tabindex="0" role="group" aria-label="Recompute primary-five diagnostics for the calibrated recording."><title>Recompute primary-five diagnostics for the calibrated recording.</title><rect x="640" y="60" width="270" height="135" rx="6" class="frame"/><text x="775" y="98" class="heading" text-anchor="middle">Refresh diagnostics</text><text x="775" y="136" class="small" text-anchor="middle">Changed signal</text><text x="775" y="170" class="code" text-anchor="middle">attach_qc()</text></g><g class="guide-node" tabindex="0" role="group" aria-label="Compare relevant outcomes on the original and calibrated fitting recording; this is not independent validation."><title>Compare relevant outcomes on the original and calibrated fitting recording; this is not independent validation.</title><rect x="940" y="60" width="270" height="135" rx="6" class="frame"/><text x="1075" y="98" class="heading" text-anchor="middle">Reassess</text><text x="1075" y="136" class="small" text-anchor="middle">Static, dynamic, features</text><text x="1075" y="170" class="code" text-anchor="middle">Selected assessments</text></g><path d="M310 127 H332" class="arrow"/><path d="M610 127 H632" class="arrow"/><path d="M910 127 H932" class="arrow"/><g class="guide-node" tabindex="0" role="group" aria-label="Use independent recordings to assess whether fixed fitted coefficients improve the intended measurement outcomes."><title>Use independent recordings to assess whether fixed fitted coefficients improve the intended measurement outcomes.</title><rect x="40" y="340" width="270" height="135" rx="6" class="frame"/><text x="175" y="378" class="heading" text-anchor="middle">Independent data</text><text x="175" y="416" class="small" text-anchor="middle">Test/reference recordings</text><text x="175" y="450" class="code" text-anchor="middle">Separate from fitting</text></g><g class="guide-node" tabindex="0" role="group" aria-label="Apply the same fitted coefficients without refitting on the independent recordings."><title>Apply the same fitted coefficients without refitting on the independent recordings.</title><rect x="340" y="340" width="270" height="135" rx="6" class="frame"/><text x="475" y="378" class="heading" text-anchor="middle">Apply fixed mapping</text><text x="475" y="416" class="small" text-anchor="middle">Independent test recording</text><text x="475" y="450" class="code" text-anchor="middle">dm_apply_vm_calibration_tbl()</text></g><g class="guide-node" tabindex="0" role="group" aria-label="Recompute diagnostics for the independently calibrated recording."><title>Recompute diagnostics for the independently calibrated recording.</title><rect x="640" y="340" width="270" height="135" rx="6" class="frame"/><text x="775" y="378" class="heading" text-anchor="middle">Refresh diagnostics</text><text x="775" y="416" class="small" text-anchor="middle">Changed signal</text><text x="775" y="450" class="code" text-anchor="middle">attach_qc()</text></g><g class="guide-node" tabindex="0" role="group" aria-label="Compare errors and response against the independent reference within the intended range and processing pipeline."><title>Compare errors and response against the independent reference within the intended range and processing pipeline.</title><rect x="940" y="340" width="270" height="135" rx="6" class="frame"/><text x="1075" y="378" class="heading" text-anchor="middle">Validate benefit</text><text x="1075" y="416" class="small" text-anchor="middle">Original vs calibrated</text><text x="1075" y="450" class="code" text-anchor="middle">Within the intended use</text></g><path d="M310 407 H332" class="arrow"/><path d="M610 407 H632" class="arrow"/><path d="M910 407 H932" class="arrow"/><path d="M175 195 V255 H475 V333" class="arrow" stroke-dasharray="7 5"/><text x="495" y="260" class="small" text-anchor="start">Fixed fitted coefficients</text><text x="40" y="320" class="heading" text-anchor="start">Independent validation</text><text x="625" y="530" class="body" text-anchor="middle">Reassessment on the fitting recording does not establish independent benefit.</text>
+</svg><a class="diagram-open" href="assets/guides/calibration-validation.svg">Open diagram</a></div>
+<p>Fit and apply a reference-based VM mapping only when warranted. This rescales
+vector magnitude while preserving direction; it does not calibrate axes
+independently. Continuing with the matched stages above:</p>
+<pre><code class="language-r">fit &lt;- dm_fit_vm_calibration(test_stages, ref_stages)
+calibrated &lt;- dm_apply_vm_calibration_tbl(retained, fit$summary)
+calibrated &lt;- attach_qc(calibrated)
+</code></pre>
+<p>Calibration removes inherited diagnostics; <code>attach_qc()</code> recomputes them.
+Independently validate the benefit, then repeat the relevant characterisation
+and feature assessments. Fitting and reassessing the same trial is not
+independent validation. See the <a href="reference.html#dm_fit_vm_calibration">calibration method</a>
+and <a href="https://github.com/miltheo/metronautica/blob/main/examples/calibration.R">runnable synthetic example</a>.</p>
 <p><a name="optional-packages"></a></p>
 <h2>Optional packages</h2>
 <table>
@@ -84,80 +350,10 @@ recording properties; they do not repair or remove observations.</p>
 </table>
 <p>Install only the required packages; functions do not install dependencies.
 <a href="reference.html#parse_raw_auto">Parser reference</a> defines decoder settings and limits.</p>
-<p><a name="real-recording-examples"></a></p>
-<h2>Real recording examples</h2>
-<p>These single-unit examples use LEAP and its paired HBK reference: a 24-hour
-stationary interval and the first 78-minute dynamic trial, including ten stages
-and adjustment periods. They demonstrate application, not device equivalence or
-behavioural validation.</p>
-<p>Obtain the selected compressed attachments and <code>sample_index.csv</code> from the
-<a href="https://github.com/miltheo/wam/blob/main/samples/README.md">WAM sample guide</a>.
-A repository clone excludes recording payloads. Configure their local directory:</p>
-<pre><code class="language-r">options(metronautica.sample_dir = &quot;path/to/wam/samples&quot;)
-</code></pre>
-<p>The loader restores checksum-verified files under <code>metronautica-samples/</code>.
-<a href="recording-examples.html#sample-retrieval">Sample retrieval</a> covers remote configuration;
-no download URL is set by default.</p>
-<p><a name="static-characterisation"></a></p>
-<h2>Static characterisation</h2>
-<!-- EXAMPLE:static:start -->
-<pre><code class="language-r">library(metronautica)
-
-# Retrieve native recording ----
-path &lt;- m_load_sample_data(device = &quot;LEAP&quot;, type = &quot;static&quot;)
-info &lt;- attr(path, &quot;sample_info&quot;)
-stationary &lt;- parse_raw_auto(path, return = &quot;bundle&quot;, time_shift_s = info$time_shift_s, full_scale_range_g = info$full_scale_range_g)
-static_result &lt;- static_metrology_from_tbl(stationary, start_utc = info$analysis_start_utc, duration_h = 24,
-    progress = FALSE)
-static_result$summary
-static_result$drift_plot
-static_result$allan_plot
-
-</code></pre>
-<!-- EXAMPLE:static:end -->
-<p><img src="assets/examples/static-characterisation.png" alt="LEAP static example: signed VM drift over the selected 24 hours and axis-specific Allan deviation." /></p>
-<p>Left: one-second VM means and fitted drift. Right: axis-specific Allan deviation.
-No additional filtering or dynamic VM calibration is applied. Stationarity must
-be established separately.</p>
-<p><a name="dynamic-characterisation"></a></p>
-<h2>Dynamic characterisation</h2>
-<!-- EXAMPLE:dynamic:start -->
-<pre><code class="language-r">library(metronautica)
-
-# Retrieve native recording ----
-path &lt;- m_load_sample_data(device = &quot;LEAP&quot;, type = &quot;dynamic&quot;)
-info &lt;- attr(path, &quot;sample_info&quot;)
-ref_info &lt;- attr(path, &quot;reference_info&quot;)
-
-# Parse test and reference signals ----
-test &lt;- parse_raw_auto(path, return = &quot;bundle&quot;, time_shift_s = info$time_shift_s, full_scale_range_g = info$full_scale_range_g)
-reference &lt;- parse_raw_auto(attr(path, &quot;reference_file&quot;), return = &quot;bundle&quot;, time_shift_s = ref_info$time_shift_s,
-    full_scale_range_g = ref_info$full_scale_range_g)
-
-# Specify identical excitation schedules ----
-test_stages &lt;- clip_dynamic_stages(test, start_utc = info$trial_start_utc, n_stages = 10L, stage_min = 6,
-    buffer_min = 2, rpm_start = 50, rpm_step = 50, trim_start_min = 1, trim_end_min = 1)
-ref_stages &lt;- clip_dynamic_stages(reference, start_utc = ref_info$trial_start_utc, n_stages = 10L, stage_min = 6,
-    buffer_min = 2, rpm_start = 50, rpm_step = 50, trim_start_min = 1, trim_end_min = 1)
-
-# Compare retained dynamic stages ----
-dynamic_result &lt;- dynamic_metrology_report(test_stages, ref_stages, test_axis_fsr_g = info$full_scale_range_g,
-    ref_axis_fsr_g = ref_info$full_scale_range_g, compute_entropy = FALSE, inspect_alignment = FALSE,
-    add_plot = TRUE, progress = FALSE)
-dynamic_result$stages
-dynamic_result$overall
-dynamic_result$plots$vm_mean_vs_rpm
-dynamic_result$plots$linearity_vs_rpm
-
-</code></pre>
-<!-- EXAMPLE:dynamic:end -->
-<p><img src="assets/examples/dynamic-characterisation.png" alt="LEAP dynamic example: stage-mean VM and reference-based VM integral non-linearity across ten stages." /></p>
-<p>Each six-minute stage loses one minute at each end. Plots show stage-mean VM
-and reference-based VM integral non-linearity without additional filtering or
-calibration. Catalogue shifts are applied separately to test and reference;
-index-based pairing does not correct timestamps.</p>
 <p><a name="next-steps"></a></p>
 <h2>Next steps</h2>
-<p><a href="recording-examples.html#feature-comparison">Compare features</a> or
-<a href="recording-examples.html#calibration">fit and assess calibration</a>.</p>
+<p>Use the <a href="https://github.com/miltheo/metronautica/blob/main/examples/tibble_minimal.R">minimal four-column example</a> to construct
+a Metronautica Tibble from decoded data.</p>
+<p><a name="offline-example"></a></p>
+<p>A <a href="https://github.com/miltheo/metronautica/blob/main/examples/offline_workflow.R">synthetic example</a> runs without recording downloads.</p>
 </main></body></html>

@@ -53,3 +53,7 @@ nav.package .topic-sections { margin:.35rem 0 .6rem 1.05rem; padding-left:.7rem;
 nav.package .topic-sections li { margin:.25rem 0; font-size:.8rem; }
 nav.package .topic-results { margin:.35rem 0; min-height:1.2em; color:var(--muted); font-size:.8rem; }
 nav.package a[aria-current=location] { color:var(--fg); text-decoration:underline; font-weight:600; }
+
+.visual-guide { margin:1.5rem 0; }
+.guide-diagram { display:block; width:100%; height:auto; border:1px solid var(--line); border-radius:8px; }
+.diagram-open { display:inline-block; margin-top:.35rem; font-size:.85rem; }

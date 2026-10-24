@@ -9,7 +9,7 @@ accel_metric_svmg(tbl, epoch_s, fs_hz, anchor = "center", output =
 }
 \arguments{
 \item{tbl}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
-\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); boundaries follow the common data format.}
+\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); see the pipeline epoch conventions in \code{\link{compute_accel_summaries}}.}
 \item{fs_hz}{\if{latex}{\out{\sloppy}} Finite positive sampling frequency (Hz), used for sample windows or time integrals.}
 \item{anchor}{\if{latex}{\out{\sloppy}} Observed-sample label: first (start), last (end), or ceiling of half the sample count (center). Labels do not change values.}
 \item{output}{\if{latex}{\out{\sloppy}} g_seconds integrates the gravity-subtracted series by sum/fs_hz; sample_sum_g returns its sample sum; mean_mg and mean_g return its epoch mean in m\eqn{g}/\eqn{g}.}

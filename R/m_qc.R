@@ -46,6 +46,80 @@ qc_number <- function(x, default = NA_real_) {
         default else as.numeric(x)
 }
 
+# Compact assessment records. Never embed a signal, parent metadata or plots.
+.m_report_flag <- function(attach_report) {
+    if (!is.logical(attach_report) || length(attach_report) != 1L || is.na(attach_report))
+        stop("attach_report must be TRUE or FALSE.", call. = FALSE)
+    invisible(NULL)
+}
+
+.m_report_source <- function(x) {
+    meta <- accel_meta(x)
+    if (is.null(meta) && is.list(x) && !is.data.frame(x))
+        meta <- x$meta
+    if (is.null(meta))
+        meta <- list()
+    fields <- c("parser_library", "calibration", "vm_calibration", "signal_pipeline",
+        "calibration_state", "decode_notes", "history")
+    list(file = meta$file, acquisition = meta$acquisition,
+        processing = meta$processing[intersect(fields, names(meta$processing))])
+}
+
+.m_report_selection <- function(x) {
+    x <- qc_input_data(x)
+    time <- x$time[is.finite(as.numeric(x$time))]
+    list(first_sample_utc = if (length(time)) min(time) else as.POSIXct(NA, tz = "UTC"),
+        last_sample_utc = if (length(time)) max(time) else as.POSIXct(NA, tz = "UTC"),
+        n_samples = nrow(x))
+}
+
+.m_report_record <- function(type, function_name, source, selection, settings, results,
+    diagnostics, reference = NULL) {
+    list(schema_version = "1", type = type, function_name = function_name,
+        created_utc = as.POSIXct(Sys.time(), tz = "UTC"),
+        software = list(package = "metronautica", version = tryCatch(
+            as.character(utils::packageVersion("metronautica")), error = function(e) NA_character_),
+            R_version = R.version.string), status = "current", source = .m_report_source(source),
+        selection = selection, settings = settings, results = results,
+        diagnostics = diagnostics, reference = reference)
+}
+
+.m_report_attach <- function(x, record) {
+    original <- x
+    data <- qc_input_data(x)
+    meta <- accel_meta(data)
+    if (is.null(meta))
+        meta <- list()
+    if (!is.null(meta$processing$reports) && !is.list(meta$processing$reports))
+        stop("processing$reports must be a list.", call. = FALSE)
+    type <- record$type
+    previous <- meta$processing$reports[[type]]
+    if (!is.null(previous) && !is.list(previous))
+        stop("Each processing$reports entry must be a list of assessment records.", call. = FALSE)
+    meta$processing$reports[[type]] <- c(previous, list(record))
+    attr(data, "meta") <- meta
+    qc_restore_input(original, data)
+}
+
+.m_reports_historical <- function(meta, reason) {
+    reports <- meta$processing$reports
+    if (!is.list(reports))
+        return(meta)
+    for (type in intersect(names(reports), c("static", "dynamic"))) {
+        if (!is.list(reports[[type]]))
+            next
+        reports[[type]] <- lapply(reports[[type]], function(record) {
+            if (is.list(record) && identical(record$schema_version, "1")) {
+                record$status <- "historical"
+                record$invalidated_by <- unique(c(record$invalidated_by, reason))
+            }
+            record
+        })
+    }
+    meta$processing$reports <- reports
+    meta
+}
+
 qc_time_intervals <- function(x) {
     x <- qc_input_data(x)
     t <- as.numeric(x$time)
@@ -144,7 +218,7 @@ attach_qc <- function(x, scope = "whole parsed recording") {
 invalidate_qc <- function(x) {
     original <- x
     x <- qc_input_data(x)
-    m <- attr(x, "meta")
+    m <- .m_reports_historical(attr(x, "meta"), "signal_or_selection_changed")
     m$processing$qc <- NULL
     if (length(m$processing$decode_notes)) {
         notes <- unlist(strsplit(m$processing$decode_notes, "\n", fixed = TRUE))

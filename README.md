@@ -1,10 +1,15 @@
 # Metronautica
 
-Metronautica: Navigate wearable triaxial accelerometer signals into transparent metrology and reports.
+*Navigate wearable triaxial accelerometer signals into transparent metrology and reports.*
 
-Parse recordings, assess signal quality, characterise measurement response and
-extract acceleration features. Developed for a research article under submission;
-analyses and recording samples are in [WAM](https://github.com/miltheo/wam).
+Use wearable accelerometer native recordings, parse into a common data format
+with metadata and signal diagnostics attached, and choose your measurement
+pathway. This R package will allow you to retain wearable accelerometer data
+longitudinally by preserving structure and metadata, while allowing you to use
+different published summary features.
+
+This repository is developed for a research article under submission. Analysis
+and recording samples are in [WAM](https://github.com/miltheo/wam).
 
 [Getting started](docs/GETTING_STARTED.md) | [Reference PDF](docs/metronautica-reference.pdf) | [Browser guide](docs/index.html)
 
@@ -13,12 +18,28 @@ analyses and recording samples are in [WAM](https://github.com/miltheo/wam).
 ![Metronautica workflow: parsing with QC, static and dynamic characterisation, features and reports; optional calibration and reassessment.](docs/assets/workflow-dark.svg)
 
 [Native recordings](#native-recordings "GENEActiv/SENS BIN; Axivity CWA/AX3 CSV; ActiGraph GT3X/LEAP CSV/LEAP AGSD; HBK G-Link CSV.") →
-[Acceleration tibble](#acceleration-tibble "time: POSIXct, UTC; ax_g, ay_g, az_g: numeric acceleration in g; attached meta: acquisition settings, provenance and QC.") →
+[Metronautica Tibble](#metronautica-tibble "Four required columns: time (POSIXct), ax_g, ay_g, az_g (numeric g). Metadata, diagnostics and reports are optional pipeline additions.") →
 [Static](#static-characterisation) → [Dynamic](#dynamic-characterisation) →
 [Features](#feature-extraction-and-visual-comparison) → [Reports](#metrology-and-feature-reports).
 
 Stages can run independently; [optional calibration](#optional-calibration) returns
 to assessment with refreshed QC. The browser guide provides clickable diagram boxes.
+
+## Function map
+
+| Stage | Entry point | Source |
+|---|---|---|
+| Parsing | [`parse_raw_auto()`](docs/reference.html#parse_raw_auto) | [m_parsers.R](R/m_parsers.R) |
+| Signal diagnostics | [`qc_accel_tbl()`](docs/reference.html#qc_accel_tbl) | [m_qc.R](R/m_qc.R) |
+| Interval selection | [`clip_bundle()`](docs/reference.html#clip_bundle) | [m_accel_clipper.R](R/m_accel_clipper.R) |
+| Static characterisation | [`static_metrology_from_tbl()`](docs/reference.html#static_metrology_from_tbl) | [m_static.R](R/m_static.R) |
+| Dynamic characterisation | [`dynamic_metrology_report()`](docs/reference.html#dynamic_metrology_report) | [m_dynamic.R](R/m_dynamic.R) |
+| Optional calibration | [`dm_fit_vm_calibration()`](docs/reference.html#dm_fit_vm_calibration) | [m_dynamic.R](R/m_dynamic.R) |
+| Axis filtering | [`filter_accel_tbl()`](docs/reference.html#filter_accel_tbl) | [m_filter.R](R/m_filter.R) |
+| Feature extraction | [`compute_accel_summaries()`](docs/reference.html#compute_accel_summaries) | [m_accel_summary_suite.R](R/m_accel_summary_suite.R) |
+| Activity counts | [`accel_metric_agcounts()`](docs/reference.html#accel_metric_agcounts) | [m_agcounts.R](R/m_agcounts.R) |
+| Visualisation | [`plot_processed_metric()`](docs/reference.html#plot_processed_metric) | [m_plotter.R](R/m_plotter.R) |
+| Sample retrieval | [`m_load_sample_data()`](docs/reference.html#m_load_sample_data) | [m_sample_data.R](R/m_sample_data.R) |
 
 ## Installation
 
@@ -61,8 +82,10 @@ include plots from separately distributed samples. Other package use requires no
 
 ## Native recordings
 
-`parse_raw_auto()` detects the format and attaches `primary-five` diagnostics
-at `meta$processing$qc` by default.
+`parse_raw_auto()` detects the format and attaches
+[`primary-five` signal diagnostics](docs/reference.html#qc_accel_tbl--details)
+at `meta$processing$qc` by default. The reference gives the five rules and their
+reported outputs, following Supplementary Table S2 of the research article.
 
 | Device | Supported input |
 |---|---|
@@ -74,12 +97,18 @@ at `meta$processing$qc` by default.
 
 Check [decoder requirements and limits](docs/reference.html#parse_raw_auto) before parsing.
 
-## Acceleration tibble
+<a name="acceleration-tibble"></a>
 
-Four columns: `time` (`POSIXct`, UTC), `ax_g`, `ay_g`, `az_g` (numeric, *g*).
-Attached `meta` stores acquisition settings, provenance and QC; `accel_meta()` reads it.
-For decoded data, use `as_accel_tbl()` and `attach_qc()`.
-[Data contract](docs/reference.html#common-data-format).
+## Metronautica Tibble
+
+[Metronautica Tibble 0.1.0](data-contract/0.1.0/SPECIFICATION.md) defines the
+sample-level data contract: one decoded observation per row, with `time`
+(`POSIXct`) and `ax_g`, `ay_g`, `az_g` (numeric acceleration in *g*), in that order.
+UTC is the storage convention. Metadata, signal diagnostics and assessment
+reports are optional pipeline attachments.
+
+`as_accel_tbl()` constructs the tibble; `accel_meta()` reads its metadata.
+[Minimal example](examples/tibble_minimal.R) · [Specification index](data-contract/README.md).
 
 ## Static characterisation
 
@@ -99,7 +128,7 @@ VM response slope, signed VM bias, VM integral non-linearity, composite error an
 `compute_accel_summaries()` returns epoch features and settings; `accel_metric_*()`
 functions calculate individual features. Use `plot_accel_clip()` for acceleration,
 `plot_processed_metric()` for features and `accel_metric_agcounts()` for activity counts.
-[Feature comparison and settings](docs/REAL_DATA_EXAMPLES.md#feature-comparison).
+[Feature extraction and comparison](docs/GETTING_STARTED.md#feature-extraction).
 
 ## Metrology and feature reports
 
@@ -108,11 +137,19 @@ Static reports return `summary`/`meta`; dynamic reports return `stages`/`overall
 feature results return `data_long`/`data_wide`/`settings`.
 [Outcome definitions](docs/reference.html#measurement-definitions).
 
+Static and dynamic report functions default to `attach_report = TRUE`.
+Capture `result$data` to retain compact assessments in
+`accel_meta(result$data)$processing$reports`; `attach_report = FALSE` opts out.
+Records retain results, assessed selections, settings, diagnostics and provenance;
+plots remain separate. Keep the unfiltered samples to support later metric
+calculations when their input requirements are met.
+[Native-recording retention example](examples/data_contract.R).
+
 ## Optional calibration
 
 Fit and apply a VM mapping only when warranted. Independently validate its benefit,
 refresh diagnostics with `attach_qc()` and repeat the selected assessments.
-[Calibration example](docs/REAL_DATA_EXAMPLES.md#calibration).
+[Calibration workflow and example](docs/GETTING_STARTED.md#optional-calibration).
 
 ## Help and citation
 

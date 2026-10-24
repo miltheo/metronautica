@@ -24,7 +24,7 @@ parse_raw_auto(path, return = c("data", "bundle"), verbose = FALSE,
 LEAP AGSD uses the shifted-reciprocal conversion verified against paired exports. Supported configuration: LEAP v2, dataVersion 3, firmware 2.1.0.106, 128 Hz, calibrationMethod 2. Other configurations error. Decoding coefficients do not establish independent calibration traceability.
 
 Review timezone assumptions/shifts before pairing. Default QC is stored at meta$processing$qc with ruleset primary-five; standalone sourcing also requires m_qc.R.}
-\seealso{\code{\link{common-data-format}}, \code{\link{qc_accel_tbl}}, \code{\link{native-recording-examples}}}
+\seealso{\code{\link{common-data-format}}, \code{\link{qc_accel_tbl}}, \href{https://github.com/miltheo/metronautica/blob/main/docs/GETTING_STARTED.md#real-recording-examples}{Recording examples}}
 
 \section{Device-specific arguments through ...}{\if{latex}{\out{\sloppy}}
 \describe{

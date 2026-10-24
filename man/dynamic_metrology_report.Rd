@@ -10,7 +10,8 @@ dynamic_metrology_report(test_clips, ref_clips, test_axis_fsr_g =
     TRUE, add_plot = TRUE, inspect_alignment = TRUE, align_hz = 10,
     align_max_lag_s = 7200, align_by = c("vm", "ax", "ay", "az"),
     align_plot_stages_n = 3, compute_stage_xcorr = FALSE,
-    comp_plot_max_n = 20000L, comp_plot_ylim = NULL)
+    comp_plot_max_n = 20000L, comp_plot_ylim = NULL,
+    attach_report = TRUE)
 }
 \arguments{
 \item{test_clips}{\if{latex}{\out{\sloppy}} Test-device stage bundle returned by \code{clip_dynamic_stages}.}
@@ -34,6 +35,7 @@ dynamic_metrology_report(test_clips, ref_clips, test_axis_fsr_g =
 \item{compute_stage_xcorr}{\if{latex}{\out{\sloppy}} Also estimate matched-stage lags when inspect_alignment is TRUE, separately from whole-trial diagnostics. No lag is applied.}
 \item{comp_plot_max_n}{\if{latex}{\out{\sloppy}} Maximum displayed composite-trace samples, selected at evenly spaced indices. Fitting/errors use all data.}
 \item{comp_plot_ylim}{\if{latex}{\out{\sloppy}} Composite-trace display limits: lower/upper \eqn{g} pair, or NULL for observed range. Fitting is unaffected.}
+\item{attach_report}{\if{latex}{\out{\sloppy}} TRUE (default) appends a compact assessment to processing$reports$dynamic on returned data and the test_clips tables. FALSE adds no record. Input objects and reference tables are not modified in place.}
 }
 \value{\if{latex}{\out{\sloppy}} A list: \code{stages} (one row per paired stage), \code{overall} (pooled response/composite error), \code{plots} (ggplot objects, possibly empty), and \code{meta} (ranges, windows, stage names and alignment diagnostics). Slope and scale-factor error are dimensionless; intercept/bias/SD are in \eqn{g}. VM integral non-linearity (retained field \code{linearity_error_vs_reference}) and composite error are percentages. Within-stage epoch-mean VM CV (retained field \code{repeatability_error_cv}) and other CV/utilisation fields are fractions. Trial-to-trial repeatability requires repeated assessments and separate aggregation.}
 \details{\if{latex}{\out{\sloppy}} OLS regresses test VM on reference VM. Unequal lengths use nearest positions on an evenly spaced sample-index grid, without timestamp alignment or continuous interpolation. Stage and pooled matching differ: the pooled reference is length-matched once after concatenation. Select synchronous, suitable stages and assess timing sensitivity; meta records pairing policy/range sources.
@@ -44,6 +46,8 @@ Frequency diagnostics are included; frequency-domain features and inter-device e
 \seealso{\code{\link{clip_dynamic_stages}}, \code{\link{m_dynamic_response}}, \code{\link{measurement-definitions}}}
 
 \section{Returned stage fields}{
+The returned \code{data} is the full test clip when available, otherwise its data table or the concatenated matched test stages. \code{test_clips} retains the input bundle structure with optional assessments attached to its tables and synchronised metadata. Attached results include stage/overall tables and test/reference diagnostics with reference provenance; shared record fields and retention follow \code{\link{common-data-format}}.
+
 \if{latex}{\out{\sloppy}}
 Here F is the test-axis peak-to-peak span; v and r are paired test/reference VM in \eqn{g}.
 \describe{

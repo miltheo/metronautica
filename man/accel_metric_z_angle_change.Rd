@@ -9,7 +9,7 @@ accel_metric_z_angle_change(tbl, epoch_s, fs_hz, anchor = "center",
 }
 \arguments{
 \item{tbl}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
-\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); boundaries follow the common data format.}
+\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); see the pipeline epoch conventions in \code{\link{compute_accel_summaries}}.}
 \item{fs_hz}{\if{latex}{\out{\sloppy}} Finite positive sampling frequency (Hz), used for sample windows or time integrals.}
 \item{anchor}{\if{latex}{\out{\sloppy}} Observed-sample label: first (start), last (end), or ceiling of half the sample count (center). Labels do not change values.}
 \item{median_s}{\if{latex}{\out{\sloppy}} Running-median duration (s), converted with fs_hz to an odd sample count of at least three; smooths the change/orientation series before aggregation.}

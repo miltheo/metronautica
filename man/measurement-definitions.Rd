@@ -27,3 +27,13 @@ Index-based dynamic reference matching is not timestamp correction. No equivalen
 \item \code{\link{compute_accel_summaries}}.
 }
 }
+
+\section{Assessment scope}{\if{latex}{\out{\sloppy}} Establish stationary or synchronous excitation conditions separately. Error estimates are not a complete uncertainty budget. WAM (\url{https://github.com/miltheo/wam}) supplies cohort aggregation, trial-to-trial repeatability, activation/deadband estimation and inter-device equivalence tests.}
+\references{\if{latex}{\out{\sloppy}}
+Joint Committee for Guides in Metrology (2012). International vocabulary of metrology: Basic and general concepts and associated terms, JCGM 200:2012. \doi{10.59161/JCGM200-2012}.
+
+IEEE (2018). IEEE Std 2700-2017, Standard for Sensor Performance Parameter Definitions. \doi{10.1109/IEEESTD.2018.8277147}.
+
+IEEE (2019). IEEE Std 1293-2018, Standard Specification Format Guide and Test Procedure for Linear Single-Axis, Nongyroscopic Accelerometers. \doi{10.1109/IEEESTD.2019.8653544}.
+
+}

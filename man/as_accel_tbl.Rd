@@ -1,16 +1,16 @@
 \name{as_accel_tbl}
 \alias{as_accel_tbl}
-\title{Construct a common-format acceleration table}
-\description{\if{latex}{\out{\sloppy}} Construct an acceleration table and retain its metadata. Parsing attaches diagnostics by default; they can also be attached explicitly.}
+\title{Construct a Metronautica Tibble}
+\description{\if{latex}{\out{\sloppy}} Construct the four-column sample-level table defined by Metronautica Tibble 0.1.0, retaining optional metadata.}
 \usage{
 as_accel_tbl(time, ax_g, ay_g, az_g, meta = list())
 }
 \arguments{
-\item{time}{\if{latex}{\out{\sloppy}} POSIXct sample timestamps. UTC is the common-format convention; existing instants and timezone attributes are retained.}
+\item{time}{\if{latex}{\out{\sloppy}} POSIXct sample timestamps. UTC is the Metronautica Tibble storage convention; existing instants and timezone attributes are retained.}
 \item{ax_g}{\if{latex}{\out{\sloppy}} Numeric X-axis acceleration in \eqn{g}.}
 \item{ay_g}{\if{latex}{\out{\sloppy}} Numeric Y-axis acceleration in \eqn{g}.}
 \item{az_g}{\if{latex}{\out{\sloppy}} Numeric Z-axis acceleration in \eqn{g}.}
-\item{meta}{\if{latex}{\out{\sloppy}} Metadata list; see \code{\link{common-data-format}}.}
+\item{meta}{\if{latex}{\out{\sloppy}} Optional pipeline metadata list, empty by default. Its fields are not required by the core data contract; see \code{\link{metronautica-tibble}}.}
 }
 \value{\if{latex}{\out{\sloppy}} An \code{accel_tbl} inheriting from \code{tbl_df}, with exactly \code{time}, \code{ax_g}, \code{ay_g}, \code{az_g} and a \code{meta} attribute.}
 \details{\if{latex}{\out{\sloppy}} Axes must have the same length as time; scalar recycling is rejected. Non-finite observations and timestamp defects are retained for diagnostics. The constructor does not sort, resample, calibrate or infer acceleration units. The constructor preserves supplied metadata without estimating acquisition settings. The configured axis full-scale range is the peak-to-peak span: 16 \eqn{g} denotes +/-8 \eqn{g}.}

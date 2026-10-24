@@ -10,7 +10,7 @@ accel_metric_svmbp(tbl, epoch_s, fs_hz, anchor = "center",
 }
 \arguments{
 \item{tbl}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
-\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); boundaries follow the common data format.}
+\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); see the pipeline epoch conventions in \code{\link{compute_accel_summaries}}.}
 \item{fs_hz}{\if{latex}{\out{\sloppy}} Finite positive sampling frequency (Hz), used for sample windows or time integrals.}
 \item{anchor}{\if{latex}{\out{\sloppy}} Observed-sample label: first (start), last (end), or ceiling of half the sample count (center). Labels do not change values.}
 \item{cutoffs_hz}{\if{latex}{\out{\sloppy}} Lower and upper axis band-pass cutoffs in Hz, applied before vector-magnitude recombination. The upper cutoff must lie below fs_hz/2 unless clipping is explicitly selected.}

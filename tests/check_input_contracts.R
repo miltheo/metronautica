@@ -7,6 +7,22 @@ local({
     t0 <- as.POSIXct("2026-01-01", tz = "UTC")
     meta <- list(acquisition = list(fs_derived_hz = fs, full_scale_range_g = 16))
 
+    # The Metronautica Tibble core does not require any pipeline metadata.
+    minimal <- as_accel_tbl(t0 + s, sin(s), cos(s), rep(1, length(s)))
+    plain <- tibble::as_tibble(minimal)
+    attr(plain, "meta") <- NULL
+    stopifnot(identical(accel_meta(minimal), list()), is.null(accel_meta(plain)),
+        identical(names(plain), c("time", "ax_g", "ay_g", "az_g")),
+        identical(qc_accel_tbl(minimal), qc_accel_tbl(plain)),
+        is.na(qc_accel_tbl(plain)$near_limit_pct),
+        identical(accel_metric_enmo(minimal, 5), accel_metric_enmo(plain, 5)),
+        identical(accel_metric_mad(minimal, 5), accel_metric_mad(plain, 5)))
+    # Unknown range remains unavailable; an explicit range enables the diagnostic.
+    ranged <- plain
+    attr(ranged, "meta") <- list(acquisition = list(full_scale_range_g = 16))
+    stopifnot(is.finite(qc_accel_tbl(ranged)$near_limit_pct),
+        is.null(accel_meta(plain)), is.null(accel_meta(minimal)$processing))
+
     # Construct common-format input ----
     x <- as_accel_tbl(t0 + s, 0.1 * sin(2 * pi * 2 * s), 0.2 * cos(2 * pi * 3 * s), 1 + 0.15 * sin(2 *
         pi * s), meta)

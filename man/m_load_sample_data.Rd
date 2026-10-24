@@ -18,12 +18,10 @@ m_load_sample_data(device = "LEAP", type = "static", dest_dir =
 \item{base_url}{\if{latex}{\out{\sloppy}} Fixed HTTPS WAM release-asset directory for samples unavailable locally. Defaults to \code{metronautica.sample_base_url}. No public URL is preconfigured. A \code{file:///} directory also supports offline retrieval.}
 }
 \value{\if{latex}{\out{\sloppy}} The native file path, with a sample_info attribute containing source identity, analysis bounds, units and timestamp shift. A JSON sidecar contains the same information. With a dynamic reference, the path also has reference_file and reference_info attributes.}
-\details{\if{latex}{\out{\sloppy}} WAM's \href{https://github.com/miltheo/wam/blob/main/samples/README.md}{sample guide and catalogue} define recording intervals, native-format boundaries, provenance and distribution terms. Recordings are separate attachments; cloning WAM alone does not provide them. The installed catalogue fixes filenames and SHA-256 checksums.
+\details{\if{latex}{\out{\sloppy}} WAM's \href{https://github.com/miltheo/wam/blob/main/samples/README.md}{sample guide} defines recording intervals, native-format boundaries, provenance and distribution terms. Recordings are separate attachments; cloning WAM does not provide them. The installed catalogue fixes filenames and SHA-256 checksums. Downloads/decompression use temporary files; validation precedes replacement.
 
-Use local sample_dir or configure a fixed release-asset base_url. Retrieval errors explain missing configuration. Downloads/decompression use temporary files and validation precedes replacement. Ordinary installation, loading and calculations require neither WAM nor network access.
-
-Apply each returned file's own timestamp shift and acquisition settings. Retrieval does not parse, filter or calibrate data.}
-\seealso{\code{\link{native-recording-examples}}, \code{\link{parse_raw_auto}}}
+Apply each file's own timestamp shift and acquisition settings. Retrieval does not parse, filter or calibrate data. Installation, loading and calculations require neither WAM nor network access. See \href{https://github.com/miltheo/metronautica/blob/main/docs/GETTING_STARTED.md#real-recording-examples}{Getting Started} for setup.}
+\seealso{\href{https://github.com/miltheo/metronautica/blob/main/docs/GETTING_STARTED.md#real-recording-examples}{Recording examples}, \code{\link{parse_raw_auto}}}
 \section{Example execution}{\if{latex}{\out{\sloppy}} \code{Not run} requires external recordings. This retrieval workflow was executed locally for the guide figures.}
 \examples{
 \dontrun{

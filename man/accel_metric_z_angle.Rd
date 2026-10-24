@@ -8,7 +8,7 @@ accel_metric_z_angle(tbl, epoch_s, anchor = "center", output =
 }
 \arguments{
 \item{tbl}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
-\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); boundaries follow the common data format.}
+\item{epoch_s}{\if{latex}{\out{\sloppy}} Positive epoch duration (s); see the pipeline epoch conventions in \code{\link{compute_accel_summaries}}.}
 \item{anchor}{\if{latex}{\out{\sloppy}} Observed-sample label: first (start), last (end), or ceiling of half the sample count (center). Labels do not change values.}
 \item{output}{\if{latex}{\out{\sloppy}} mean_deg returns the epoch mean Z-angle; sd_deg returns its sample SD. Both are in degrees.}
 }

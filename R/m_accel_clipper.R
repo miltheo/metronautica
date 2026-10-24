@@ -108,6 +108,7 @@ clip_bundle <- function(obj, start_time = NULL, duration_s = NULL, end_time = NU
 
     meta <- meta_processing_init(meta)
 
+    meta <- .m_reports_historical(meta, "selection_changed")
     step <- list(step = "clip", clip_start_utc = as.character(format(start_time, tz = "UTC", usetz = TRUE)),
         clip_end_utc = as.character(format(end_time, tz = "UTC", usetz = TRUE)), duration_s = as.numeric(difftime(end_time,
             start_time, units = "secs")), pad_s = as.numeric(trim_pad_s), n_before = nrow(x), n_after = nrow(x2),

@@ -7,7 +7,7 @@ static_noise_summary_from_tbl(x, instrument = NA_character_,
     device_id = NA_character_, device_vendor = NA_character_,
     device_model = NA_character_, fs_nominal_hz = NA_real_,
     fs_derived_hz = NA_real_, out_dir = NULL, start_utc, duration_h,
-    verbose = FALSE, progress = TRUE)
+    verbose = FALSE, progress = TRUE, attach_report = TRUE)
 }
 \arguments{
 \item{x}{\if{latex}{\out{\sloppy}} Acceleration table or parser/clip bundle; see \code{\link{common-data-format}}.}
@@ -22,8 +22,9 @@ static_noise_summary_from_tbl(x, instrument = NA_character_,
 \item{duration_h}{\if{latex}{\out{\sloppy}} Required positive duration (h), with exclusive end. processing$static_window records requested bounds, observed span and boundary coverage. Incomplete boundary coverage warns; internal gaps and stationarity are not tested.}
 \item{verbose}{\if{latex}{\out{\sloppy}} Print processing messages.}
 \item{progress}{\if{latex}{\out{\sloppy}} Show a text progress bar.}
+\item{attach_report}{\if{latex}{\out{\sloppy}} TRUE (default) appends the noise assessment to processing$reports$static on returned data and clipped_data. FALSE adds no record. The caller's object is not modified in place.}
 }
-\value{\if{latex}{\out{\sloppy}} Invisible list: summary (one-row noise/identifier table), clipped_data, meta (including window coverage), files (written paths or NULL).}
+\value{\if{latex}{\out{\sloppy}} Invisible list: summary (one-row noise/identifier table), clipped_data, meta (including window coverage), files (written paths or NULL), and data (the complete input table with optional attached assessment). Attached results contain the noise summary; shared record fields and retention follow \code{\link{common-data-format}}.}
 \seealso{\code{\link{static_axis_noise_metrics}}, \code{\link{static_metrology_from_tbl}}}
 
 \section{Summary fields}{

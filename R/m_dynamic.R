@@ -51,7 +51,7 @@ clip_dynamic_stages <- function(x, start_utc, n_stages, stage_min, buffer_min, r
     full_end <- max(stage_end)
 
     clip_accel_tbl <- function(a, t1, t2) {
-        m <- accel_meta(a)
+        m <- .m_reports_historical(accel_meta(a), "selection_changed")
         out <- a[a$time >= t1 & a$time < t2, , drop = FALSE]
         attr(out, "meta") <- m
         class(out) <- c("accel_tbl", setdiff(class(out), "accel_tbl"))
@@ -448,8 +448,9 @@ dynamic_metrology_report <- function(test_clips, ref_clips, test_axis_fsr_g = NU
     window_s = 5, epoch_time = c("end", "center", "start"), compute_entropy = TRUE, entropy_m = 2, entropy_r = NULL,
     entropy_tau = 1, verbose = FALSE, progress = TRUE, add_plot = TRUE, inspect_alignment = TRUE, align_hz = 10,
     align_max_lag_s = 7200, align_by = c("vm", "ax", "ay", "az"), align_plot_stages_n = 3, compute_stage_xcorr = FALSE,
-    comp_plot_max_n = 20000L, comp_plot_ylim = NULL) {
+    comp_plot_max_n = 20000L, comp_plot_ylim = NULL, attach_report = TRUE) {
     # Compute dynamic metrics
+    .m_report_flag(attach_report)
     epoch_time <- match.arg(epoch_time)
     align_by <- match.arg(align_by)
     stopifnot(is.list(test_clips), is.list(ref_clips))
@@ -663,5 +664,47 @@ dynamic_metrology_report <- function(test_clips, ref_clips, test_axis_fsr_g = NU
         reference = ref_range_source), comparison_plot_ylim = comp_plot_ylim, pairing = "evenly_spaced_sample_index",
         window_s = window_s, epoch_time = epoch_time, entropy = list(enabled = compute_entropy, m = entropy_m,
             r = entropy_r, tau = entropy_tau), stage_names = stage_names, alignment = align_meta)
-    list(stages = stages_tbl, overall = overall_tbl, plots = plots, meta = meta)
+    # Retain the test signal with a compact, explicitly scoped assessment record.
+    data <- if (is.data.frame(test_clips$full)) test_clips$full else test_clips$data
+    if (!is.data.frame(data)) {
+        data <- dplyr::bind_rows(test_clips$stages[stage_names])
+        attr(data, "meta") <- test_clips$meta
+        data <- attach_qc(data, scope = "concatenated matched dynamic stages")
+    }
+    if (is.null(attr(data, "meta")) && !is.null(test_clips$meta))
+        attr(data, "meta") <- test_clips$meta
+    clips <- test_clips
+    if (attach_report) {
+        selection <- list(stage_names = stage_names, schedule = test_clips$schedule,
+            stages = lapply(test_clips$stages[stage_names], .m_report_selection))
+        reference <- list(source = .m_report_source(ref_clips), selection = list(
+            stage_names = stage_names, schedule = ref_clips$schedule,
+            stages = lapply(ref_clips$stages[stage_names], .m_report_selection)))
+        settings <- meta
+        settings$alignment_options <- list(inspect_alignment = inspect_alignment,
+            align_hz = align_hz, align_max_lag_s = align_max_lag_s, align_by = align_by,
+            compute_stage_xcorr = compute_stage_xcorr)
+        record <- .m_report_record("dynamic", "dynamic_metrology_report", test_clips,
+            selection, settings, results = list(stages = stages_tbl, overall = overall_tbl),
+            diagnostics = list(test = lapply(test_clips$stages[stage_names], qc_accel_tbl),
+                reference = lapply(ref_clips$stages[stage_names], qc_accel_tbl)), reference = reference)
+        data <- .m_report_attach(data, record)
+        attach_stage <- function(stage) {
+            if (is.null(stage))
+                return(NULL)
+            if (is.null(attr(stage, "meta")) && !is.null(test_clips$meta))
+                attr(stage, "meta") <- test_clips$meta
+            .m_report_attach(stage, record)
+        }
+        for (field in c("full", "data")) if (is.data.frame(clips[[field]]))
+            clips[[field]] <- attach_stage(clips[[field]])
+        clips$stages <- lapply(clips$stages, function(stage) {
+            attach_stage(stage)
+        })
+        clips$meta <- accel_meta(data)
+        if ("qc" %in% names(clips))
+            clips$qc <- clips$meta$processing$qc
+    }
+    list(stages = stages_tbl, overall = overall_tbl, plots = plots, meta = meta,
+        data = data, test_clips = clips)
 }

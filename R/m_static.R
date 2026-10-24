@@ -87,7 +87,7 @@ static_clip <- function(x, start_utc, duration_h) {
         stop("start_utc must specify one valid instant.")
     end_utc <- start_utc + as.difftime(duration_h, units = "hours")
     y <- x[x$time >= start_utc & x$time < end_utc, , drop = FALSE]
-    attr(y, "meta") <- attr(x, "meta")
+    attr(y, "meta") <- .m_reports_historical(attr(x, "meta"), "selection_changed")
     if (exists("attach_qc", mode = "function")) {
         y <- attach_qc(y, scope = paste("static clip", format(start_utc, tz = "UTC"), "to", format(end_utc,
             tz = "UTC"), "UTC; end exclusive"))
@@ -233,8 +233,9 @@ static_axis_noise_metrics <- function(x, cv_min_abs_mean_g = 0.005) {
 # Stationary noise report ----
 static_noise_summary_from_tbl <- function(x, instrument = NA_character_, device_id = NA_character_, device_vendor = NA_character_,
     device_model = NA_character_, fs_nominal_hz = NA_real_, fs_derived_hz = NA_real_, out_dir = NULL,
-    start_utc, duration_h, verbose = FALSE, progress = TRUE) {
+    start_utc, duration_h, verbose = FALSE, progress = TRUE, attach_report = TRUE) {
 
+    .m_report_flag(attach_report)
     x <- qc_input_data(x)
     static_require()
     static_validate(x)
@@ -291,7 +292,6 @@ static_noise_summary_from_tbl <- function(x, instrument = NA_character_, device_
         f_meta <- file.path(out_dir, paste0(prefix, "__meta.rds"))
 
         utils::write.csv(summary_tbl, f_summary, row.names = FALSE)
-        saveRDS(accel_meta(xw), f_meta)
 
         files <- list(summary_csv = f_summary, meta_rds = f_meta)
     }
@@ -299,7 +299,19 @@ static_noise_summary_from_tbl <- function(x, instrument = NA_character_, device_
     if (isTRUE(verbose))
         message("[static_noise_summary_from_tbl] done")
 
-    invisible(list(summary = summary_tbl, clipped_data = xw, meta = m, files = files))
+    data <- x
+    if (attach_report) {
+        record <- .m_report_record("static", "static_noise_summary_from_tbl", x,
+            selection = m$processing$static_window,
+            settings = list(fs_nominal_hz = fs_nom, fs_derived_hz = fs_der),
+            results = list(summary = summary_tbl), diagnostics = m$processing$qc)
+        data <- .m_report_attach(x, record)
+        xw <- .m_report_attach(xw, record)
+    }
+    m <- accel_meta(xw)
+    if (!is.null(files))
+        saveRDS(m, files$meta_rds)
+    invisible(list(summary = summary_tbl, clipped_data = xw, meta = m, files = files, data = data))
 }
 
 # Non-overlapping Allan deviation ----
@@ -412,7 +424,8 @@ static_slug <- function(x) {
 # Combined static metrology report ----
 static_metrology_from_tbl <- function(x, instrument = NA_character_, device_id = NA_character_, device_vendor = NA_character_,
     device_model = NA_character_, fs_nominal_hz = NA_real_, fs_derived_hz = NA_real_, out_dir = NULL,
-    start_utc, duration_h, title_prefix = NULL, verbose = FALSE, progress = TRUE) {
+    start_utc, duration_h, title_prefix = NULL, verbose = FALSE, progress = TRUE, attach_report = TRUE) {
+    .m_report_flag(attach_report)
     x <- qc_input_data(x)
 
     static_require()
@@ -509,7 +522,6 @@ static_metrology_from_tbl <- function(x, instrument = NA_character_, device_id =
 
         utils::write.csv(summary_tbl, f_summary, row.names = FALSE)
         utils::write.csv(allan_df, f_allan, row.names = FALSE)
-        saveRDS(m, f_meta)
 
         ggplot2::ggsave(f_drift, p_drift, width = 10, height = 5, dpi = 300, units = "in")
         ggplot2::ggsave(f_allanp, p_allan, width = 10, height = 5, dpi = 300, units = "in")
@@ -521,6 +533,18 @@ static_metrology_from_tbl <- function(x, instrument = NA_character_, device_id =
     if (isTRUE(verbose))
         message("[static_metrology_from_tbl] done")
 
+    data <- x
+    if (attach_report) {
+        record <- .m_report_record("static", "static_metrology_from_tbl", x,
+            selection = m$processing$static_window,
+            settings = list(fs_nominal_hz = fs_nom, fs_derived_hz = fs_der),
+            results = list(summary = summary_tbl, allan = allan_df, one_hz = d1),
+            diagnostics = m$processing$qc)
+        data <- .m_report_attach(x, record)
+        xw <- .m_report_attach(xw, record)
+    }
+    if (!is.null(files))
+        saveRDS(accel_meta(xw), files$meta_rds)
     invisible(list(summary = summary_tbl, allan = allan_df, drift_plot = p_drift, allan_plot = p_allan,
-        clipped_data = xw, one_hz = d1, meta = accel_meta(xw), files = files))
+        clipped_data = xw, one_hz = d1, meta = accel_meta(xw), files = files, data = data))
 }
